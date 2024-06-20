@@ -11,16 +11,25 @@ const prisma = new PrismaClient();
 router.get('/programs', authenticateToken, async (req: Request, res) => {
 
   const userId = req.user.id;
-
-  console.log(req.user)
-  console.log(userId)
-
   const programs = await prisma.programs.findMany({ where : { userId }});
 
-  console.log(programs)
-
-
   res.status(200).json({programs})
+});
+
+router.post('/programs', authenticateToken, async (req: Request, res) => {
+
+  const {programName, programRecipientId} = req.body;
+
+  console.log(programName)
+  console.log(programRecipientId)
+
+  await prisma.programs.create({
+    data:{
+      name: programName,
+      userId: parseInt(programRecipientId)
+    }});
+
+  res.status(200).json()
 });
 
 

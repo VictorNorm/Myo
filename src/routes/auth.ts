@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import authenticateToken from '../middleware/authenticateToken';
+import passport from 'passport';
+import { Strategy } from 'passport-local';
 dotenv.config();
 
 const router = Router();
@@ -13,6 +15,28 @@ const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 function isValidEmail(email: string) {
   return emailPattern.test(email);
 }
+
+passport.use('local', new Strategy(async (username, password, done) => {
+
+  const foundUser = await prisma.users.findUnique({
+    where: {
+      username
+    }
+  });
+
+  if(!foundUser) {
+    return done(null, false);
+  }
+
+  const isValid = await bcrypt.compare(password, foundUser.password_hash);
+
+  if (!isValid) {
+    return done(null, false);
+  }
+
+  return done(null, foundUser);
+
+}))
 
 
 router.post('/signup', async (req, res) => {
@@ -33,20 +57,6 @@ router.post('/signup', async (req, res) => {
         message: "Invalid email format."
       }
     })
-  }
-
-  const foundUser = await prisma.users.findUnique({
-    where: {
-      username: email
-    }
-  })
-
-  if (foundUser) {
-    return res.status(400).json({
-      data: {
-        message: "User already exists with the provided email."
-      }
-    });
   }
 
   try {
@@ -75,42 +85,37 @@ router.post('/signup', async (req, res) => {
   });
 });
 
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', async (err: any, user: any, info: any) => {
+    if (err) {
+      return next(err); // Handle errors from Passport
+    }
+    if (!user) {
+      return res.status(401).json({ message: 'Authentication failed' });
+    }
 
-  if(!username || !password) {
-    return res.status(400).json({
-      data: {
-        message: "Please provide: username and password."
+    try {
+      if (!process.env.JWT_SECRET) {
+        throw new Error('JWT_SECRET is not defined in the environment variables.');
       }
-    })
-   }
 
-  const user = await prisma.users.findUnique({
-      where: {
-          username: username,
-      },
-  });
+      const token = jwt.sign(
+        { 
+          id: user.id, 
+          firstName: user.firstname, 
+          lastName: user.lastname, 
+          username: user.username 
+        }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '168h' }
+      );
 
-  if (!user) {
-      return res.status(404).send('User not found');
-  }
-
-  const isValid = await bcrypt.compare(password, user.password_hash);
-
-  if (!isValid) {
-      return res.status(401).send('Invalid credentials');
-  }
-
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is not defined in the environment variables.');
-  }
-
-  const token = jwt.sign( { id: user.id, firstName: user.firstname, lastName: user.lastname, username: user.username }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Replace 'your_secret_key' with a real secret key
-
-  res.json({ token });
+      res.json({ token });
+    } catch (error) {
+      next(error); // Handle errors in token generation
+    }
+  })(req, res, next);
 });
-
 
 
 router.get('/protectedRouted', authenticateToken, async (req, res) => {
