@@ -16,6 +16,13 @@ router.get('/programs', authenticateToken, async (req: Request, res) => {
   res.status(200).json({programs})
 });
 
+router.get('/allprograms', authenticateToken, async (req: Request, res) => {
+
+  const programs = await prisma.programs.findMany();
+
+  res.status(200).json({programs})
+});
+
 router.post('/programs', authenticateToken, async (req: Request, res) => {
 
   const {programName, programRecipientId} = req.body;

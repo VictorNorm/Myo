@@ -30,7 +30,8 @@ model exercises {
   workout_exercises   workout_exercises[]
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
-  muscle_group        MuscleGroup         @default(Shoulder) // Provide a default value here
+  muscle_group        MuscleGroup         @default(Shoulder)
+  createdAt           DateTime            @default(now())    
 }
 
 model programs {
@@ -74,8 +75,9 @@ model users {
   trainerId     Int?
   trainer       users?       @relation("UserTrainer", fields: [trainerId], references: [id])
   clients       users[]      @relation("UserTrainer")
+  emailVerified  Boolean   @default(false)
+  
   completed_exercises completed_exercises[]
-
   @@index([trainerId])
 }
 
@@ -86,6 +88,8 @@ model workout_exercises {
   reps        Int?
   weight      Decimal?  @db.Decimal(10, 2)
   order       Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
 
   workouts    workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_1")
   exercises   exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_2")

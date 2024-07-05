@@ -93,9 +93,6 @@ router.get('/workouts/:workoutId/exercises', authenticateToken, async (req: Requ
 });
 
 
-
-
-
 router.post('/workouts/completeWorkout', authenticateToken, async (req, res) => {
   const exerciseData = req.body;
 

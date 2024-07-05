@@ -10,6 +10,8 @@ const prisma = new PrismaClient();
 router.get('/exercises', authenticateToken, async (req, res) => {
 
     try {
+        // const test = await prisma.userCompletedExercises.findMany();
+        // console.log(test);
         const exercises = await prisma.exercises.findMany()
         res.status(200).json(exercises);
     } catch (error) {

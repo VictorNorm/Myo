@@ -7,6 +7,7 @@ import exercises from "./routes/exercises";
 import users from "./routes/users";
 import passport from 'passport';
 import cors from 'cors';
+import helmet from 'helmet';
 
 const prisma = new PrismaClient();
 const app = express();
