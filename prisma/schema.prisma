@@ -7,36 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMIN
-  TRAINER
-  USER
-}
-
-enum MuscleGroup {
-  Shoulder
-  Arm
-  Chest
-  Abdominal
-  Back
-  Glute
-  Leg
-  Compound
-}
-
 model exercises {
-  id                  Int                 @id @default(autoincrement())
-  name                String              @db.Text @unique
-  workout_exercises   workout_exercises[]
+  id                  Int                      @id @default(autoincrement())
+  name                String                   @unique
+  createdAt           DateTime                 @default(now())
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
-  muscle_group        MuscleGroup         @default(Shoulder)
-  createdAt           DateTime            @default(now())    
+  workout_exercises   workout_exercises[]
 }
 
 model programs {
   id       Int        @id @default(autoincrement())
-  name     String     @db.Text
+  name     String
   userId   Int?
   users    users?     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workouts workouts[]
@@ -54,30 +36,32 @@ model sessions {
 }
 
 model user_stats {
-  userId   Int       // You'll decide if this is optional or not based on your application logic
+  userId   Int
   measured DateTime @id @db.Timestamp(0)
   stats    Json?
-  users    users?   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users    users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([userId], map: "user_stats_userId")
 }
 
 model users {
-  id            Int          @id @default(autoincrement())
-  username      String       @unique @db.VarChar(255)
-  password_hash String       @db.Text
-  firstname     String
-  lastname      String
-  role          UserRole
-  created_at    DateTime?    @default(now()) @db.Timestamp(0)
-  programs      programs[]
-  user_stats    user_stats[]
-  trainerId     Int?
-  trainer       users?       @relation("UserTrainer", fields: [trainerId], references: [id])
-  clients       users[]      @relation("UserTrainer")
-  emailVerified  Boolean   @default(false)
-  
-  completed_exercises completed_exercises[]
+  id                       Int                   @id @default(autoincrement())
+  username                 String                @unique @db.VarChar(255)
+  password_hash            String
+  firstname                String
+  lastname                 String
+  role                     UserRole
+  created_at               DateTime?             @default(now()) @db.Timestamp(0)
+  trainerId                Int?
+  emailVerified            Boolean               @default(false)
+  verificationToken        String?
+  verificationTokenExpires DateTime?
+  completed_exercises      completed_exercises[]
+  programs                 programs[]
+  user_stats               user_stats[]
+  trainer                  users?                @relation("UserTrainer", fields: [trainerId], references: [id])
+  clients                  users[]               @relation("UserTrainer")
+
   @@index([trainerId])
 }
 
@@ -90,7 +74,6 @@ model workout_exercises {
   order       Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
-
   workouts    workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_1")
   exercises   exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_2")
 
@@ -99,30 +82,29 @@ model workout_exercises {
 }
 
 model workouts {
-  id                 Int                  @id @default(autoincrement())
-  name               String               @db.Text
-  program_id         Int?
-  sessions           sessions[]
-  workout_exercises  workout_exercises[]
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  program_id          Int?
   completed_exercises completed_exercises[]
-  programs           programs?            @relation(fields: [program_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
+  sessions            sessions[]
+  workout_exercises   workout_exercises[]
+  programs            programs?             @relation(fields: [program_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
 
   @@index([program_id], map: "program_id")
 }
 
 model completed_exercises {
-  id           Int       @id @default(autoincrement())
-  user_id       Int
-  workout_id    Int
-  exercise_id   Int
-  sets         Int
-  reps         Int
-  weight       Decimal    @db.Decimal(10, 2)
-  completedAt  DateTime   @default(now()) @db.Timestamp(0)
-  
-  user         users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  workout      workouts   @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  exercise     exercises  @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int       @id @default(autoincrement())
+  sets        Int
+  reps        Int
+  weight      Decimal   @db.Decimal(10, 2)
+  completedAt DateTime  @default(now()) @db.Timestamp(0)
+  exercise_id Int
+  user_id     Int
+  workout_id  Int
+  exercise    exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workout     workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([user_id], map: "completed_exercises_user_id")
   @@index([workout_id], map: "completed_exercises_workout_id")
@@ -130,17 +112,33 @@ model completed_exercises {
 }
 
 model muscle_groups {
-  id            Int           @id @default(autoincrement())
-  name          String        @unique
-  exercises     exercise_muscle_groups[]
+  id        Int                      @id @default(autoincrement())
+  name      String                   @unique
+  exercises exercise_muscle_groups[]
 }
 
 model exercise_muscle_groups {
-  exercise_id    Int
+  exercise_id     Int
   muscle_group_id Int
-
-  exercises      exercises     @relation(fields: [exercise_id], references: [id])
-  muscle_groups  muscle_groups @relation(fields: [muscle_group_id], references: [id])
+  exercises       exercises     @relation(fields: [exercise_id], references: [id])
+  muscle_groups   muscle_groups @relation(fields: [muscle_group_id], references: [id])
 
   @@id([exercise_id, muscle_group_id])
+}
+
+enum UserRole {
+  ADMIN
+  TRAINER
+  USER
+}
+
+enum MuscleGroup {
+  Shoulder
+  Arm
+  Chest
+  Abdominal
+  Back
+  Glute
+  Leg
+  Compound
 }

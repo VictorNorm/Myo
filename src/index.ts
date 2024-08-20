@@ -29,8 +29,11 @@ app.use(cors({
   credentials: true, // Enable cookies and other credentials
 }));
 
+
 app.options('*', cors());
 
+
+app.use(helmet());
 app.use(express.json());
 app.use(passport.initialize());
 
