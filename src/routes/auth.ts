@@ -14,6 +14,7 @@ import signupLimiter from "../middleware/signupLimiter";
 import nodemailer from "nodemailer";
 import crypto from "node:crypto";
 import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { hoursToMilliseconds } from "date-fns";
 
 dotenv.config();
 
@@ -64,7 +65,10 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-const sendVerificationEmail = async (email: string, userId: number) => {
+const sendVerificationEmail = async (
+	email: string,
+	verificationToken: string,
+) => {
 	if (!process.env.JWT_SECRET) {
 		throw new Error("JWT_SECRET is not defined in the environment variables.");
 	}
@@ -72,12 +76,7 @@ const sendVerificationEmail = async (email: string, userId: number) => {
 		throw new Error("BASE_URL is not defined in the environment variables.");
 	}
 
-	const verificationToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
-		expiresIn: "1h",
-	});
 	const verificationUrl = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
-
-	console.log("Generated verification token:", verificationToken);
 
 	const mailOptions = {
 		from: '"Myo" <no-reply@myo.com>',
@@ -88,19 +87,6 @@ const sendVerificationEmail = async (email: string, userId: number) => {
 	};
 
 	await transporter.sendMail(mailOptions);
-
-	// Store the JWT token and expiration in the database
-	const tokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now in UTC
-	await prisma.users.update({
-		where: { id: userId },
-		data: {
-			verificationToken: verificationToken, // Store the JWT token
-			verificationTokenExpires: tokenExpiry,
-		},
-	});
-
-	console.log("Stored verification token:", verificationToken);
-	console.log("Token expires at (UTC):", tokenExpiry.toISOString());
 };
 
 function generateVerificationToken() {
@@ -110,7 +96,6 @@ function generateVerificationToken() {
 router.post(
 	"/signup",
 	signupLimiter,
-	reCAPTCHA,
 	[
 		body("firstName").notEmpty().withMessage("First name is required"),
 		body("lastName").notEmpty().withMessage("Last name is required"),
@@ -134,6 +119,21 @@ router.post(
 		const { firstName, lastName, email, password } = req.body;
 
 		try {
+			if (!firstName || !lastName || !email || !password) {
+				res.status(400).json({
+					data: {
+						message: "All fields are required",
+					},
+				});
+				return;
+			}
+
+			const verificationToken = await bcrypt.hash(
+				crypto.randomBytes(32).toString(),
+				10,
+			);
+
+			console.log("AUTH ROUTE REACHED");
 			const role = "USER";
 			const password_hash = await bcrypt.hash(password, 10);
 
@@ -144,11 +144,16 @@ router.post(
 					username: email.toLowerCase(),
 					password_hash,
 					role,
+					verificationToken,
+					verificationTokenExpires: new Date(
+						Date.now() + hoursToMilliseconds(24),
+					),
+					emailVerified: false,
 				},
 			});
 
 			// Call the function to send verification email
-			await sendVerificationEmail(email, newUser.id);
+			await sendVerificationEmail(email, verificationToken);
 
 			res.status(200).json({
 				data: {
@@ -178,49 +183,22 @@ router.get("/verify-email", async (req, res) => {
 	const token = req.query.token;
 
 	if (typeof token !== "string") {
-		console.log("Token is not a string:", token);
 		return res.status(400).send("Verification token is missing or invalid.");
 	}
 
 	try {
-		if (!process.env.JWT_SECRET) {
-			throw new Error(
-				"JWT_SECRET is not defined in the environment variables.",
-			);
-		}
-
-		console.log("Token received:", token);
-
-		// Verify and decode the token
-		const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
-			userId: number;
-		};
-		const userId = decoded.userId;
-
-		console.log("Decoded token:", decoded);
-
-		// Log the query parameters
-		console.log("Querying for user with ID:", userId);
-		console.log("Token to match:", token);
-		console.log("Current date (UTC):", new Date().toISOString());
-
-		// Check if the user with the given token and userId exists and the token is still valid
 		const user = await prisma.users.findFirst({
 			where: {
-				id: userId,
 				verificationToken: token,
 				verificationTokenExpires: {
-					gt: new Date(),
+					gte: new Date(),
 				},
 			},
 		});
 
 		if (!user) {
-			console.log("User not found or token expired");
 			return res.status(400).send("Invalid or expired verification token.");
 		}
-
-		console.log("User found:", user);
 
 		// Update user to set emailVerified to true and clear the token fields
 		await prisma.users.update({
@@ -232,9 +210,8 @@ router.get("/verify-email", async (req, res) => {
 			},
 		});
 
-		console.log("User email verified successfully");
-
-		res.send("Email verified successfully!");
+		res.redirect("/login");
+		return;
 	} catch (error) {
 		console.error("Verification error:", error);
 		if (error instanceof jwt.JsonWebTokenError) {
@@ -287,6 +264,15 @@ router.get("/protectedRouted", authenticateToken, async (req, res) => {
 		data: {
 			message:
 				"You can access protected routes, because you are logged in, like a healthy adult.",
+		},
+	});
+});
+
+router.get("/verificationSuccessful", authenticateToken, async (req, res) => {
+	res.status(200).json({
+		data: {
+			message:
+				"Your email has been succsessfully verified, please continue in the app.",
 		},
 	});
 });

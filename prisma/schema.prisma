@@ -10,7 +10,7 @@ datasource db {
 model exercises {
   id                  Int                      @id @default(autoincrement())
   name                String                   @unique
-  createdAt           DateTime                 @default(now())
+  createdAt           DateTime                 @default(now()) @db.Timestamptz(0)
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
   workout_exercises   workout_exercises[]
@@ -29,7 +29,7 @@ model programs {
 model sessions {
   id         Int       @id @default(autoincrement())
   workout_id Int?
-  happened   DateTime? @db.Timestamp(0)
+  happened   DateTime? @db.Timestamptz(0)
   workouts   workouts? @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_ibfk_1")
 
   @@index([workout_id], map: "workout_id")
@@ -37,7 +37,7 @@ model sessions {
 
 model user_stats {
   userId   Int
-  measured DateTime @id @db.Timestamp(0)
+  measured DateTime @id @db.Timestamptz(0)
   stats    Json?
   users    users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
@@ -51,11 +51,11 @@ model users {
   firstname                String
   lastname                 String
   role                     UserRole
-  created_at               DateTime?             @default(now()) @db.Timestamp(0)
+  created_at               DateTime?             @default(now()) @db.Timestamptz(0)
   trainerId                Int?
   emailVerified            Boolean               @default(false)
   verificationToken        String?
-  verificationTokenExpires DateTime?
+  verificationTokenExpires DateTime?             @db.Timestamptz(0)
   completed_exercises      completed_exercises[]
   programs                 programs[]
   user_stats               user_stats[]
@@ -72,8 +72,8 @@ model workout_exercises {
   reps        Int?
   weight      Decimal?  @db.Decimal(10, 2)
   order       Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now()) @db.Timestamptz(0)
+  updatedAt   DateTime  @default(now()) @db.Timestamptz(0)
   workouts    workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_1")
   exercises   exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_2")
 
@@ -98,7 +98,7 @@ model completed_exercises {
   sets        Int
   reps        Int
   weight      Decimal   @db.Decimal(10, 2)
-  completedAt DateTime  @default(now()) @db.Timestamp(0)
+  completedAt DateTime  @default(now()) @db.Timestamptz(0)
   exercise_id Int
   user_id     Int
   workout_id  Int
