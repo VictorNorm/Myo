@@ -2,18 +2,14 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true
   },
-  "include": [
-    "src/**/*",
-    "types/**/*",
-    "prisma/**/*"
-  ],
+"include": ["src/**/*", "prisma/**/*"],
   "exclude": ["node_modules", "prisma/migrations"],
   "ts-node": {
     "swc": true
