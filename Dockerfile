@@ -35,7 +35,11 @@ RUN npx prisma generate --schema=./prisma/schema.prisma
 # Copy the rest of the application code
 COPY . .
 
+RUN npx tsc
+
 RUN npm run build
+
+RUN echo "Contents of /app/build:" && ls -la build && echo "Contents of /app/build/src:" && ls -la build/src
 
 RUN npm prune --omit=dev
 
@@ -48,4 +52,4 @@ RUN apt-get update -qq && \
 COPY --from=build /app /app
 
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "node", "build/src/index.js" ]
