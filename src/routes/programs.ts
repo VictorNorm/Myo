@@ -9,10 +9,13 @@ const router = Router();
 const prisma = new PrismaClient();
 
 router.get("/programs", authenticateToken, async (req: Request, res) => {
-	const userId = req.user.id;
-	const programs = await prisma.programs.findMany({ where: { userId } });
-
-	res.status(200).json({ programs });
+	if (req.user) {
+		const userId = req.user.id;
+		const programs = await prisma.programs.findMany({ where: { userId } });
+		res.status(200).json({ programs });
+	} else {
+		res.status(404).json({ message: "User not found" });
+	}
 });
 
 router.get("/allprograms", authenticateToken, async (req: Request, res) => {

@@ -32,9 +32,11 @@ router.get(
 	authenticateToken,
 	async (req: Request, res) => {
 		const { workoutId } = req.params;
-		const userId = req.user.id; // Assuming `req.user` contains the authenticated user info
+		const userId = req.user?.id;
 
-		console.log("Route reached with workoutId:", workoutId); // Add this line
+		if (!userId) {
+			return res.status(401).json({ error: "User not authenticated" });
+		}
 
 		try {
 			// Raw SQL query to get the latest completed exercises for each exercise within the workout for the user
@@ -45,7 +47,7 @@ router.get(
       JOIN (
         SELECT "exercise_id", MAX("completedAt") as latest
         FROM completed_exercises
-        WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${Number.parseInt(userId)}
+        WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
         GROUP BY "exercise_id"
       ) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
       JOIN exercises e ON ce."exercise_id" = e.id
