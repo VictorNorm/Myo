@@ -5,19 +5,19 @@
 	"main": "index.js",
 	"scripts": {
 		"migrate:deploy": "prisma migrate deploy",
-		"db:seed": "ts-node prisma/seed.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node build/index.js",
 		"build": "tsc",
 		"seed": "node build/prisma/seed.js",
 		"postinstall": "prisma generate",
+		"db:seed": "node build/prisma/seed.js",
 		"dev": "ts-node src/index.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@prisma/client": "^5.18.0",
+		"@prisma/client": "^5.19.0",
 		"axios": "^1.7.2",
 		"bcrypt": "^5.1.1",
 		"cors": "^2.8.5",
@@ -31,7 +31,9 @@
 		"nodemailer": "^6.9.14",
 		"passport": "^0.7.0",
 		"passport-jwt": "^4.0.1",
-		"passport-local": "^1.0.0"
+		"passport-local": "^1.0.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.4.2"
 	},
 	"devDependencies": {
 		"@flydotio/dockerfile": "^0.5.7",
