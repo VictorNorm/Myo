@@ -11,7 +11,8 @@
 		"seed": "node build/prisma/seed.js",
 		"postinstall": "prisma generate",
 		"db:seed": "node build/prisma/seed.js",
-		"dev": "ts-node src/index.ts"
+		"dev": "ts-node src/index.ts",
+		"predeploy": "npm run build"
 	},
 	"keywords": [],
 	"author": "",
