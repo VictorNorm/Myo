@@ -9,22 +9,28 @@ import passport from "passport";
 import cors from "cors";
 import helmet from "helmet";
 
+console.log("Application starting...");
+
 const prisma = new PrismaClient();
 const app = express();
 
 const safeParseNumber = (envName: string, defaultValue: number): number => {
-	if (process.env[envName]) {
-		return Number.parseInt(process.env[envName]!, 10);
-	} else {
-		return defaultValue;
+	const envValue = process.env[envName];
+	if (envValue) {
+		return Number.parseInt(envValue, 10);
 	}
+	return defaultValue;
 };
 
 const PORT = safeParseNumber("PORT", 3000);
 
 app.use(
 	cors({
-		origin: "https://www.myofitness.no", // Allow requests from this origin
+		origin: [
+			"https://www.myofitness.no",
+			"http://localhost:4000",
+			"http://192.168.50.195:8081",
+		], // Allow requests from this origin
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow additional methods if needed
 		allowedHeaders: ["Content-Type", "Authorization"], // Add any custom headers you are using
 		credentials: true, // Enable cookies and other credentials
@@ -49,4 +55,6 @@ app.get("/", (req, res) => {
 
 // Define more routes and endpoints as needed
 
-app.listen(PORT, "0.0.0.0");
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Server is running on http://localhost:${PORT}`);
+});

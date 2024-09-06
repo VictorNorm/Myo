@@ -18,6 +18,41 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 	}
 });
 
+router.get(
+	"/programs/:userId",
+	authenticateToken,
+	async (req: Request, res) => {
+		const userId = req.params.userId;
+
+		if (!userId) {
+			return res.status(400).json({ error: "User ID is required" });
+		}
+
+		const parsedUserId = Number.parseInt(userId);
+
+		if (Number.isNaN(parsedUserId)) {
+			return res.status(400).json({ error: "Invalid user ID format" });
+		}
+
+		try {
+			const userPrograms = await prisma.programs.findMany({
+				where: { userId: parsedUserId },
+			});
+
+			if (userPrograms.length === 0) {
+				return res
+					.status(404)
+					.json({ message: "No programs found for this user" });
+			}
+
+			res.status(200).json({ userPrograms });
+		} catch (error) {
+			console.error("Error fetching user programs:", error);
+			res.status(500).json({ error: "Internal server error" });
+		}
+	},
+);
+
 router.get("/allprograms", authenticateToken, async (req: Request, res) => {
 	const programs = await prisma.programs.findMany();
 

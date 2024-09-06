@@ -42,27 +42,30 @@ router.get(
 			// Raw SQL query to get the latest completed exercises for each exercise within the workout for the user
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			const completedExercises = await prisma.$queryRaw<any[]>`
-      SELECT ce.*, e.id as "exercise_id", e.name as "exercise_name"
-      FROM completed_exercises ce
-      JOIN (
-        SELECT "exercise_id", MAX("completedAt") as latest
-        FROM completed_exercises
-        WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
-        GROUP BY "exercise_id"
-      ) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
-      JOIN exercises e ON ce."exercise_id" = e.id
-    `;
+		  SELECT ce.*, e.id as "exercise_id", e.name as "exercise_name", we."order"
+		  FROM completed_exercises ce
+		  JOIN (
+			SELECT "exercise_id", MAX("completedAt") as latest
+			FROM completed_exercises
+			WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
+			GROUP BY "exercise_id"
+		  ) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
+		  JOIN exercises e ON ce."exercise_id" = e.id
+		  JOIN workout_exercises we ON ce."exercise_id" = we."exercise_id" AND we."workout_id" = ${Number.parseInt(workoutId)}
+		  ORDER BY we."order" ASC
+		`;
 
 			if (completedExercises.length > 0) {
 				// Transform the completed exercises to match the workout exercises structure
 				const transformedExercises = completedExercises.map((ex) => ({
-					workout_id: ex.workout_id, // Transform to workout_id
-					exercise_id: ex.exercise_id, // Transform to exercise_id
+					workout_id: ex.workout_id,
+					exercise_id: ex.exercise_id,
 					sets: ex.sets,
 					reps: ex.reps,
-					weight: ex.weight ? Number.parseFloat(ex.weight) : 0, // Handle Decimal or null
+					weight: ex.weight ? Number.parseFloat(ex.weight) : 0,
+					order: ex.order,
 					exercises: {
-						id: ex.exercise_id, // Transform to exercise_id
+						id: ex.exercise_id,
 						name: ex.exercise_name,
 					},
 				}));
@@ -77,6 +80,9 @@ router.get(
 					include: {
 						exercises: true,
 					},
+					orderBy: {
+						order: "asc",
+					},
 				});
 
 				// Transform workoutExercises to match the structure of completedExercises
@@ -87,7 +93,8 @@ router.get(
 					reps: we.reps,
 					weight: we.weight
 						? Number.parseFloat(we.weight as unknown as string)
-						: 0, // Handle Decimal or null
+						: 0,
+					order: we.order,
 					exercises: {
 						id: we.exercises.id,
 						name: we.exercises.name,

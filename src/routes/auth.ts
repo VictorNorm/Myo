@@ -226,6 +226,7 @@ router.get("/verify-email", async (req, res) => {
 
 router.post("/login", (req, res, next) => {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	console.log("BONKA BONKA");
 	passport.authenticate("local", async (err: any, user: any, info: any) => {
 		if (err) {
 			return next(err); // Handle errors from Passport
