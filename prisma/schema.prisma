@@ -61,6 +61,8 @@ model users {
   user_stats               user_stats[]
   trainer                  users?                @relation("UserTrainer", fields: [trainerId], references: [id])
   clients                  users[]               @relation("UserTrainer")
+  resetToken       String?
+  resetTokenExpiry DateTime?
 
   @@index([trainerId])
 }

@@ -8,11 +8,14 @@ import users from "./routes/users";
 import passport from "passport";
 import cors from "cors";
 import helmet from "helmet";
+import password from "./routes/password";
 
 console.log("Application starting...");
 
 const prisma = new PrismaClient();
 const app = express();
+
+app.set("trust proxy", 1);
 
 const safeParseNumber = (envName: string, defaultValue: number): number => {
 	const envValue = process.env[envName];
@@ -48,6 +51,7 @@ app.use(programs);
 app.use(workouts);
 app.use(exercises);
 app.use(users);
+app.use(password);
 
 app.get("/", (req, res) => {
 	res.json({ message: "Hello Worldfucker" });

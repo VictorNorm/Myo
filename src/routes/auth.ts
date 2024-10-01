@@ -9,9 +9,8 @@ import authenticateToken from "../middleware/authenticateToken";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { body, validationResult } from "express-validator";
-import reCAPTCHA from "../middleware/reCAPTCHA";
+import sendVerificationEmail from "../middleware/sendEmail";
 import signupLimiter from "../middleware/signupLimiter";
-import nodemailer from "nodemailer";
 import crypto from "node:crypto";
 import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hoursToMilliseconds } from "date-fns";
@@ -54,40 +53,6 @@ passport.use(
 		return done(null, foundUser);
 	}),
 );
-
-const transporter = nodemailer.createTransport({
-	host: process.env.SMTP_HOST,
-	port: Number.parseInt(process.env.SMTP_PORT || "587"),
-	secure: false, // true for 465, false for other ports
-	auth: {
-		user: process.env.SMTP_USER, // generated ethereal user
-		pass: process.env.SMTP_PASS, // generated ethereal password
-	},
-});
-
-const sendVerificationEmail = async (
-	email: string,
-	verificationToken: string,
-) => {
-	if (!process.env.JWT_SECRET) {
-		throw new Error("JWT_SECRET is not defined in the environment variables.");
-	}
-	if (!process.env.BASE_URL) {
-		throw new Error("BASE_URL is not defined in the environment variables.");
-	}
-
-	const verificationUrl = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
-
-	const mailOptions = {
-		from: '"Myo" <no-reply@myo.com>',
-		to: email,
-		subject: "Verify Your Email",
-		text: `Click the following link to verify your email: ${verificationUrl}`,
-		html: `<p>Click the following link to verify your email:</p><a href="${verificationUrl}">Verify Email</a>`,
-	};
-
-	await transporter.sendMail(mailOptions);
-};
 
 function generateVerificationToken() {
 	return crypto.randomBytes(32).toString("hex");
@@ -145,9 +110,7 @@ router.post(
 					password_hash,
 					role,
 					verificationToken,
-					verificationTokenExpires: new Date(
-						Date.now() + hoursToMilliseconds(24),
-					),
+					verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),
 					emailVerified: false,
 				},
 			});
@@ -183,21 +146,38 @@ router.get("/verify-email", async (req, res) => {
 	const token = req.query.token;
 
 	if (typeof token !== "string") {
-		return res.status(400).send("Verification token is missing or invalid.");
+		return res
+			.status(400)
+			.json({ message: "Verification token is missing or invalid." });
 	}
 
 	try {
 		const user = await prisma.users.findFirst({
 			where: {
 				verificationToken: token,
-				verificationTokenExpires: {
-					gte: new Date(),
-				},
 			},
 		});
 
 		if (!user) {
-			return res.status(400).send("Invalid or expired verification token.");
+			return res.status(400).json({ message: "Invalid verification token." });
+		}
+
+		if (user.verificationTokenExpires == null) {
+			return res
+				.status(400)
+				.json({ message: "Verification token expires is null." });
+		}
+
+		if (user.verificationTokenExpires < new Date()) {
+			return res
+				.status(400)
+				.json({ message: "Verification token has expired." });
+		}
+
+		if (user.emailVerified) {
+			return res
+				.status(200)
+				.json({ message: "Email already verified. You can now log in." });
 		}
 
 		// Update user to set emailVerified to true and clear the token fields
@@ -210,23 +190,20 @@ router.get("/verify-email", async (req, res) => {
 			},
 		});
 
-		res.redirect("/login");
-		return;
+		res
+			.status(200)
+			.json({
+				message: "Email verified successfully. You can now log in.",
+				verified: true,
+			});
 	} catch (error) {
 		console.error("Verification error:", error);
-		if (error instanceof jwt.JsonWebTokenError) {
-			res.status(400).send("Invalid token.");
-		} else if (error instanceof jwt.TokenExpiredError) {
-			res.status(400).send("Token has expired.");
-		} else {
-			res.status(500).send("Server error.");
-		}
+		res.status(500).json({ message: "Server error. Please try again later." });
 	}
 });
 
 router.post("/login", (req, res, next) => {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	console.log("BONKA BONKA");
 	passport.authenticate("local", async (err: any, user: any, info: any) => {
 		if (err) {
 			return next(err); // Handle errors from Passport
