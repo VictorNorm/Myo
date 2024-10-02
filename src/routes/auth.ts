@@ -93,6 +93,16 @@ router.post(
 				return;
 			}
 
+			const existingUser = await prisma.users.findFirst({
+				where: { username: email },
+			});
+
+			if (existingUser) {
+				return res.status(400).json({
+					data: { message: "A user is already registered with that email." },
+				});
+			}
+
 			const verificationToken = await bcrypt.hash(
 				crypto.randomBytes(32).toString(),
 				10,
@@ -190,12 +200,10 @@ router.get("/verify-email", async (req, res) => {
 			},
 		});
 
-		res
-			.status(200)
-			.json({
-				message: "Email verified successfully. You can now log in.",
-				verified: true,
-			});
+		res.status(200).json({
+			message: "Email verified successfully. You can now log in.",
+			verified: true,
+		});
 	} catch (error) {
 		console.error("Verification error:", error);
 		res.status(500).json({ message: "Server error. Please try again later." });
