@@ -5,6 +5,7 @@ import authenticateToken from "../middleware/authenticateToken";
 import bcrypt from "bcrypt";
 import crypto from "node:crypto";
 import nodemailer from "nodemailer";
+import sendResetPasswordEmail from "../middleware/sendResetPasswordEmail";
 dotenv.config();
 
 const router = Router();
@@ -26,7 +27,7 @@ router.post("/forgot-password", async (req, res) => {
 		});
 
 		// Send email with reset link
-		await sendResetEmail(email, resetToken);
+		await sendResetPasswordEmail(email, resetToken);
 
 		res.json({ message: "Password reset email sent." });
 	} catch (error) {
@@ -100,7 +101,7 @@ async function sendResetEmail(email: string, resetToken: string) {
 
 	// Send mail with defined transport object
 	const info = await transporter.sendMail({
-		from: '"Myo" <noreply@yourapp.com>',
+		from: '"Myo" <noreply@myofitness.no>',
 		to: email,
 		subject: "Password Reset",
 		text: `You requested a password reset. Please use the following link to reset your password: http://yourapp.com/reset-password?token=${resetToken}`,
