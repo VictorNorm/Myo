@@ -77,36 +77,54 @@ router.post("/exercises", authenticateToken, async (req, res) => {
 	}
 });
 
-router.post("/addExercisesToWorkout", authenticateToken, async (req, res) => {
-	try {
-		console.log("addExercisesToWorkout reached");
-		const { workoutId, exercises } = req.body;
+router.post(
+	"/upsertExercisesToWorkout",
+	authenticateToken,
+	async (req, res) => {
+		try {
+			console.log("upsertExercisesToWorkout reached");
+			const { workoutId, exercises } = req.body;
 
-		if (!workoutId || !exercises || !Array.isArray(exercises)) {
-			return res.status(400).json({ error: "Invalid input data" });
+			if (!workoutId || !exercises || !Array.isArray(exercises)) {
+				return res.status(400).json({ error: "Invalid input data" });
+			}
+
+			const upsertPromises = exercises.map((exercise, index) =>
+				prisma.workout_exercises.upsert({
+					where: {
+						workout_id_exercise_id: {
+							workout_id: workoutId,
+							exercise_id: exercise.id,
+						},
+					},
+					update: {
+						sets: exercise.sets,
+						reps: exercise.reps,
+						weight: exercise.weight,
+						order: index,
+					},
+					create: {
+						workout_id: workoutId,
+						exercise_id: exercise.id,
+						sets: exercise.sets,
+						reps: exercise.reps,
+						weight: exercise.weight,
+						order: index,
+					},
+				}),
+			);
+
+			const results = await Promise.all(upsertPromises);
+
+			res.status(200).json({
+				message: "Exercises upserted to workout successfully",
+				count: results.length,
+			});
+		} catch (error) {
+			console.error(error);
+			res.status(500).json({ error: "Internal server error" });
 		}
-
-		const workoutExercises = exercises.map((exercise, index) => ({
-			workout_id: workoutId,
-			exercise_id: exercise.id,
-			sets: exercise.sets,
-			reps: exercise.reps,
-			weight: exercise.weight,
-			order: index,
-		}));
-
-		const result = await prisma.workout_exercises.createMany({
-			data: workoutExercises,
-		});
-
-		res.status(201).json({
-			message: "Exercises added to workout successfully",
-			count: result.count,
-		});
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal server error" });
-	}
-});
+	},
+);
 
 export default router;
