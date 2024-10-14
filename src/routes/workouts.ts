@@ -8,6 +8,34 @@ dotenv.config();
 const router = Router();
 const prisma = new PrismaClient();
 
+interface CompletedExercise {
+	workout_id: number;
+	exercise_id: number;
+	sets: number;
+	reps: number;
+	weight: string | null;
+	order: number;
+	exercise_name: string;
+}
+
+interface Exercise {
+	workout_id: number;
+	exercise_id: number;
+	sets: number;
+	reps: number;
+	weight: number;
+	order: number;
+	exercises: {
+		id: number;
+		name: string;
+	};
+	superset_with: number | null;
+}
+
+interface SupersetMap {
+	[key: number]: number;
+}
+
 // Workouts route
 router.get(
 	"/programs/:programId/workouts",
@@ -39,25 +67,30 @@ router.get(
 		}
 
 		try {
-			// Raw SQL query to get the latest completed exercises for each exercise within the workout for the user
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			const completedExercises = await prisma.$queryRaw<any[]>`
-		  SELECT ce.*, e.id as "exercise_id", e.name as "exercise_name", we."order"
-		  FROM completed_exercises ce
-		  JOIN (
-			SELECT "exercise_id", MAX("completedAt") as latest
-			FROM completed_exercises
-			WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
-			GROUP BY "exercise_id"
-		  ) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
-		  JOIN exercises e ON ce."exercise_id" = e.id
-		  JOIN workout_exercises we ON ce."exercise_id" = we."exercise_id" AND we."workout_id" = ${Number.parseInt(workoutId)}
-		  ORDER BY we."order" ASC
-		`;
+			// Fetch superset information
+			const supersets = await prisma.supersets.findMany({
+				where: { workout_id: Number.parseInt(workoutId) },
+				orderBy: { order: "asc" },
+			});
 
+			// Your existing query for completed exercises...
+			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
+				SELECT ce.*, e.id as "exercise_id", e.name as "exercise_name", we."order"
+				FROM completed_exercises ce
+				JOIN (
+					SELECT "exercise_id", MAX("completedAt") as latest
+					FROM completed_exercises
+					WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
+					GROUP BY "exercise_id"
+				) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
+				JOIN exercises e ON ce."exercise_id" = e.id
+				JOIN workout_exercises we ON ce."exercise_id" = we."exercise_id" AND we."workout_id" = ${Number.parseInt(workoutId)}
+				ORDER BY we."order" ASC
+				`;
+
+			let exercises: Exercise[];
 			if (completedExercises.length > 0) {
-				// Transform the completed exercises to match the workout exercises structure
-				const transformedExercises = completedExercises.map((ex) => ({
+				exercises = completedExercises.map((ex) => ({
 					workout_id: ex.workout_id,
 					exercise_id: ex.exercise_id,
 					sets: ex.sets,
@@ -68,29 +101,20 @@ router.get(
 						id: ex.exercise_id,
 						name: ex.exercise_name,
 					},
+					superset_with: null,
 				}));
-
-				res.status(200).json(transformedExercises);
 			} else {
-				// Otherwise, return the workout exercises
 				const workoutExercises = await prisma.workout_exercises.findMany({
-					where: {
-						workout_id: Number.parseInt(workoutId),
-					},
-					include: {
-						exercises: true,
-					},
-					orderBy: {
-						order: "asc",
-					},
+					where: { workout_id: Number.parseInt(workoutId) },
+					include: { exercises: true },
+					orderBy: { order: "asc" },
 				});
 
-				// Transform workoutExercises to match the structure of completedExercises
-				const transformedWorkoutExercises = workoutExercises.map((we) => ({
+				exercises = workoutExercises.map((we) => ({
 					workout_id: we.workout_id,
 					exercise_id: we.exercise_id,
-					sets: we.sets,
-					reps: we.reps,
+					sets: we.sets ?? 0,
+					reps: we.reps ?? 0,
 					weight: we.weight
 						? Number.parseFloat(we.weight as unknown as string)
 						: 0,
@@ -99,10 +123,27 @@ router.get(
 						id: we.exercises.id,
 						name: we.exercises.name,
 					},
+					superset_with: null,
 				}));
-
-				return res.status(200).json(transformedWorkoutExercises);
 			}
+
+			// Create a map of superset pairs
+			const supersetMap: SupersetMap = supersets.reduce(
+				(acc: SupersetMap, superset) => {
+					acc[superset.first_exercise_id] = superset.second_exercise_id;
+					acc[superset.second_exercise_id] = superset.first_exercise_id;
+					return acc;
+				},
+				{},
+			);
+
+			// Add superset information to exercises
+			const exercisesWithSupersets = exercises.map((exercise) => ({
+				...exercise,
+				superset_with: supersetMap[exercise.exercise_id] || null,
+			}));
+
+			return res.status(200).json(exercisesWithSupersets);
 		} catch (error) {
 			console.error("Error fetching exercises:", error);
 			return res.status(500).json({ error: "Internal server error" });

@@ -83,42 +83,69 @@ router.post(
 	async (req, res) => {
 		try {
 			console.log("upsertExercisesToWorkout reached");
-			const { workoutId, exercises } = req.body;
+			const { workoutId, exercises, supersets } = req.body;
 
 			if (!workoutId || !exercises || !Array.isArray(exercises)) {
 				return res.status(400).json({ error: "Invalid input data" });
 			}
 
-			const upsertPromises = exercises.map((exercise, index) =>
-				prisma.workout_exercises.upsert({
-					where: {
-						workout_id_exercise_id: {
+			// Start a transaction
+			const result = await prisma.$transaction(async (prisma) => {
+				// Upsert exercises
+				const upsertPromises = exercises.map((exercise, index) =>
+					prisma.workout_exercises.upsert({
+						where: {
+							workout_id_exercise_id: {
+								workout_id: workoutId,
+								exercise_id: exercise.id,
+							},
+						},
+						update: {
+							sets: exercise.sets,
+							reps: exercise.reps,
+							weight: exercise.weight,
+							order: index,
+						},
+						create: {
 							workout_id: workoutId,
 							exercise_id: exercise.id,
+							sets: exercise.sets,
+							reps: exercise.reps,
+							weight: exercise.weight,
+							order: index,
 						},
-					},
-					update: {
-						sets: exercise.sets,
-						reps: exercise.reps,
-						weight: exercise.weight,
-						order: index,
-					},
-					create: {
-						workout_id: workoutId,
-						exercise_id: exercise.id,
-						sets: exercise.sets,
-						reps: exercise.reps,
-						weight: exercise.weight,
-						order: index,
-					},
-				}),
-			);
+					}),
+				);
 
-			const results = await Promise.all(upsertPromises);
+				const exerciseResults = await Promise.all(upsertPromises);
+
+				// Delete existing supersets for this workout
+				await prisma.supersets.deleteMany({
+					where: { workout_id: workoutId },
+				});
+
+				// Insert new supersets
+				if (supersets && Array.isArray(supersets) && supersets.length > 0) {
+					const supersetPromises = supersets.map((superset, index) =>
+						prisma.supersets.create({
+							data: {
+								workout_id: workoutId,
+								first_exercise_id: superset.first_exercise_id,
+								second_exercise_id: superset.second_exercise_id,
+								order: index,
+							},
+						}),
+					);
+
+					await Promise.all(supersetPromises);
+				}
+
+				return exerciseResults;
+			});
 
 			res.status(200).json({
-				message: "Exercises upserted to workout successfully",
-				count: results.length,
+				message: "Exercises and supersets upserted to workout successfully",
+				count: result.length,
 			});
 		} catch (error) {
 			console.error(error);

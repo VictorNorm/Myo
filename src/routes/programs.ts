@@ -62,9 +62,6 @@ router.get("/allprograms", authenticateToken, async (req: Request, res) => {
 router.post("/programs", authenticateToken, async (req: Request, res) => {
 	const { programName, programRecipientId } = req.body;
 
-	console.log(programName);
-	console.log(programRecipientId);
-
 	await prisma.programs.create({
 		data: {
 			name: programName,

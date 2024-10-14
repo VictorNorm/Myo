@@ -78,6 +78,8 @@ model workout_exercises {
   updatedAt   DateTime  @default(now()) @db.Timestamptz(0)
   workouts    workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_1")
   exercises   exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workout_exercises_ibfk_2")
+  first_supersets   supersets[] @relation("FirstExercise")
+  second_supersets  supersets[] @relation("SecondExercise")
 
   @@id([workout_id, exercise_id])
   @@index([exercise_id], map: "exercise_id")
@@ -91,6 +93,7 @@ model workouts {
   sessions            sessions[]
   workout_exercises   workout_exercises[]
   programs            programs?             @relation(fields: [program_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
+  supersets         supersets[]
 
   @@index([program_id], map: "program_id")
 }
@@ -126,6 +129,24 @@ model exercise_muscle_groups {
   muscle_groups   muscle_groups @relation(fields: [muscle_group_id], references: [id])
 
   @@id([exercise_id, muscle_group_id])
+}
+
+model supersets {
+  id                  Int               @id @default(autoincrement())
+  workout_id          Int
+  first_exercise_id   Int
+  second_exercise_id  Int
+  order               Int
+  createdAt           DateTime          @default(now()) @db.Timestamptz(0)
+  updatedAt           DateTime          @default(now()) @db.Timestamptz(0)
+  workout             workouts          @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  first_exercise      workout_exercises @relation("FirstExercise", fields: [workout_id, first_exercise_id], references: [workout_id, exercise_id])
+  second_exercise     workout_exercises @relation("SecondExercise", fields: [workout_id, second_exercise_id], references: [workout_id, exercise_id])
+
+  @@unique([workout_id, first_exercise_id, second_exercise_id])
+  @@index([workout_id])
+  @@index([first_exercise_id])
+  @@index([second_exercise_id])
 }
 
 enum UserRole {

@@ -57,7 +57,9 @@ app.get("/", (req, res) => {
 	res.json({ message: "Hello Worldfucker" });
 });
 
-// Define more routes and endpoints as needed
+app.get("/health", (req, res) => {
+	res.status(200).json({ status: "ok" });
+});
 
 app.listen(PORT, "0.0.0.0", () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
