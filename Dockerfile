@@ -52,4 +52,6 @@ RUN apt-get update -qq && \
 COPY --from=build /app /app
 
 EXPOSE 3000
-CMD [ "node", "build/src/index.js" ]
+
+# Add this line to run migrations before starting the app
+CMD npx prisma migrate deploy && node build/src/index.js
