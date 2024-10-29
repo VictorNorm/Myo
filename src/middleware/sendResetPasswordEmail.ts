@@ -23,7 +23,7 @@ const sendResetPasswordEmail = async (
 	email: string,
 	resetToken: string,
 ): Promise<SentMessageInfo> => {
-	if (!process.env.BASE_URL) {
+	if (!process.env.CLIENT_URL) {
 		throw new Error("CLIENT_URL is not defined in the environment variables.");
 	}
 
@@ -31,7 +31,7 @@ const sendResetPasswordEmail = async (
 		throw new Error("SMTP_USER is not defined in the environment variables.");
 	}
 
-	const resetUrl = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
+	const resetUrl = `${process.env.CLIENT_URL}/#/reset-password?token=${resetToken}`;
 
 	const mailOptions: Mail.Options = {
 		from: {
