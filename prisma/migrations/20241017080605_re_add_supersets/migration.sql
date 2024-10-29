@@ -24,10 +24,10 @@ CREATE INDEX "supersets_second_exercise_id_idx" ON "supersets"("second_exercise_
 CREATE UNIQUE INDEX "supersets_workout_id_first_exercise_id_second_exercise_id_key" ON "supersets"("workout_id", "first_exercise_id", "second_exercise_id");
 
 -- AddForeignKey
-ALTER TABLE "supersets" ADD CONSTRAINT "supersets_workout_id_fkey" FOREIGN KEY ("workout_id") REFERENCES "workouts"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "supersets" ADD CONSTRAINT "supersets_workout_id_first_exercise_id_fkey" FOREIGN KEY ("workout_id", "first_exercise_id") REFERENCES "workout_exercises"("workout_id", "exercise_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "supersets" ADD CONSTRAINT "supersets_workout_id_first_exercise_id_fkey" FOREIGN KEY ("workout_id", "first_exercise_id") REFERENCES "workout_exercises"("workout_id", "exercise_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "supersets" ADD CONSTRAINT "supersets_workout_id_fkey" FOREIGN KEY ("workout_id") REFERENCES "workouts"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "supersets" ADD CONSTRAINT "supersets_workout_id_second_exercise_id_fkey" FOREIGN KEY ("workout_id", "second_exercise_id") REFERENCES "workout_exercises"("workout_id", "exercise_id") ON DELETE RESTRICT ON UPDATE CASCADE;
