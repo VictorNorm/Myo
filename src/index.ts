@@ -20,12 +20,14 @@ app.set("trust proxy", 1);
 const safeParseNumber = (envName: string, defaultValue: number): number => {
 	const envValue = process.env[envName];
 	if (envValue) {
-		return Number.parseInt(envValue, 10);
+		const parsed = Number.parseInt(envValue, 10);
+		return Number.isNaN(parsed) ? defaultValue : parsed;
 	}
 	return defaultValue;
 };
 
 const PORT = safeParseNumber("PORT", 3000);
+const HOST = process.env.HOST || "0.0.0.0";
 
 app.use(
 	cors({
@@ -58,9 +60,25 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-	res.status(200).json({ status: "ok" });
+	try {
+		// You might want to add a basic DB check here too
+		res.status(200).json({
+			status: "healthy",
+			timestamp: new Date().toISOString(),
+		});
+	} catch (error) {
+		res.status(500).json({
+			status: "unhealthy",
+			error: error instanceof Error ? error.message : "Unknown error",
+		});
+	}
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-	console.log(`Server is running on http://localhost:${PORT}`);
-});
+app
+	.listen(PORT, HOST, () => {
+		console.log(`Server is running on http://${HOST}:${PORT}`);
+	})
+	.on("error", (err) => {
+		console.error("Failed to start server:", err);
+		process.exit(1);
+	});

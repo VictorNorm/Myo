@@ -1,7 +1,4 @@
-# fly.toml app configuration file generated for myo-express-prisma on 2024-05-23T11:55:19+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# fly.toml app configuration file for myo-express-prisma
 
 app = 'myo-express-prisma'
 primary_region = 'ams'
@@ -14,6 +11,14 @@ primary_region = 'ams'
   auto_start_machines = true
   min_machines_running = 1
   processes = ['app']
+
+  [[http_service.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[http_service.ports]]
+    handlers = ["tls", "http"]
+    port = 443
 
 [[vm]]
   memory = '1gb'
