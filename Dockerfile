@@ -8,7 +8,6 @@ LABEL fly_launch_runtime="Node.js/Prisma"
 WORKDIR /app
 
 ENV NODE_ENV="production"
-# Explicitly set host and port
 ENV HOST="0.0.0.0"
 ENV PORT="3000"
 
@@ -21,10 +20,9 @@ RUN apt-get update -qq && \
     openssl \
     pkg-config \
     python-is-python3 \
-    # Add debugging tools
     procps \
     net-tools \
-    netcat \
+    netcat-openbsd \
     curl
 
 # Copy package.json and package-lock.json
@@ -61,17 +59,12 @@ FROM base
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     openssl \
-    # Add minimal debugging tools to production image
     procps \
     net-tools \
     curl && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 COPY --from=build /app /app
-
-# Add a health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
 
 EXPOSE 3000
 

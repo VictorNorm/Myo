@@ -63,12 +63,26 @@ router.get(
 		const { workoutId } = req.params;
 		const userId = req.user?.id;
 
+		console.log("Workout request received:", {
+			workoutId,
+			userId,
+			timestamp: new Date().toISOString(),
+			headers: req.headers,
+		});
+
 		if (!userId) {
+			console.log("Authentication failed for workout request");
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
 		try {
-			// 1. Get the base workout exercises (template data)
+			// Validate workoutId
+			if (!workoutId || Number.isNaN(Number(workoutId))) {
+				console.error("Invalid workoutId:", workoutId);
+				return res.status(400).json({ error: "Invalid workout ID" });
+			}
+
+			console.log("Fetching base workout exercises...");
 			const workoutExercises = await prisma.workout_exercises.findMany({
 				where: {
 					workout_id: Number.parseInt(workoutId),
@@ -79,7 +93,17 @@ router.get(
 				orderBy: { order: "asc" },
 			});
 
-			// 2. Get the latest completed exercises
+			console.log(`Found ${workoutExercises.length} base exercises`);
+
+			if (!workoutExercises.length) {
+				console.log("No exercises found for workout:", workoutId);
+				return res.status(404).json({
+					error: "No exercises found for this workout",
+					workoutId,
+				});
+			}
+
+			console.log("Fetching completed exercises...");
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
 		  SELECT ce.*
 		  FROM completed_exercises ce
@@ -94,32 +118,19 @@ router.get(
 		  WHERE ce.workout_id = ${Number.parseInt(workoutId)}
 		`;
 
+			console.log(`Found ${completedExercises.length} completed exercises`);
+
 			// Create a map of completed exercises
 			const completedExerciseMap = new Map(
 				completedExercises.map((ce) => [ce.exercise_id, ce]),
 			);
 
-			// 3. Merge the data, using completed data only if it's non-zero
+			// Merge the data with detailed logging
 			const mergedExercises = workoutExercises.map((we) => {
 				const completed = completedExerciseMap.get(we.exercise_id);
-
-				// Log for debugging
-				console.log("Processing exercise:", {
-					exercise_id: we.exercise_id,
-					template: { sets: we.sets, reps: we.reps, weight: we.weight },
-					completed: completed
-						? {
-								sets: completed.sets,
-								reps: completed.reps,
-								weight: completed.weight,
-							}
-						: null,
-				});
-
-				return {
+				const result = {
 					workout_id: we.workout_id,
 					exercise_id: we.exercise_id,
-					// Use completed values only if they're non-zero, otherwise use template values
 					sets: completed && completed.sets > 0 ? completed.sets : we.sets,
 					reps: completed && completed.reps > 0 ? completed.reps : we.reps,
 					weight:
@@ -136,13 +147,34 @@ router.get(
 					lastCompleted: completed?.completedAt ?? null,
 					superset_with: null,
 				};
+
+				console.log("Processed exercise:", {
+					id: we.exercise_id,
+					template: { sets: we.sets, reps: we.reps, weight: we.weight },
+					completed: completed
+						? {
+								sets: completed.sets,
+								reps: completed.reps,
+								weight: completed.weight,
+							}
+						: null,
+					result: {
+						sets: result.sets,
+						reps: result.reps,
+						weight: result.weight,
+					},
+				});
+
+				return result;
 			});
 
-			// 4. Handle supersets
+			console.log("Fetching supersets...");
 			const supersets = await prisma.supersets.findMany({
 				where: { workout_id: Number.parseInt(workoutId) },
 				orderBy: { order: "asc" },
 			});
+
+			console.log(`Found ${supersets.length} supersets`);
 
 			const supersetMap = supersets.reduce(
 				(acc, superset) => {
@@ -158,10 +190,21 @@ router.get(
 				superset_with: supersetMap[exercise.exercise_id] || null,
 			}));
 
+			console.log("Sending response with", finalExercises.length, "exercises");
 			return res.status(200).json(finalExercises);
 		} catch (error) {
-			console.error("Error fetching exercises:", error);
-			return res.status(500).json({ error: "Internal server error" });
+			console.error("Detailed error in workout exercises endpoint:", {
+				error,
+				stack: error instanceof Error ? error.stack : undefined,
+				workoutId,
+				userId,
+				timestamp: new Date().toISOString(),
+			});
+
+			return res.status(500).json({
+				error: "Internal server error",
+				message: error instanceof Error ? error.message : "Unknown error",
+			});
 		}
 	},
 );
