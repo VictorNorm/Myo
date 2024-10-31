@@ -8,11 +8,24 @@ LABEL fly_launch_runtime="Node.js/Prisma"
 WORKDIR /app
 
 ENV NODE_ENV="production"
+# Explicitly set host and port
+ENV HOST="0.0.0.0"
+ENV PORT="3000"
 
 FROM base as build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    node-gyp \
+    openssl \
+    pkg-config \
+    python-is-python3 \
+    # Add debugging tools
+    procps \
+    net-tools \
+    netcat \
+    curl
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -46,12 +59,27 @@ RUN npm prune --omit=dev
 FROM base
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y openssl && \
+    apt-get install --no-install-recommends -y \
+    openssl \
+    # Add minimal debugging tools to production image
+    procps \
+    net-tools \
+    curl && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 COPY --from=build /app /app
 
+# Add a health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
 EXPOSE 3000
 
-# Add this line to run migrations before starting the app
-CMD npx prisma migrate deploy && node build/src/index.js
+# Add debugging information before starting
+CMD echo "Starting server with ENV:" && \
+    echo "NODE_ENV=$NODE_ENV" && \
+    echo "HOST=$HOST" && \
+    echo "PORT=$PORT" && \
+    netstat -tulpn && \
+    npx prisma migrate deploy && \
+    node build/src/index.js
