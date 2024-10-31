@@ -16,6 +16,7 @@ interface CompletedExercise {
 	weight: string | null;
 	order: number;
 	exercise_name: string;
+	completedAt: string;
 }
 
 interface Exercise {
@@ -67,83 +68,97 @@ router.get(
 		}
 
 		try {
-			// Fetch superset information
-			const supersets = await prisma.supersets.findMany({
-				where: { workout_id: Number.parseInt(workoutId) },
+			// 1. Get the base workout exercises (template data)
+			const workoutExercises = await prisma.workout_exercises.findMany({
+				where: {
+					workout_id: Number.parseInt(workoutId),
+				},
+				include: {
+					exercises: true,
+				},
 				orderBy: { order: "asc" },
 			});
 
-			// Your existing query for completed exercises...
+			// 2. Get the latest completed exercises
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
-				SELECT ce.*, e.id as "exercise_id", e.name as "exercise_name", we."order"
-				FROM completed_exercises ce
-				JOIN (
-					SELECT "exercise_id", MAX("completedAt") as latest
-					FROM completed_exercises
-					WHERE "workout_id" = ${Number.parseInt(workoutId)} AND "user_id" = ${userId}
-					GROUP BY "exercise_id"
-				) latest_ce ON ce."exercise_id" = latest_ce."exercise_id" AND ce."completedAt" = latest_ce.latest
-				JOIN exercises e ON ce."exercise_id" = e.id
-				JOIN workout_exercises we ON ce."exercise_id" = we."exercise_id" AND we."workout_id" = ${Number.parseInt(workoutId)}
-				ORDER BY we."order" ASC
-				`;
+		  SELECT ce.*
+		  FROM completed_exercises ce
+		  JOIN (
+			SELECT exercise_id, MAX("completedAt") as latest_completion
+			FROM completed_exercises
+			WHERE workout_id = ${Number.parseInt(workoutId)}
+			AND user_id = ${userId}
+			GROUP BY exercise_id
+		  ) latest ON ce.exercise_id = latest.exercise_id 
+		  AND ce."completedAt" = latest.latest_completion
+		  WHERE ce.workout_id = ${Number.parseInt(workoutId)}
+		`;
 
-			let exercises: Exercise[];
-			if (completedExercises.length > 0) {
-				exercises = completedExercises.map((ex) => ({
-					workout_id: ex.workout_id,
-					exercise_id: ex.exercise_id,
-					sets: ex.sets,
-					reps: ex.reps,
-					weight: ex.weight ? Number.parseFloat(ex.weight) : 0,
-					order: ex.order,
-					exercises: {
-						id: ex.exercise_id,
-						name: ex.exercise_name,
-					},
-					superset_with: null,
-				}));
-			} else {
-				const workoutExercises = await prisma.workout_exercises.findMany({
-					where: { workout_id: Number.parseInt(workoutId) },
-					include: { exercises: true },
-					orderBy: { order: "asc" },
+			// Create a map of completed exercises
+			const completedExerciseMap = new Map(
+				completedExercises.map((ce) => [ce.exercise_id, ce]),
+			);
+
+			// 3. Merge the data, using completed data only if it's non-zero
+			const mergedExercises = workoutExercises.map((we) => {
+				const completed = completedExerciseMap.get(we.exercise_id);
+
+				// Log for debugging
+				console.log("Processing exercise:", {
+					exercise_id: we.exercise_id,
+					template: { sets: we.sets, reps: we.reps, weight: we.weight },
+					completed: completed
+						? {
+								sets: completed.sets,
+								reps: completed.reps,
+								weight: completed.weight,
+							}
+						: null,
 				});
 
-				exercises = workoutExercises.map((we) => ({
+				return {
 					workout_id: we.workout_id,
 					exercise_id: we.exercise_id,
-					sets: we.sets ?? 0,
-					reps: we.reps ?? 0,
-					weight: we.weight
-						? Number.parseFloat(we.weight as unknown as string)
-						: 0,
+					// Use completed values only if they're non-zero, otherwise use template values
+					sets: completed && completed.sets > 0 ? completed.sets : we.sets,
+					reps: completed && completed.reps > 0 ? completed.reps : we.reps,
+					weight:
+						completed?.weight && Number(completed.weight) > 0
+							? Number(completed.weight)
+							: we.weight
+								? Number(we.weight)
+								: 0,
 					order: we.order,
 					exercises: {
 						id: we.exercises.id,
 						name: we.exercises.name,
 					},
+					lastCompleted: completed?.completedAt ?? null,
 					superset_with: null,
-				}));
-			}
+				};
+			});
 
-			// Create a map of superset pairs
-			const supersetMap: SupersetMap = supersets.reduce(
-				(acc: SupersetMap, superset) => {
+			// 4. Handle supersets
+			const supersets = await prisma.supersets.findMany({
+				where: { workout_id: Number.parseInt(workoutId) },
+				orderBy: { order: "asc" },
+			});
+
+			const supersetMap = supersets.reduce(
+				(acc, superset) => {
 					acc[superset.first_exercise_id] = superset.second_exercise_id;
 					acc[superset.second_exercise_id] = superset.first_exercise_id;
 					return acc;
 				},
-				{},
+				{} as Record<number, number>,
 			);
 
-			// Add superset information to exercises
-			const exercisesWithSupersets = exercises.map((exercise) => ({
+			const finalExercises = mergedExercises.map((exercise) => ({
 				...exercise,
 				superset_with: supersetMap[exercise.exercise_id] || null,
 			}));
 
-			return res.status(200).json(exercisesWithSupersets);
+			return res.status(200).json(finalExercises);
 		} catch (error) {
 			console.error("Error fetching exercises:", error);
 			return res.status(500).json({ error: "Internal server error" });
