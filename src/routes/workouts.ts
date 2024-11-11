@@ -17,6 +17,8 @@ interface CompletedExercise {
 	order: number;
 	exercise_name: string;
 	completedAt: string;
+	timestamp: Date;
+	source: string;
 }
 
 interface Exercise {
@@ -63,13 +65,6 @@ router.get(
 		const { workoutId } = req.params;
 		const userId = req.user?.id;
 
-		console.log("Workout request received:", {
-			workoutId,
-			userId,
-			timestamp: new Date().toISOString(),
-			headers: req.headers,
-		});
-
 		if (!userId) {
 			console.log("Authentication failed for workout request");
 			return res.status(401).json({ error: "User not authenticated" });
@@ -82,7 +77,6 @@ router.get(
 				return res.status(400).json({ error: "Invalid workout ID" });
 			}
 
-			console.log("Fetching base workout exercises...");
 			const workoutExercises = await prisma.workout_exercises.findMany({
 				where: {
 					workout_id: Number.parseInt(workoutId),
@@ -93,32 +87,52 @@ router.get(
 				orderBy: { order: "asc" },
 			});
 
-			console.log(`Found ${workoutExercises.length} base exercises`);
-
 			if (!workoutExercises.length) {
 				console.log("No exercises found for workout:", workoutId);
-				return res.status(404).json({
-					error: "No exercises found for this workout",
-					workoutId,
-				});
+				return res.status(200).json([]); // Return empty array instead of error object
 			}
 
-			console.log("Fetching completed exercises...");
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
-		  SELECT ce.*
-		  FROM completed_exercises ce
-		  JOIN (
-			SELECT exercise_id, MAX("completedAt") as latest_completion
-			FROM completed_exercises
-			WHERE workout_id = ${Number.parseInt(workoutId)}
-			AND user_id = ${userId}
-			GROUP BY exercise_id
-		  ) latest ON ce.exercise_id = latest.exercise_id 
-		  AND ce."completedAt" = latest.latest_completion
-		  WHERE ce.workout_id = ${Number.parseInt(workoutId)}
-		`;
+			WITH LatestValues AS (
+			  -- Get latest completed exercises
+			  SELECT 
+				ce.exercise_id,
+				ce.sets,
+				ce.reps,
+				ce.weight,
+				ce."completedAt" as timestamp,
+				'completed' as source
+			  FROM completed_exercises ce
+			  JOIN (
+				SELECT exercise_id, MAX("completedAt") as latest_completion
+				FROM completed_exercises
+				WHERE workout_id = ${Number.parseInt(workoutId)}
+				AND user_id = ${userId}
+				GROUP BY exercise_id
+			  ) latest ON ce.exercise_id = latest.exercise_id 
+			  AND ce."completedAt" = latest.latest_completion
+		  
+			  UNION ALL
+		  
+			  -- Get workout exercises
+			  SELECT 
+				we.exercise_id,
+				we.sets,
+				we.reps,
+				we.weight,
+				we."updatedAt" as timestamp,
+				'workout' as source
+			  FROM workout_exercises we
+			  WHERE we.workout_id = ${Number.parseInt(workoutId)}
+			)
+			SELECT DISTINCT ON (exercise_id) *
+			FROM LatestValues
+			ORDER BY exercise_id, timestamp DESC
+		  `;
 
-			console.log(`Found ${completedExercises.length} completed exercises`);
+			const latestValuesMap = new Map(
+				completedExercises.map((ce) => [ce.exercise_id, ce]),
+			);
 
 			// Create a map of completed exercises
 			const completedExerciseMap = new Map(
@@ -127,45 +141,22 @@ router.get(
 
 			// Merge the data with detailed logging
 			const mergedExercises = workoutExercises.map((we) => {
-				const completed = completedExerciseMap.get(we.exercise_id);
-				const result = {
+				const latest = latestValuesMap.get(we.exercise_id);
+				return {
 					workout_id: we.workout_id,
 					exercise_id: we.exercise_id,
-					sets: completed && completed.sets > 0 ? completed.sets : we.sets,
-					reps: completed && completed.reps > 0 ? completed.reps : we.reps,
-					weight:
-						completed?.weight && Number(completed.weight) > 0
-							? Number(completed.weight)
-							: we.weight
-								? Number(we.weight)
-								: 0,
+					sets: latest ? latest.sets : we.sets,
+					reps: latest ? latest.reps : we.reps,
+					weight: latest ? Number(latest.weight) : Number(we.weight) || 0,
 					order: we.order,
 					exercises: {
 						id: we.exercises.id,
 						name: we.exercises.name,
 					},
-					lastCompleted: completed?.completedAt ?? null,
+					lastCompleted:
+						latest?.source === "completed" ? latest.timestamp : null,
 					superset_with: null,
 				};
-
-				console.log("Processed exercise:", {
-					id: we.exercise_id,
-					template: { sets: we.sets, reps: we.reps, weight: we.weight },
-					completed: completed
-						? {
-								sets: completed.sets,
-								reps: completed.reps,
-								weight: completed.weight,
-							}
-						: null,
-					result: {
-						sets: result.sets,
-						reps: result.reps,
-						weight: result.weight,
-					},
-				});
-
-				return result;
 			});
 
 			console.log("Fetching supersets...");

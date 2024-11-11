@@ -35,10 +35,16 @@ app.use(
 			"https://www.myofitness.no",
 			"http://localhost:4000",
 			"http://192.168.50.195:8081",
-		], // Allow requests from this origin
-		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow additional methods if needed
-		allowedHeaders: ["Content-Type", "Authorization"], // Add any custom headers you are using
-		credentials: true, // Enable cookies and other credentials
+		],
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowedHeaders: [
+			"Content-Type",
+			"Authorization",
+			"Cache-Control",
+			"Pragma",
+			"Expires",
+		],
+		credentials: true,
 	}),
 );
 
