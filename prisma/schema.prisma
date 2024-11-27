@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProgramType {
+  PT_MANAGED    // Manually managed by trainer
+  AI_ASSISTED   // Automated progression
+}
+
+enum Goal {
+  HYPERTROPHY
+  STRENGTH
+}
+
 model exercises {
   id                  Int                      @id @default(autoincrement())
   name                String                   @unique
@@ -17,13 +27,28 @@ model exercises {
 }
 
 model programs {
-  id       Int        @id @default(autoincrement())
-  name     String
-  userId   Int?
-  users    users?     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  workouts workouts[]
+  id          Int         @id @default(autoincrement())
+  name        String
+  userId      Int?
+  goal        Goal @default(HYPERTROPHY)
+  programType ProgramType @default(PT_MANAGED)
+  startDate   DateTime    @default(now()) @db.Timestamptz(0)
+  endDate     DateTime?   @db.Timestamptz(0)
+  users       users?      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workouts    workouts[]
+  progressionSettings program_progression_settings?
 
   @@index([userId], map: "programs_userId")
+}
+
+model program_progression_settings {
+  id                    Int      @id @default(autoincrement())
+  program_id           Int      @unique
+  experienceLevel      String   // 'beginner', 'intermediate', 'advanced', 'advanced_plus'
+  weeklyFrequency      Int
+  lastDeloadDate       DateTime? @db.Timestamptz(0)
+  nextDeloadDate       DateTime? @db.Timestamptz(0)
+  program              programs  @relation(fields: [program_id], references: [id])
 }
 
 model sessions {

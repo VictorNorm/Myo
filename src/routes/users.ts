@@ -9,8 +9,8 @@ const prisma = new PrismaClient();
 
 router.get("/users", authenticateToken, async (req, res) => {
 	const trainerId = req.body.id;
-	console.log("TRAINER ID:", trainerId);
-	console.log(req.user);
+	// console.log("TRAINER ID:", trainerId);
+	// console.log(req.user);
 
 	interface UserDetail {
 		id: number;

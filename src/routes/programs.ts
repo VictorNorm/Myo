@@ -72,4 +72,59 @@ router.post("/programs", authenticateToken, async (req: Request, res) => {
 	res.status(200).json();
 });
 
+router.post(
+	"/programs/create-with-workouts",
+	authenticateToken,
+	async (req, res) => {
+		const { programName, userId, workouts } = req.body;
+
+		// Validate input
+		if (!programName || !userId || !workouts || !workouts.length) {
+			return res.status(400).json({
+				error: "Program name, user ID, and at least one workout are required",
+			});
+		}
+
+		try {
+			// Use a transaction to ensure all operations succeed or none do
+			const result = await prisma.$transaction(async (prisma) => {
+				// Create the program
+				const program = await prisma.programs.create({
+					data: {
+						name: programName,
+						userId: Number.parseInt(userId),
+					},
+				});
+
+				// Create all workouts for this program
+				const createdWorkouts = await Promise.all(
+					workouts.map((workout: { name: string; program_id: number }) =>
+						prisma.workouts.create({
+							data: {
+								name: workout.name,
+								program_id: program.id,
+							},
+						}),
+					),
+				);
+
+				return {
+					program,
+					workouts: createdWorkouts,
+				};
+			});
+
+			res.status(201).json({
+				message: "Program and workouts created successfully",
+				data: result,
+			});
+		} catch (error) {
+			console.error("Error creating program with workouts:", error);
+			res.status(500).json({
+				error: "An error occurred while creating the program and workouts",
+			});
+		}
+	},
+);
+
 export default router;
