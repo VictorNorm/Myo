@@ -26,11 +26,13 @@ router.get("/exercises", authenticateToken, async (req, res) => {
 });
 
 router.post("/exercises", authenticateToken, async (req, res) => {
-	const { name, muscleGroupId } = req.body;
+	const { name, muscleGroupId, equipment, category } = req.body; // Add these to destructuring
 
-	if (!name || !muscleGroupId) {
+	if (!name || !muscleGroupId || !equipment || !category) {
+		// Add validation
 		return res.status(400).json({
-			error: "Please provide valid name and muscle group of exercise.",
+			error:
+				"Please provide valid name, muscle group, equipment, and category of exercise.",
 		});
 	}
 
@@ -46,6 +48,8 @@ router.post("/exercises", authenticateToken, async (req, res) => {
 		const newExercise = await prisma.exercises.create({
 			data: {
 				name: name,
+				equipment: equipment, // Add this
+				category: category, // Add this
 				muscle_groups: {
 					create: [
 						{

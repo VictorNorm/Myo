@@ -17,9 +17,28 @@ enum Goal {
   STRENGTH
 }
 
+enum Equipment {
+  DUMBBELL
+  BARBELL
+  CABLE
+  MACHINE
+  BODYWEIGHT
+}
+
+enum ExerciseCategory {
+  COMPOUND
+  ISOLATION
+}
+
 model exercises {
   id                  Int                      @id @default(autoincrement())
   name                String                   @unique
+  equipment           Equipment
+  category            ExerciseCategory
+  defaultIncrementKg  Decimal?                @db.Decimal(4, 2)  // For gym-specific increments
+  minWeight           Decimal?                @db.Decimal(6, 2)  // Minimum possible weight
+  maxWeight           Decimal?                @db.Decimal(6, 2)  // Maximum available weight
+  notes               String?                 // For special instructions
   createdAt           DateTime                 @default(now()) @db.Timestamptz(0)
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
