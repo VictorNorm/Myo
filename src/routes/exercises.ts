@@ -216,4 +216,40 @@ router.post(
 	},
 );
 
+router.put("/editExercises", authenticateToken, async (req, res) => {
+	const { id, name, equipment, category, muscleGroupId } = req.body;
+
+	try {
+		// Update the exercise
+		const updatedExercise = await prisma.exercises.update({
+			where: { id: id },
+			data: {
+				name,
+				equipment,
+				category,
+				muscle_groups: {
+					deleteMany: {}, // Remove existing muscle group connections
+					create: [
+						{
+							muscle_group_id: muscleGroupId,
+						},
+					],
+				},
+			},
+			include: {
+				muscle_groups: {
+					include: {
+						muscle_groups: true,
+					},
+				},
+			},
+		});
+
+		res.json(updatedExercise);
+	} catch (error) {
+		console.error("Error updating exercise:", error);
+		res.status(500).json({ error: "Failed to update exercise" });
+	}
+});
+
 export default router;
