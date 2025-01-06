@@ -222,34 +222,85 @@ router.post(
 		}
 
 		try {
-			const completedExercises = await Promise.all(
-				exerciseData.map(async (data) => {
-					return await prisma.completed_exercises.create({
-						data: {
-							sets: data.sets,
-							reps: data.reps,
-							weight: data.weight,
-							user: {
-								connect: {
-									id: Number.parseInt(data.userId), // Ensure userId is an integer
+			// First, get the program_id for this workout
+			const workout = await prisma.workouts.findUnique({
+				where: {
+					id: Number.parseInt(exerciseData[0].workoutId),
+				},
+				select: {
+					program_id: true,
+				},
+			});
+
+			if (!workout || !workout.program_id) {
+				throw new Error("Workout not found or not associated with a program");
+			}
+
+			const programId = workout.program_id;
+
+			// Start a transaction
+			const result = await prisma.$transaction(async (prisma) => {
+				// Changed 'tx' to 'prisma'
+				// Save completed exercises
+				const completedExercises = await Promise.all(
+					exerciseData.map(async (data) => {
+						return await prisma.completed_exercises.create({
+							data: {
+								sets: data.sets,
+								reps: data.reps,
+								weight: data.weight,
+								user: {
+									connect: {
+										id: Number.parseInt(data.userId),
+									},
 								},
-							},
-							workout: {
-								connect: {
-									id: Number.parseInt(data.workoutId), // Ensure workoutId is an integer
+								workout: {
+									connect: {
+										id: Number.parseInt(data.workoutId),
+									},
 								},
-							},
-							exercise: {
-								connect: {
-									id: Number.parseInt(data.exerciseId), // Ensure exerciseId is an integer
+								exercise: {
+									connect: {
+										id: Number.parseInt(data.exerciseId),
+									},
 								},
+								completedAt: new Date(),
 							},
-							completedAt: new Date(), // Optional, if you want to set it manually
+						});
+					}),
+				);
+
+				// Check if baselines exist for this user and program
+				for (const data of exerciseData) {
+					const existingBaseline = await prisma.exercise_baselines.findUnique({
+						where: {
+							exercise_id_user_id_program_id: {
+								exercise_id: Number.parseInt(data.exerciseId),
+								user_id: Number.parseInt(data.userId),
+								program_id: programId,
+							},
 						},
 					});
-				}),
-			);
-			res.status(201).json(completedExercises);
+
+					// If no baseline exists, create one
+					if (!existingBaseline) {
+						await prisma.exercise_baselines.create({
+							data: {
+								exercise_id: Number.parseInt(data.exerciseId),
+								user_id: Number.parseInt(data.userId),
+								program_id: programId,
+								sets: data.sets,
+								reps: data.reps,
+								weight: data.weight,
+							},
+						});
+					}
+				}
+
+				return completedExercises;
+			});
+
+			res.status(201).json(result);
 		} catch (error) {
 			console.error("Error during database operation:", error);
 			res

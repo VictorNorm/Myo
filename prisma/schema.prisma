@@ -43,7 +43,29 @@ model exercises {
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
   workout_exercises   workout_exercises[]
+  baselines    exercise_baselines[]
 }
+
+model exercise_baselines {
+  id          Int      @id @default(autoincrement())
+  exercise_id Int
+  user_id     Int
+  program_id  Int
+  weight      Decimal  @db.Decimal(6, 2)
+  reps        Int
+  sets        Int
+  createdAt   DateTime @default(now()) @db.Timestamptz(0)
+  
+  exercise    exercises @relation(fields: [exercise_id], references: [id])
+  user        users     @relation(fields: [user_id], references: [id])
+  program     programs  @relation(fields: [program_id], references: [id])
+
+  @@unique([exercise_id, user_id, program_id])
+  @@index([exercise_id])
+  @@index([user_id])
+  @@index([program_id])
+}
+
 
 model programs {
   id          Int         @id @default(autoincrement())
@@ -56,6 +78,7 @@ model programs {
   users       users?      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workouts    workouts[]
   progressionSettings program_progression_settings?
+  baselines    exercise_baselines[]
 
   @@index([userId], map: "programs_userId")
 }
@@ -107,6 +130,7 @@ model users {
   user_stats               user_stats[]
   trainer                  users?                @relation("UserTrainer", fields: [trainerId], references: [id])
   clients                  users[]               @relation("UserTrainer")
+  baselines    exercise_baselines[]
 
   @@index([trainerId])
 }
