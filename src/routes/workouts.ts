@@ -1,6 +1,10 @@
 import { Router } from "express";
 import type { Request } from "express";
 import { PrismaClient, completed_exercises } from "@prisma/client";
+import {
+	calculateProgression,
+	type ExerciseData,
+} from "../services/progressionCalculator";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 dotenv.config();
@@ -215,20 +219,21 @@ router.post(
 					data.exerciseId == null ||
 					data.sets == null ||
 					data.reps == null ||
-					data.weight == null,
+					data.weight == null ||
+					data.rating == null, // Required for AI_ASSISTED programs
 			)
 		) {
 			return res.status(400).json({ message: "Invalid data format" });
 		}
 
 		try {
-			// First, get the program_id for this workout
+			// Get the program details including type and goal
 			const workout = await prisma.workouts.findUnique({
 				where: {
-					id: Number.parseInt(exerciseData[0].workoutId),
+					id: Number(exerciseData[0].workoutId),
 				},
-				select: {
-					program_id: true,
+				include: {
+					programs: true,
 				},
 			});
 
@@ -237,57 +242,101 @@ router.post(
 			}
 
 			const programId = workout.program_id;
+			const isAiAssisted = workout.programs?.programType === "AI_ASSISTED";
+			const programGoal = workout.programs?.goal || "HYPERTROPHY";
 
-			// Start a transaction
 			const result = await prisma.$transaction(async (prisma) => {
-				// Changed 'tx' to 'prisma'
-				// Save completed exercises
 				const completedExercises = await Promise.all(
 					exerciseData.map(async (data) => {
-						return await prisma.completed_exercises.create({
+						// Get exercise details
+						const exercise = await prisma.exercises.findUnique({
+							where: { id: Number(data.exerciseId) },
+						});
+
+						if (!exercise)
+							throw new Error(`Exercise ${data.exerciseId} not found`);
+
+						// Save completed exercise
+						const completed = await prisma.completed_exercises.create({
 							data: {
 								sets: data.sets,
 								reps: data.reps,
 								weight: data.weight,
-								user: {
-									connect: {
-										id: Number.parseInt(data.userId),
-									},
-								},
-								workout: {
-									connect: {
-										id: Number.parseInt(data.workoutId),
-									},
-								},
-								exercise: {
-									connect: {
-										id: Number.parseInt(data.exerciseId),
-									},
-								},
+								rating: data.rating,
+								user: { connect: { id: Number(data.userId) } },
+								workout: { connect: { id: Number(data.workoutId) } },
+								exercise: { connect: { id: Number(data.exerciseId) } },
 								completedAt: new Date(),
 							},
 						});
+
+						// Only calculate progression for AI_ASSISTED programs
+						if (isAiAssisted) {
+							const exerciseData: ExerciseData = {
+								sets: data.sets,
+								reps: data.reps,
+								weight: Number(data.weight),
+								rating: data.rating,
+								equipment_type: exercise.equipment,
+								is_compound: exercise.category === "COMPOUND",
+								exercise_name: exercise.name,
+							};
+
+							const progressionResult = calculateProgression(
+								exerciseData,
+								programGoal === "STRENGTH" ? "STRENGTH" : "HYPERTROPHY",
+							);
+
+							// Update next workout's exercise with progression
+							await prisma.workout_exercises.update({
+								where: {
+									workout_id_exercise_id: {
+										workout_id: Number(data.workoutId),
+										exercise_id: Number(data.exerciseId),
+									},
+								},
+								data: {
+									weight: progressionResult.newWeight,
+									reps: progressionResult.newReps,
+								},
+							});
+
+							// Record progression history
+							await prisma.progression_history.create({
+								data: {
+									exercise_id: Number(data.exerciseId),
+									user_id: Number(data.userId),
+									program_id: programId,
+									oldWeight: data.weight,
+									newWeight: progressionResult.newWeight,
+									oldReps: data.reps,
+									newReps: progressionResult.newReps,
+									reason: "Weekly progression",
+								},
+							});
+						}
+
+						return completed;
 					}),
 				);
 
-				// Check if baselines exist for this user and program
+				// Handle exercise baselines (for first-time exercises)
 				for (const data of exerciseData) {
 					const existingBaseline = await prisma.exercise_baselines.findUnique({
 						where: {
 							exercise_id_user_id_program_id: {
-								exercise_id: Number.parseInt(data.exerciseId),
-								user_id: Number.parseInt(data.userId),
+								exercise_id: Number(data.exerciseId),
+								user_id: Number(data.userId),
 								program_id: programId,
 							},
 						},
 					});
 
-					// If no baseline exists, create one
 					if (!existingBaseline) {
 						await prisma.exercise_baselines.create({
 							data: {
-								exercise_id: Number.parseInt(data.exerciseId),
-								user_id: Number.parseInt(data.userId),
+								exercise_id: Number(data.exerciseId),
+								user_id: Number(data.userId),
 								program_id: programId,
 								sets: data.sets,
 								reps: data.reps,
@@ -303,9 +352,10 @@ router.post(
 			res.status(201).json(result);
 		} catch (error) {
 			console.error("Error during database operation:", error);
-			res
-				.status(500)
-				.json({ error: "An error occurred while saving the exercise data." });
+			res.status(500).json({
+				error: "An error occurred while saving the exercise data.",
+				message: error instanceof Error ? error.message : "Unknown error",
+			});
 		}
 	},
 );

@@ -18,7 +18,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@prisma/client": "^6.1.0",
+		"@prisma/client": "^6.3.1",
 		"axios": "^1.7.2",
 		"bcrypt": "^5.1.1",
 		"cors": "^2.8.5",
@@ -48,7 +48,7 @@
 		"@types/nodemailer": "^6.4.15",
 		"@types/passport": "^1.0.16",
 		"@types/passport-local": "^1.0.38",
-		"prisma": "^6.1.0",
+		"prisma": "^6.3.1",
 		"regenerator-runtime": "^0.14.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.4.2"

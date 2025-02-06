@@ -27,4 +27,22 @@ export interface AuthenticatedUser {
 	username: string;
 	iat?: number;
 	exp?: number;
+	role: string;
 }
+
+export type ExperienceLevel = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
+
+export interface UserSettings {
+	experienceLevel: ExperienceLevel;
+	dumbbellIncrement: number; // in kg
+	useMetric: boolean;
+	darkMode: boolean;
+	// Add any other settings as needed
+}
+
+// Progression multipliers based on experience level
+export const EXPERIENCE_MULTIPLIERS = {
+	BEGINNER: 1.5, // Faster progression
+	INTERMEDIATE: 1.0, // Normal progression
+	ADVANCED: 0.75, // Slower progression
+};

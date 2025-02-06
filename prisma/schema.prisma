@@ -8,8 +8,16 @@ datasource db {
 }
 
 enum ProgramType {
-  PT_MANAGED    // Manually managed by trainer
-  AI_ASSISTED   // Automated progression
+  PT_MANAGED    // Will be removed later
+  AI_ASSISTED   // Will be removed later
+  MANUAL        // New value
+  AUTOMATED     // New value
+}
+
+enum ExperienceLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
 }
 
 enum Goal {
@@ -40,6 +48,8 @@ model exercises {
   maxWeight           Decimal?                @db.Decimal(6, 2)  // Maximum available weight
   notes               String?                 // For special instructions
   createdAt           DateTime                 @default(now()) @db.Timestamptz(0)
+
+  progression_history progression_history[]
   completed_exercises completed_exercises[]
   muscle_groups       exercise_muscle_groups[]
   workout_exercises   workout_exercises[]
@@ -66,16 +76,19 @@ model exercise_baselines {
   @@index([program_id])
 }
 
-
 model programs {
   id          Int         @id @default(autoincrement())
   name        String
   userId      Int?
   goal        Goal @default(HYPERTROPHY)
-  programType ProgramType @default(PT_MANAGED)
+  programType ProgramType @default(AUTOMATED)
   startDate   DateTime    @default(now()) @db.Timestamptz(0)
   endDate     DateTime?   @db.Timestamptz(0)
   users       users?      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  totalWorkouts        Int      @default(0)
+
+  workout_progress     workout_progress[]
+  progression_history progression_history[]
   workouts    workouts[]
   progressionSettings program_progression_settings?
   baselines    exercise_baselines[]
@@ -86,7 +99,7 @@ model programs {
 model program_progression_settings {
   id                    Int      @id @default(autoincrement())
   program_id           Int      @unique
-  experienceLevel      String   // 'beginner', 'intermediate', 'advanced', 'advanced_plus'
+  experienceLevel      ExperienceLevel @default(BEGINNER)
   weeklyFrequency      Int
   lastDeloadDate       DateTime? @db.Timestamptz(0)
   nextDeloadDate       DateTime? @db.Timestamptz(0)
@@ -125,14 +138,36 @@ model users {
   verificationTokenExpires DateTime?             @db.Timestamptz(0)
   resetToken               String?
   resetTokenExpiry         DateTime?
+
+  progression_history progression_history[]
   completed_exercises      completed_exercises[]
   programs                 programs[]
   user_stats               user_stats[]
   trainer                  users?                @relation("UserTrainer", fields: [trainerId], references: [id])
   clients                  users[]               @relation("UserTrainer")
   baselines    exercise_baselines[]
+  workout_progress    workout_progress[]
 
   @@index([trainerId])
+}
+
+model workout_progress {
+  id                Int       @id @default(autoincrement())
+  user_id          Int
+  program_id       Int
+  workout_id       Int
+  completed_at     DateTime
+  next_scheduled_at DateTime?
+  created_at       DateTime   @default(now()) @db.Timestamptz(0)
+  updated_at       DateTime   @default(now()) @db.Timestamptz(0)
+  user             users     @relation(fields: [user_id], references: [id])
+  program          programs  @relation(fields: [program_id], references: [id])
+  workout          workouts  @relation(fields: [workout_id], references: [id])
+
+  @@unique([user_id, program_id, workout_id])
+  @@index([user_id])
+  @@index([program_id])
+  @@index([workout_id])
 }
 
 model workout_exercises {
@@ -163,6 +198,7 @@ model workouts {
   workout_exercises   workout_exercises[]
   programs            programs?             @relation(fields: [program_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
 
+  workout_progress    workout_progress[]
   @@index([program_id], map: "program_id")
 }
 
@@ -178,10 +214,32 @@ model completed_exercises {
   exercise    exercises @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workout     workouts  @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rating      Int?
 
   @@index([user_id], map: "completed_exercises_user_id")
   @@index([workout_id], map: "completed_exercises_workout_id")
   @@index([exercise_id], map: "completed_exercises_exercise_id")
+}
+
+model progression_history {
+  id           Int       @id @default(autoincrement())
+  exercise_id  Int
+  user_id      Int
+  program_id   Int
+  oldWeight    Decimal   @db.Decimal(10, 2)
+  newWeight    Decimal   @db.Decimal(10, 2)
+  oldReps      Int
+  newReps      Int
+  reason       String    // e.g., "Weekly progression", "Deload", "Manual adjustment"
+  createdAt    DateTime  @default(now()) @db.Timestamptz(0)
+  
+  exercise     exercises @relation(fields: [exercise_id], references: [id])
+  user         users     @relation(fields: [user_id], references: [id])
+  program      programs  @relation(fields: [program_id], references: [id])
+
+  @@index([exercise_id])
+  @@index([user_id])
+  @@index([program_id])
 }
 
 model muscle_groups {

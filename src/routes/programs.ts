@@ -14,8 +14,8 @@ interface Workout {
 }
 
 enum ProgramType {
-	PT_MANAGED = "PT_MANAGED",
-	AI_ASSISTED = "AI_ASSISTED",
+	MANUAL = "MANUAL",
+	AUTOMATED = "AUTOMATED",
 }
 
 enum Goal {
@@ -80,6 +80,61 @@ router.get(
 			res.status(200).json({ userPrograms });
 		} catch (error) {
 			console.error("Error fetching user programs:", error);
+			res.status(500).json({ error: "Internal server error" });
+		}
+	},
+);
+
+router.get(
+	"/programs/:programId/nextWorkout",
+	authenticateToken,
+	async (req, res) => {
+		const { programId } = req.params;
+		const userId = req.user?.id;
+
+		try {
+			// First try to find a workout that hasn't been completed
+			const nextWorkout = await prisma.workouts.findFirst({
+				where: {
+					program_id: Number(programId),
+					workout_progress: {
+						none: {
+							user_id: Number(userId),
+						},
+					},
+				},
+				include: {
+					workout_progress: true,
+				},
+				orderBy: {
+					id: "asc",
+				},
+			});
+
+			if (nextWorkout) {
+				return res.json(nextWorkout);
+			}
+
+			// If all workouts completed, get the oldest completed one
+			const oldestCompleted = await prisma.workouts.findFirst({
+				where: {
+					program_id: Number(programId),
+				},
+				include: {
+					workout_progress: {
+						where: {
+							user_id: Number(userId),
+						},
+						orderBy: {
+							completed_at: "asc",
+						},
+					},
+				},
+			});
+
+			res.json(oldestCompleted);
+		} catch (error) {
+			console.error("Error in nextWorkout:", error);
 			res.status(500).json({ error: "Internal server error" });
 		}
 	},
@@ -214,6 +269,21 @@ router.delete(
 				// Delete all sessions
 				await tx.sessions.deleteMany({
 					where: { workout_id: { in: workoutIds } },
+				});
+
+				// Delete workout progress
+				await tx.workout_progress.deleteMany({
+					where: { program_id: programId },
+				});
+
+				// Delete progression history
+				await tx.progression_history.deleteMany({
+					where: { program_id: programId },
+				});
+
+				// Delete exercise baselines
+				await tx.exercise_baselines.deleteMany({
+					where: { program_id: programId },
 				});
 
 				// Delete all workouts

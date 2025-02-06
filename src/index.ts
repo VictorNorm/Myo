@@ -10,6 +10,9 @@ import cors from "cors";
 import helmet from "helmet";
 import password from "./routes/password";
 import muscleGroups from "./routes/muscleGroups";
+import progression from "./routes/progression";
+import template from "./routes/template";
+import userSettings from "./routes/userSettings";
 
 console.log("Application starting...");
 
@@ -62,6 +65,9 @@ app.use(exercises);
 app.use(users);
 app.use(password);
 app.use(muscleGroups);
+app.use(progression);
+app.use(template);
+app.use(userSettings);
 
 app.get("/", (req, res) => {
 	res.json({ message: "Hello Worldfucker" });
