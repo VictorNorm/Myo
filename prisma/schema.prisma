@@ -14,6 +14,13 @@ enum ProgramType {
   AUTOMATED     // New value
 }
 
+enum ProgramStatus {
+  PENDING    // Initial state when program is created
+  ACTIVE     // Currently active program
+  COMPLETED  // Program that was completed successfully
+  ARCHIVED   // Program that was archived before completion
+}
+
 enum ExperienceLevel {
   BEGINNER
   INTERMEDIATE
@@ -84,6 +91,7 @@ model programs {
   programType ProgramType @default(AUTOMATED)
   startDate   DateTime    @default(now()) @db.Timestamptz(0)
   endDate     DateTime?   @db.Timestamptz(0)
+  status      ProgramStatus @default(PENDING)  // Add status field
   users       users?      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   totalWorkouts        Int      @default(0)
 

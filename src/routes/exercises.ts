@@ -7,18 +7,39 @@ dotenv.config();
 const router = Router();
 const prisma = new PrismaClient();
 
+// Update the get exercises route to include muscle groups
 router.get("/exercises", authenticateToken, async (req, res) => {
 	try {
 		const exercises = await prisma.exercises.findMany({
 			include: {
 				muscle_groups: {
 					include: {
-						muscle_groups: true,
+						muscle_groups: true, // This gets the muscle group details
 					},
 				},
 			},
+			orderBy: {
+				name: "asc",
+			},
 		});
-		res.status(200).json(exercises);
+
+		// Reorganize data to group by muscle groups
+		const muscleGroups = await prisma.muscle_groups.findMany({
+			orderBy: {
+				name: "asc",
+			},
+		});
+
+		const groupedExercises = muscleGroups
+			.map((group) => ({
+				muscleGroup: group,
+				exercises: exercises.filter((exercise) =>
+					exercise.muscle_groups.some((mg) => mg.muscle_group_id === group.id),
+				),
+			}))
+			.filter((group) => group.exercises.length > 0); // Only include groups with exercises
+
+		res.status(200).json(groupedExercises);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal server error" });
@@ -82,7 +103,7 @@ router.post("/exercises", authenticateToken, async (req, res) => {
 });
 
 router.post(
-	"/upsertExercisesToWorkout",
+	"/exercises/upsertExercisesToWorkout",
 	authenticateToken,
 	async (req, res) => {
 		try {

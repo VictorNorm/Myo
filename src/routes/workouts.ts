@@ -220,7 +220,7 @@ router.post(
 					data.sets == null ||
 					data.reps == null ||
 					data.weight == null ||
-					data.rating == null, // Required for AI_ASSISTED programs
+					data.rating == null, // Required for AUTOMATED programs
 			)
 		) {
 			return res.status(400).json({ message: "Invalid data format" });
@@ -242,7 +242,7 @@ router.post(
 			}
 
 			const programId = workout.program_id;
-			const isAiAssisted = workout.programs?.programType === "AI_ASSISTED";
+			const isAutomated = workout.programs?.programType === "AUTOMATED";
 			const programGoal = workout.programs?.goal || "HYPERTROPHY";
 
 			const result = await prisma.$transaction(async (prisma) => {
@@ -270,8 +270,8 @@ router.post(
 							},
 						});
 
-						// Only calculate progression for AI_ASSISTED programs
-						if (isAiAssisted) {
+						// Only calculate progression for AUTOMATED programs
+						if (isAutomated) {
 							const exerciseData: ExerciseData = {
 								sets: data.sets,
 								reps: data.reps,
@@ -345,6 +345,28 @@ router.post(
 						});
 					}
 				}
+
+				await prisma.workout_progress.upsert({
+					where: {
+						user_id_program_id_workout_id: {
+							user_id: Number(exerciseData[0].userId),
+							program_id: programId,
+							workout_id: Number(exerciseData[0].workoutId),
+						},
+					},
+					create: {
+						user_id: Number(exerciseData[0].userId),
+						program_id: programId,
+						workout_id: Number(exerciseData[0].workoutId),
+						completed_at: new Date(),
+						next_scheduled_at: null,
+					},
+					update: {
+						completed_at: new Date(),
+						next_scheduled_at: null,
+						updated_at: new Date(), // Update the updated_at timestamp
+					},
+				});
 
 				return completedExercises;
 			});

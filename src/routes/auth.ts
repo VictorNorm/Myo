@@ -238,14 +238,6 @@ router.post("/login", (req, res, next) => {
 				{ expiresIn: "168h" },
 			);
 
-			console.log("Creating token with user:", {
-				id: user.id,
-				type: typeof user.id,
-				firstName: user.firstname,
-				lastName: user.lastname,
-				username: user.username,
-			});
-
 			res.json({ token });
 		} catch (error) {
 			next(error); // Handle errors in token generation

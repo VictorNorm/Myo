@@ -24,7 +24,7 @@ function authenticateToken(req: Request, res: Response, next: NextFunction) {
 			});
 		}
 
-		console.log(user);
+		// console.log(user);
 
 		req.user = user as AuthenticatedUser;
 		next();
