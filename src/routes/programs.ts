@@ -3,6 +3,7 @@ import type { Response, Request } from "express";
 import { type Prisma, PrismaClient, type ProgramStatus } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
+import authorizeMiddleware from "../middleware/authorizeMiddleware";
 dotenv.config();
 
 const router = Router();
@@ -232,6 +233,7 @@ router.get(
 router.patch(
 	"/programs/:programId/status",
 	authenticateToken,
+	authorizeMiddleware.programAccess,
 	async (req: Request, res: Response) => {
 		const { programId } = req.params;
 		const { status: newStatus } = req.body;
@@ -453,9 +455,9 @@ router.delete(
 			}
 
 			// Optional: Prevent deletion of active programs
-			if (program.status === "ACTIVE") {
+			if (program.status !== "ARCHIVED") {
 				return res.status(400).json({
-					error: "Cannot delete an active program. Please archive it first.",
+					error: "Programs must be archived before deletion.",
 					programId,
 					currentStatus: program.status,
 				});
