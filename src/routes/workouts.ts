@@ -4,9 +4,11 @@ import { PrismaClient, completed_exercises } from "@prisma/client";
 import {
 	calculateProgression,
 	type ExerciseData,
-} from "../services/progressionCalculator";
+	type UserEquipmentSettings,
+} from "fitness-progression-calculator";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
+import type { Decimal } from "@prisma/client/runtime/library";
 dotenv.config();
 
 const router = Router();
@@ -41,6 +43,13 @@ interface Exercise {
 
 interface SupersetMap {
 	[key: number]: number;
+}
+
+function toNumber(
+	value: Decimal | null | undefined,
+	defaultValue: number,
+): number {
+	return value ? Number(value) : defaultValue;
 }
 
 // Workouts route
@@ -272,6 +281,25 @@ router.post(
 
 						// Only calculate progression for AUTOMATED programs
 						if (isAutomated) {
+							// Get user settings from database
+							const userSettings = await prisma.user_settings.findUnique({
+								where: {
+									user_id: Number(data.userId),
+								},
+							});
+
+							// Convert database settings to UserEquipmentSettings format
+							const equipmentSettings: UserEquipmentSettings = {
+								barbellIncrement: toNumber(userSettings?.barbellIncrement, 2.5),
+								dumbbellIncrement: toNumber(
+									userSettings?.dumbbellIncrement,
+									2.0,
+								),
+								cableIncrement: toNumber(userSettings?.cableIncrement, 2.5),
+								machineIncrement: toNumber(userSettings?.machineIncrement, 5.0),
+								experienceLevel: userSettings?.experienceLevel || "BEGINNER",
+							};
+
 							const exerciseData: ExerciseData = {
 								sets: data.sets,
 								reps: data.reps,
@@ -285,35 +313,8 @@ router.post(
 							const progressionResult = calculateProgression(
 								exerciseData,
 								programGoal === "STRENGTH" ? "STRENGTH" : "HYPERTROPHY",
+								equipmentSettings, // Add this parameter
 							);
-
-							// Update next workout's exercise with progression
-							await prisma.workout_exercises.update({
-								where: {
-									workout_id_exercise_id: {
-										workout_id: Number(data.workoutId),
-										exercise_id: Number(data.exerciseId),
-									},
-								},
-								data: {
-									weight: progressionResult.newWeight,
-									reps: progressionResult.newReps,
-								},
-							});
-
-							// Record progression history
-							await prisma.progression_history.create({
-								data: {
-									exercise_id: Number(data.exerciseId),
-									user_id: Number(data.userId),
-									program_id: programId,
-									oldWeight: data.weight,
-									newWeight: progressionResult.newWeight,
-									oldReps: data.reps,
-									newReps: progressionResult.newReps,
-									reason: "Weekly progression",
-								},
-							});
 						}
 
 						return completed;
@@ -381,6 +382,209 @@ router.post(
 		}
 	},
 );
+
+// Add this right after your /workouts/completeWorkout route
+
+router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
+	try {
+		const userId = req.user?.id;
+		if (!userId) {
+			return res.status(401).json({ error: "Unauthorized" });
+		}
+
+		const parsedUserId =
+			typeof userId === "string" ? Number.parseInt(userId, 10) : userId;
+
+		const {
+			exerciseId,
+			workoutId,
+			sets,
+			reps,
+			weight,
+			rating,
+			equipment_type,
+			is_compound,
+			useAdaptiveIncrements = true, // Default to true if not provided
+		} = req.body;
+
+		// Get the exercise details
+		const exercise = await prisma.exercises.findUnique({
+			where: { id: exerciseId },
+		});
+
+		if (!exercise) {
+			return res.status(404).json({ error: "Exercise not found" });
+		}
+
+		// Find current program
+		const workout = await prisma.workouts.findUnique({
+			where: { id: workoutId },
+			include: { programs: true },
+		});
+
+		if (!workout || !workout.program_id) {
+			return res
+				.status(404)
+				.json({ error: "Workout not found or not associated with a program" });
+		}
+
+		const programId = workout.program_id;
+		const programGoal = workout.programs?.goal || "HYPERTROPHY";
+
+		// Get user settings
+		const userSettings = await prisma.user_settings.findUnique({
+			where: { user_id: parsedUserId },
+		});
+
+		// If settings don't exist, create default settings
+		const settings =
+			userSettings ||
+			(await prisma.user_settings.create({
+				data: {
+					user_id: parsedUserId,
+					experienceLevel: "BEGINNER",
+					barbellIncrement: 2.5,
+					dumbbellIncrement: 2.0,
+					cableIncrement: 2.5,
+					machineIncrement: 5.0,
+					useMetric: true,
+					darkMode: true,
+				},
+			}));
+
+		// Record completed exercise with rating
+		const completedExercise = await prisma.completed_exercises.create({
+			data: {
+				exercise_id: exerciseId,
+				user_id: parsedUserId,
+				workout_id: workoutId,
+				sets,
+				reps,
+				weight,
+				rating,
+			},
+		});
+
+		if (!completedExercise) {
+			return res
+				.status(500)
+				.json({ error: "Failed to record exercise completion" });
+		}
+
+		// Map settings to the format expected by the progression calculator
+		const equipmentSettings: UserEquipmentSettings = {
+			barbellIncrement: toNumber(settings.barbellIncrement, 2.5),
+			dumbbellIncrement: toNumber(settings.dumbbellIncrement, 2.0),
+			cableIncrement: toNumber(settings.cableIncrement, 2.5),
+			machineIncrement: toNumber(settings.machineIncrement, 5.0),
+			experienceLevel: settings.experienceLevel || "BEGINNER",
+		};
+
+		// If not using adaptive increments, use fixed increments
+		if (!useAdaptiveIncrements) {
+			// Get the fixed increment for the equipment type
+			let fixedIncrement: number;
+			switch (equipment_type) {
+				case "BARBELL":
+					fixedIncrement = toNumber(settings.barbellIncrement, 2.5);
+					break;
+				case "DUMBBELL":
+					fixedIncrement = toNumber(settings.dumbbellIncrement, 2.0);
+					break;
+				case "CABLE":
+					fixedIncrement = toNumber(settings.cableIncrement, 2.5);
+					break;
+				case "MACHINE":
+					fixedIncrement = toNumber(settings.machineIncrement, 5.0);
+					break;
+				case "BODYWEIGHT":
+					fixedIncrement = toNumber(settings.dumbbellIncrement, 2.0);
+					break;
+				default:
+					fixedIncrement = 2.5;
+			}
+
+			// Override all increment settings with the fixed increment
+			equipmentSettings.barbellIncrement = fixedIncrement;
+			equipmentSettings.dumbbellIncrement = fixedIncrement;
+			equipmentSettings.cableIncrement = fixedIncrement;
+			equipmentSettings.machineIncrement = fixedIncrement;
+		}
+
+		// Prepare exercise data for progression calculation
+		const exerciseData: ExerciseData = {
+			sets,
+			reps,
+			weight: Number(weight),
+			rating,
+			equipment_type,
+			is_compound,
+			exercise_name: exercise.name,
+		};
+
+		// Calculate progression
+		const progressionResult = calculateProgression(
+			exerciseData,
+			programGoal === "STRENGTH" ? "STRENGTH" : "HYPERTROPHY",
+			equipmentSettings,
+		);
+
+		// Record progression history
+		await prisma.progression_history.create({
+			data: {
+				exercise_id: exerciseId,
+				user_id: parsedUserId,
+				program_id: programId,
+				oldWeight: weight,
+				newWeight: progressionResult.newWeight,
+				oldReps: reps,
+				newReps: progressionResult.newReps,
+				reason: "Rating-based progression",
+			},
+		});
+
+		// Update exercise baseline for next workout
+		await prisma.exercise_baselines.upsert({
+			where: {
+				exercise_id_user_id_program_id: {
+					exercise_id: exerciseId,
+					user_id: parsedUserId,
+					program_id: programId,
+				},
+			},
+			update: {
+				weight: progressionResult.newWeight,
+				reps: progressionResult.newReps,
+				sets,
+			},
+			create: {
+				exercise_id: exerciseId,
+				user_id: parsedUserId,
+				program_id: programId,
+				weight: progressionResult.newWeight,
+				reps: progressionResult.newReps,
+				sets,
+			},
+		});
+
+		// Return the progression result
+		res.json({
+			success: true,
+			exerciseId,
+			oldWeight: Number(weight),
+			newWeight: progressionResult.newWeight,
+			oldReps: reps,
+			newReps: progressionResult.newReps,
+			adaptiveIncrements: useAdaptiveIncrements,
+		});
+	} catch (error) {
+		console.error("Error rating exercise:", error);
+		res.status(500).json({
+			error: "Internal server error",
+			message: error instanceof Error ? error.message : "Unknown error",
+		});
+	}
+});
 
 router.post("/workouts/addworkout", authenticateToken, async (req, res) => {
 	const workoutName = req.body.name;

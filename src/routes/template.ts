@@ -14,6 +14,24 @@ router.get(
 		const { workoutId } = req.params;
 
 		try {
+			// First, get the workout with program details to determine the program type
+			const workout = await prisma.workouts.findUnique({
+				where: { id: Number(workoutId) },
+				include: {
+					programs: {
+						select: {
+							id: true,
+							name: true,
+							programType: true,
+						},
+					},
+				},
+			});
+
+			if (!workout) {
+				return res.status(404).json({ error: "Workout not found" });
+			}
+
 			// Get workout exercises with their details
 			const workoutExercises = await prisma.workout_exercises.findMany({
 				where: {
@@ -48,7 +66,7 @@ router.get(
 				supersetMap[superset.second_exercise_id] = superset.first_exercise_id;
 			}
 
-			// Format the response
+			// Format the exercise data
 			const templateData = workoutExercises.map((exercise) => ({
 				workout_id: exercise.workout_id,
 				exercise_id: exercise.exercise_id,
@@ -65,7 +83,13 @@ router.get(
 				superset_with: supersetMap[exercise.exercise_id] || null,
 			}));
 
-			return res.status(200).json(templateData);
+			// Return the structured response
+			return res.status(200).json({
+				exercises: templateData,
+				programType: workout.programs?.programType || "MANUAL", // Default to MANUAL if not specified
+				programId: workout.program_id,
+				programName: workout.programs?.name,
+			});
 		} catch (error) {
 			console.error("Error fetching workout template:", error);
 			return res.status(500).json({

@@ -155,8 +155,24 @@ model users {
   clients                  users[]               @relation("UserTrainer")
   baselines    exercise_baselines[]
   workout_progress    workout_progress[]
+  settings          user_settings?
 
   @@index([trainerId])
+}
+
+model user_settings {
+  user_id           Int             @id
+  experienceLevel   ExperienceLevel @default(BEGINNER)
+  barbellIncrement  Decimal         @default(2.5) @db.Decimal(4, 2)
+  dumbbellIncrement Decimal         @default(2.0) @db.Decimal(4, 2)
+  cableIncrement    Decimal         @default(2.5) @db.Decimal(4, 2)
+  machineIncrement  Decimal         @default(5.0) @db.Decimal(4, 2)
+  useMetric         Boolean         @default(true)
+  darkMode          Boolean         @default(true)
+  createdAt         DateTime        @default(now()) @db.Timestamptz(0)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(0)
+  
+  user              users           @relation(fields: [user_id], references: [id])
 }
 
 model workout_progress {
