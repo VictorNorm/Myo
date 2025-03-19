@@ -1,9 +1,9 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
 import auth from "./routes/auth";
 import programs from "./routes/programs";
 import workouts from "./routes/workouts";
 import exercises from "./routes/exercises";
+import exercisesV2 from "./routes/exercisesV2"; // Import new modular route
 import users from "./routes/users";
 import passport from "passport";
 import cors from "cors";
@@ -13,10 +13,11 @@ import muscleGroups from "./routes/muscleGroups";
 import progression from "./routes/progression";
 import template from "./routes/template";
 import userSettings from "./routes/userSettings";
+import { errorHandler } from "./utils/errorHandler"; // Import error handler
 
 console.log("Application starting...");
 
-const prisma = new PrismaClient();
+// Using prisma singleton from db.ts instead
 const app = express();
 
 app.set("trust proxy", 1);
@@ -58,6 +59,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(passport.initialize());
 
+// Legacy routes
 app.use(auth);
 app.use(programs);
 app.use(workouts);
@@ -69,8 +71,11 @@ app.use(progression);
 app.use(template);
 app.use(userSettings);
 
+// New modular routes
+app.use(exercisesV2);
+
 app.get("/", (req, res) => {
-	res.json({ message: "Hello Worldfucker" });
+	res.json({ message: "Hello World" });
 });
 
 app.get("/health", (req, res) => {
@@ -87,6 +92,9 @@ app.get("/health", (req, res) => {
 		});
 	}
 });
+
+// Apply global error handler
+app.use(errorHandler);
 
 app
 	.listen(PORT, HOST, () => {

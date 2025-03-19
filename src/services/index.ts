@@ -27,3 +27,9 @@ export type {
 	ProgressionHistory,
 	ProgressionPreview,
 };
+
+// Export the new services
+export { exerciseService } from "./exerciseService";
+
+// Export the prisma db singleton
+export { default as db } from "./db";
