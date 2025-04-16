@@ -362,7 +362,10 @@ router.post(
 			});
 		}
 
-		if (Number.parseInt(userId) !== req.user?.id) {
+		if (
+			Number.parseInt(userId) !== req.user?.id &&
+			req.user?.role !== "ADMIN"
+		) {
 			return res
 				.status(403)
 				.json({ error: "Not authorized to create program for other users" });

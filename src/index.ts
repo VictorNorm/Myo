@@ -13,6 +13,7 @@ import muscleGroups from "./routes/muscleGroups";
 import progression from "./routes/progression";
 import template from "./routes/template";
 import userSettings from "./routes/userSettings";
+import stats from "./routes/stats";
 import { errorHandler } from "./utils/errorHandler"; // Import error handler
 
 console.log("Application starting...");
@@ -70,6 +71,7 @@ app.use(muscleGroups);
 app.use(progression);
 app.use(template);
 app.use(userSettings);
+app.use(stats);
 
 // New modular routes
 app.use(exercisesV2);
