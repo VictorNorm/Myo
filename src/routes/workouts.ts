@@ -58,11 +58,43 @@ router.get(
 	authenticateToken,
 	async (req: Request, res) => {
 		const { programId } = req.params;
+		const currentUser = req.user;
+
+		if (!currentUser) {
+			return res.status(401).json({ error: "User not authenticated" });
+		}
+
+		const parsedProgramId = Number(programId);
+		if (Number.isNaN(parsedProgramId)) {
+			return res.status(400).json({ error: "Invalid program ID format" });
+		}
 
 		try {
+			// First check if the program exists
+			const program = await prisma.programs.findUnique({
+				where: { id: Number(programId) },
+			});
+
+			if (!program) {
+				return res.status(404).json({ error: "Program not found" });
+			}
+
+			// Check if user is authorized (either the owner or an admin)
+			if (program.userId !== currentUser.id && currentUser.role !== "ADMIN") {
+				return res
+					.status(403)
+					.json({ error: "Not authorized to access this program's workouts" });
+			}
+
 			const workouts = await prisma.workouts.findMany({
 				where: { program_id: Number(programId) },
 			});
+
+			// Add more detailed logging
+			console.log(
+				`Found ${workouts.length} workouts for program ${parsedProgramId}`,
+			);
+
 			res.status(200).json(workouts);
 		} catch (error) {
 			console.error(error);
