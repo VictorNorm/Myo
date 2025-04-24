@@ -3,7 +3,7 @@ import auth from "./routes/auth";
 import programs from "./routes/programs";
 import workouts from "./routes/workouts";
 import exercises from "./routes/exercises";
-import exercisesV2 from "./routes/exercisesV2"; // Import new modular route
+import exercisesV2 from "./routes/exercisesV2";
 import users from "./routes/users";
 import passport from "passport";
 import cors from "cors";
@@ -14,11 +14,12 @@ import progression from "./routes/progression";
 import template from "./routes/template";
 import userSettings from "./routes/userSettings";
 import stats from "./routes/stats";
-import { errorHandler } from "./utils/errorHandler"; // Import error handler
+import { errorHandler } from "./utils/errorHandler";
+import logger from "./services/logger";
+import httpLogger from "./middleware/httpLogger";
 
-console.log("Application starting...");
+logger.info("Application starting...");
 
-// Using prisma singleton from db.ts instead
 const app = express();
 
 app.set("trust proxy", 1);
@@ -34,6 +35,12 @@ const safeParseNumber = (envName: string, defaultValue: number): number => {
 
 const PORT = safeParseNumber("PORT", 3000);
 const HOST = process.env.HOST || "0.0.0.0";
+
+// Apply middleware
+app.use(httpLogger); // Move this before routes!
+app.use(helmet());
+app.use(express.json());
+app.use(passport.initialize());
 
 app.use(
 	cors({
@@ -56,11 +63,7 @@ app.use(
 
 app.options("*", cors());
 
-app.use(helmet());
-app.use(express.json());
-app.use(passport.initialize());
-
-// Legacy routes
+// Apply routes
 app.use(auth);
 app.use(programs);
 app.use(workouts);
@@ -72,8 +75,6 @@ app.use(progression);
 app.use(template);
 app.use(userSettings);
 app.use(stats);
-
-// New modular routes
 app.use(exercisesV2);
 
 app.get("/", (req, res) => {
@@ -81,7 +82,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-	// You might want to add a basic DB check here too
 	res.status(200).json({
 		status: "healthy",
 	});
@@ -92,9 +92,9 @@ app.use(errorHandler);
 
 app
 	.listen(PORT, HOST, () => {
-		console.log(`Server is running on http://${HOST}:${PORT}`);
+		logger.info(`Server is running on http://${HOST}:${PORT}`);
 	})
 	.on("error", (err) => {
-		console.error("Failed to start server:", err);
+		logger.error(`Failed to start server: ${err.message}`);
 		process.exit(1);
 	});

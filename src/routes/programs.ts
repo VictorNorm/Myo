@@ -6,6 +6,7 @@ import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
 dotenv.config();
 import prisma from "../services/db";
+import logger from "../services/logger";
 
 const router = Router();
 
@@ -70,27 +71,46 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 			whereClause.status = status as ProgramStatus;
 		}
 
-		const programs = await prisma.programs.findMany({
-			where: whereClause,
-			orderBy: {
-				startDate: "desc",
-			},
-		});
+		try {
+			const programs = await prisma.programs.findMany({
+				where: whereClause,
+				orderBy: {
+					startDate: "desc",
+				},
+			});
 
-		const statusCounts = await prisma.programs.groupBy({
-			by: ["status"],
-			where: { userId },
-			_count: {
-				status: true,
-			},
-		});
+			const statusCounts = await prisma.programs.groupBy({
+				by: ["status"],
+				where: { userId },
+				_count: {
+					status: true,
+				},
+			});
 
-		res.status(200).json({
-			programs,
-			statusCounts,
-			activeProgram: programs.find((p) => p.status === "ACTIVE"),
-		});
+			logger.debug("Fetched programs for user", {
+				userId,
+				statusFilter: status,
+				programCount: programs.length,
+			});
+
+			res.status(200).json({
+				programs,
+				statusCounts,
+				activeProgram: programs.find((p) => p.status === "ACTIVE"),
+			});
+		} catch (error) {
+			logger.error(
+				`Error fetching programs: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					userId,
+					statusFilter: status,
+				},
+			);
+			res.status(500).json({ error: "Internal server error" });
+		}
 	} else {
+		logger.warn("Attempted to fetch programs with no user in request");
 		res.status(404).json({ message: "User not found" });
 	}
 });
@@ -103,12 +123,14 @@ router.get(
 		const { status } = req.query;
 
 		if (!userId) {
+			logger.warn("Missing userId parameter in request");
 			return res.status(400).json({ error: "User ID is required" });
 		}
 
 		const parsedUserId = Number.parseInt(userId);
 
 		if (Number.isNaN(parsedUserId)) {
+			logger.warn("Invalid userId format", { userId });
 			return res.status(400).json({ error: "Invalid user ID format" });
 		}
 
@@ -127,6 +149,10 @@ router.get(
 			});
 
 			if (userPrograms.length === 0) {
+				logger.info("No programs found for user", {
+					userId: parsedUserId,
+					statusFilter: status,
+				});
 				return res.status(404).json({
 					message: status
 						? `No programs with status ${status} found for this user`
@@ -142,13 +168,26 @@ router.get(
 				},
 			});
 
+			logger.debug("Fetched programs for specific user", {
+				userId: parsedUserId,
+				statusFilter: status,
+				programCount: userPrograms.length,
+			});
+
 			res.status(200).json({
 				userPrograms,
 				statusCounts,
 				activeProgram: userPrograms.find((p) => p.status === "ACTIVE"),
 			});
 		} catch (error) {
-			console.error("Error fetching user programs:", error);
+			logger.error(
+				`Error fetching user programs: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					userId: parsedUserId,
+					statusFilter: status,
+				},
+			);
 			res.status(500).json({ error: "Internal server error" });
 		}
 	},
@@ -172,6 +211,9 @@ router.get(
 			});
 
 			if (allWorkouts.length === 0) {
+				logger.info("No workouts found for program", {
+					programId: Number(programId),
+				});
 				return res
 					.status(404)
 					.json({ error: "No workouts found for this program" });
@@ -192,6 +234,14 @@ router.get(
 
 			// If no workouts completed, return first workout
 			if (completedWorkouts.length === 0) {
+				logger.debug(
+					"First workout in program returned (no completed workouts)",
+					{
+						programId: Number(programId),
+						userId,
+						workoutId: allWorkouts[0].id,
+					},
+				);
 				return res.json({
 					...allWorkouts[0],
 					workout_progress: [],
@@ -201,7 +251,6 @@ router.get(
 
 			// Get the most recently completed workout
 			const latestCompleted = completedWorkouts[0];
-			console.log("Latest completed:", latestCompleted);
 
 			// Find its position in the workout sequence
 			const currentIndex = allWorkouts.findIndex(
@@ -210,6 +259,12 @@ router.get(
 
 			// If we're not at the end of the sequence, return next workout
 			if (currentIndex < allWorkouts.length - 1) {
+				logger.debug("Next workout in sequence returned", {
+					programId: Number(programId),
+					userId,
+					lastCompletedWorkoutId: latestCompleted.workout_id,
+					nextWorkoutId: allWorkouts[currentIndex + 1].id,
+				});
 				return res.json({
 					...allWorkouts[currentIndex + 1],
 					workout_progress: [],
@@ -218,13 +273,29 @@ router.get(
 			}
 
 			// If we are at the end, return first workout with new cycle flag
+			logger.debug(
+				"First workout returned with new cycle flag (completed all workouts)",
+				{
+					programId: Number(programId),
+					userId,
+					lastCompletedWorkoutId: latestCompleted.workout_id,
+					nextWorkoutId: allWorkouts[0].id,
+				},
+			);
 			return res.json({
 				...allWorkouts[0],
 				workout_progress: [],
 				isNewCycle: true,
 			});
 		} catch (error) {
-			console.error("Error in nextWorkout:", error);
+			logger.error(
+				`Error determining next workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+				},
+			);
 			res.status(500).json({ error: "Internal server error" });
 		}
 	},
@@ -240,10 +311,16 @@ router.patch(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to update program status without authenticated user",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
 		if (!newStatus) {
+			logger.warn("Missing status in program status update request", {
+				programId: Number(programId),
+			});
 			return res.status(400).json({ error: "Status is required" });
 		}
 
@@ -253,10 +330,18 @@ router.patch(
 			});
 
 			if (!program) {
+				logger.warn("Attempted to update non-existent program", {
+					programId: Number(programId),
+				});
 				return res.status(404).json({ error: "Program not found" });
 			}
 
 			if (program.userId !== userId) {
+				logger.warn("Unauthorized program status update attempt", {
+					programId: Number(programId),
+					programOwnerId: program.userId,
+					requestUserId: userId,
+				});
 				return res
 					.status(403)
 					.json({ error: "Not authorized to modify this program" });
@@ -266,6 +351,12 @@ router.patch(
 			if (
 				!isValidStatusTransition(program.status, newStatus as ProgramStatus)
 			) {
+				logger.warn("Invalid program status transition attempted", {
+					programId: Number(programId),
+					currentStatus: program.status,
+					attemptedStatus: newStatus,
+					validTransitions: VALID_STATUS_TRANSITIONS[program.status],
+				});
 				return res.status(400).json({
 					error: `Invalid status transition from ${program.status} to ${newStatus}`,
 					validTransitions: VALID_STATUS_TRANSITIONS[program.status],
@@ -292,11 +383,21 @@ router.patch(
 						data: { status: newStatus as ProgramStatus },
 					});
 				});
+				logger.info("Program activated, other active programs set to pending", {
+					programId: Number(programId),
+					userId,
+				});
 			} else {
 				// For non-ACTIVE status changes, just update the program
 				await prisma.programs.update({
 					where: { id: Number(programId) },
 					data: { status: newStatus as ProgramStatus },
+				});
+				logger.info("Program status updated", {
+					programId: Number(programId),
+					userId,
+					oldStatus: program.status,
+					newStatus,
 				});
 			}
 
@@ -305,29 +406,65 @@ router.patch(
 				newStatus: newStatus,
 			});
 		} catch (error) {
-			console.error("Error updating program status:", error);
+			logger.error(
+				`Error updating program status: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+					newStatus,
+				},
+			);
 			res.status(500).json({ error: "Failed to update program status" });
 		}
 	},
 );
 
 router.get("/allprograms", authenticateToken, async (req: Request, res) => {
-	const programs = await prisma.programs.findMany();
-
-	res.status(200).json({ programs });
+	try {
+		const programs = await prisma.programs.findMany();
+		logger.debug("Fetched all programs", { count: programs.length });
+		res.status(200).json({ programs });
+	} catch (error) {
+		logger.error(
+			`Error fetching all programs: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+			},
+		);
+		res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 router.post("/programs", authenticateToken, async (req: Request, res) => {
 	const { programName, programRecipientId } = req.body;
 
-	await prisma.programs.create({
-		data: {
-			name: programName,
-			userId: Number.parseInt(programRecipientId),
-		},
-	});
+	try {
+		const program = await prisma.programs.create({
+			data: {
+				name: programName,
+				userId: Number.parseInt(programRecipientId),
+			},
+		});
 
-	res.status(200).json();
+		logger.info("Created new program", {
+			programId: program.id,
+			programName,
+			userId: Number.parseInt(programRecipientId),
+		});
+
+		res.status(200).json();
+	} catch (error) {
+		logger.error(
+			`Error creating program: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				programName,
+				userId: programRecipientId,
+			},
+		);
+		res.status(500).json({ error: "Failed to create program" });
+	}
 });
 
 router.post(
@@ -356,6 +493,21 @@ router.post(
 			!programType ||
 			!Object.values(ProgramType).includes(programType)
 		) {
+			logger.warn(
+				"Invalid program creation request - missing required fields",
+				{
+					hasName: !!programName,
+					hasUserId: !!userId,
+					hasWorkouts: !!workouts,
+					workoutsLength: workouts?.length,
+					hasStartDate: !!startDate,
+					hasGoal: !!goal,
+					hasProgramType: !!programType,
+					validProgramType: programType
+						? Object.values(ProgramType).includes(programType)
+						: false,
+				},
+			);
 			return res.status(400).json({
 				error:
 					"Program name, user ID, goal, program type, start date, and at least one workout are required",
@@ -366,6 +518,11 @@ router.post(
 			Number.parseInt(userId) !== req.user?.id &&
 			req.user?.role !== "ADMIN"
 		) {
+			logger.warn("Unauthorized program creation attempt for another user", {
+				requestUserId: req.user?.id,
+				targetUserId: Number.parseInt(userId),
+				userRole: req.user?.role,
+			});
 			return res
 				.status(403)
 				.json({ error: "Not authorized to create program for other users" });
@@ -384,6 +541,12 @@ router.post(
 							status: "PENDING",
 						},
 					});
+					logger.debug(
+						"Set all active programs to PENDING for new active program",
+						{
+							userId: Number.parseInt(userId),
+						},
+					);
 				}
 
 				// Create the program with new fields
@@ -417,12 +580,32 @@ router.post(
 				};
 			});
 
+			logger.info("Created program with workouts", {
+				programId: result.program.id,
+				programName,
+				userId: Number.parseInt(userId),
+				workoutCount: result.workouts.length,
+				goal,
+				programType,
+				status: setActive ? "ACTIVE" : "PENDING",
+			});
+
 			res.status(201).json({
 				message: "Program and workouts created successfully",
 				data: result,
 			});
 		} catch (error) {
-			console.error("Error creating program with workouts:", error);
+			logger.error(
+				`Error creating program with workouts: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programName,
+					userId,
+					workoutCount: workouts?.length,
+					goal,
+					programType,
+				},
+			);
 			res.status(500).json({
 				error: "An error occurred while creating the program and workouts",
 			});
@@ -439,6 +622,7 @@ router.delete(
 			const userId = req.user?.id;
 
 			if (!userId) {
+				logger.warn("Attempted to delete program without authenticated user");
 				return res.status(401).json({ error: "User not authenticated" });
 			}
 
@@ -448,10 +632,16 @@ router.delete(
 			});
 
 			if (!program) {
+				logger.warn("Attempted to delete non-existent program", { programId });
 				return res.status(404).json({ error: "Program not found" });
 			}
 
 			if (program.userId !== userId) {
+				logger.warn("Unauthorized program deletion attempt", {
+					programId,
+					programOwnerId: program.userId,
+					requestUserId: userId,
+				});
 				return res
 					.status(403)
 					.json({ error: "Not authorized to delete this program" });
@@ -459,6 +649,10 @@ router.delete(
 
 			// Optional: Prevent deletion of active programs
 			if (program.status !== "ARCHIVED") {
+				logger.warn("Attempted to delete non-archived program", {
+					programId,
+					currentStatus: program.status,
+				});
 				return res.status(400).json({
 					error: "Programs must be archived before deletion.",
 					programId,
@@ -474,6 +668,10 @@ router.delete(
 				});
 
 				const workoutIds = workouts.map((w) => w.id);
+				logger.debug("Deleting program and related data", {
+					programId,
+					workoutCount: workoutIds.length,
+				});
 
 				// Delete all supersets for these workouts
 				await tx.supersets.deleteMany({
@@ -526,12 +724,24 @@ router.delete(
 				});
 			});
 
+			logger.info("Program deleted successfully", {
+				programId,
+				userId,
+			});
+
 			res.status(200).json({
 				message: "Program deleted successfully",
 				programId,
 			});
 		} catch (error) {
-			console.error("Error deleting program:", error);
+			logger.error(
+				`Error deleting program: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number.parseInt(req.params.programId),
+					userId: req.user?.id,
+				},
+			);
 			res.status(500).json({ error: "Failed to delete program" });
 		}
 	},

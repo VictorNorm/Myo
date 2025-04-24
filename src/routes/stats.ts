@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
 import prisma from "../services/db";
+import logger from "../services/logger";
 dotenv.config();
 
 const router = Router();
@@ -20,6 +21,7 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn("Attempted to access progression without authentication");
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -37,6 +39,9 @@ router.get(
 			});
 
 			if (!workouts.length) {
+				logger.info("No workouts found for program", {
+					programId: Number(programId),
+				});
 				return res
 					.status(404)
 					.json({ error: "No workouts found for this program" });
@@ -60,6 +65,7 @@ router.get(
 					});
 
 					if (!exercise) {
+						logger.warn("Exercise not found", { exerciseId });
 						return null;
 					}
 
@@ -126,9 +132,25 @@ router.get(
 				}),
 			);
 
-			return res.status(200).json(progressionData.filter(Boolean));
+			const filteredProgressionData = progressionData.filter(Boolean);
+
+			logger.debug("Fetched exercise progression data for program", {
+				programId: Number(programId),
+				userId,
+				totalExercises: exerciseIds.length,
+				returnedExercises: filteredProgressionData.length,
+			});
+
+			return res.status(200).json(filteredProgressionData);
 		} catch (error) {
-			console.error("Error fetching exercise progression:", error);
+			logger.error(
+				`Error fetching exercise progression: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",
@@ -150,6 +172,9 @@ router.get(
 		const { timeFrame } = req.query; // 'week', 'month', 'program', 'all'
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access completed exercises without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -298,6 +323,15 @@ router.get(
 				weeklyData[weekKey].volume += Number(volume);
 			}
 
+			logger.debug("Calculated volume data for program", {
+				programId: Number(programId),
+				userId,
+				timeFrame,
+				exerciseCount: completedExercises.length,
+				totalVolume,
+				muscleGroupsCount: Object.keys(volumeByMuscle).length,
+			});
+
 			return res.status(200).json({
 				completedExercises: exercisesWithVolume,
 				volumeByDate,
@@ -308,7 +342,15 @@ router.get(
 				allDates,
 			});
 		} catch (error) {
-			console.error("Error fetching volume data:", error);
+			logger.error(
+				`Error fetching volume data: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+					timeFrame,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",
@@ -330,6 +372,9 @@ router.get(
 		const { timeFrame } = req.query; // 'week', 'month', 'program', 'all'
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access workout progress without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -379,6 +424,9 @@ router.get(
 			});
 
 			if (!program) {
+				logger.warn("Program not found for workout progress", {
+					programId: Number(programId),
+				});
 				return res.status(404).json({ error: "Program not found" });
 			}
 
@@ -488,6 +536,17 @@ router.get(
 					? Math.round((completedWorkouts / totalScheduledWorkouts) * 100)
 					: 0;
 
+			logger.debug("Calculated workout frequency data", {
+				programId: Number(programId),
+				userId,
+				timeFrame,
+				completedWorkouts,
+				totalScheduledWorkouts,
+				currentStreak,
+				longestStreak,
+				consistency,
+			});
+
 			return res.status(200).json({
 				totalWorkouts: totalScheduledWorkouts,
 				completedWorkouts,
@@ -500,7 +559,15 @@ router.get(
 				workoutProgress,
 			});
 		} catch (error) {
-			console.error("Error fetching frequency data:", error);
+			logger.error(
+				`Error fetching frequency data: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+					timeFrame,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",
@@ -521,6 +588,9 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access program statistics without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -531,6 +601,9 @@ router.get(
 			});
 
 			if (!program) {
+				logger.warn("Program not found for statistics", {
+					programId: Number(programId),
+				});
 				return res.status(404).json({ error: "Program not found" });
 			}
 
@@ -646,6 +719,18 @@ router.get(
 				0,
 			);
 
+			logger.debug("Calculated program statistics", {
+				programId: Number(programId),
+				userId,
+				programName: program.name,
+				daysActive,
+				totalDays,
+				completedWorkouts: workoutProgress.length,
+				completionPercentage,
+				averageStrengthGain: averagePercentGain,
+				exercisesWithProgressionData: Object.keys(exerciseGains).length,
+			});
+
 			return res.status(200).json({
 				program: {
 					name: program.name,
@@ -666,7 +751,14 @@ router.get(
 				},
 			});
 		} catch (error) {
-			console.error("Error fetching program statistics:", error);
+			logger.error(
+				`Error fetching program statistics: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: Number(programId),
+					userId,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",

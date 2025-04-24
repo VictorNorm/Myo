@@ -7,6 +7,7 @@ import crypto from "node:crypto";
 import nodemailer from "nodemailer";
 import sendResetPasswordEmail from "../middleware/sendResetPasswordEmail";
 import prisma from "../services/db";
+import logger from "../services/logger";
 
 dotenv.config();
 
@@ -30,9 +31,16 @@ router.post("/forgot-password", async (req, res) => {
 		// Send email with reset link
 		await sendResetPasswordEmail(email, resetToken);
 
+		logger.info("Password reset email sent", { email });
 		res.json({ message: "Password reset email sent." });
 	} catch (error) {
-		console.error(error);
+		logger.error(
+			`Error processing forgot password request: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				email,
+			},
+		);
 		res.status(500).json({ error: "Error processing request" });
 	}
 });
@@ -50,10 +58,19 @@ router.post("/reset-password", async (req, res) => {
 		});
 
 		if (!user) {
+			logger.warn("Invalid or expired reset token attempt", {
+				tokenProvided: !!token,
+			});
 			return res.status(400).json({ error: "Invalid or expired reset token." });
 		}
 
 		if (user.resetToken === null) {
+			logger.warn(
+				"User reset token is null despite database query constraint",
+				{
+					userId: user.id,
+				},
+			);
 			return res.status(400).json({ error: "User reset token is null." });
 		}
 
@@ -61,6 +78,9 @@ router.post("/reset-password", async (req, res) => {
 		const isValidToken = bcrypt.compare(token, user.resetToken);
 
 		if (!isValidToken) {
+			logger.warn("Invalid reset token verification", {
+				userId: user.id,
+			});
 			return res.status(400).json({ error: "Invalid reset token." });
 		}
 
@@ -77,41 +97,63 @@ router.post("/reset-password", async (req, res) => {
 			},
 		});
 
+		logger.info("Password successfully reset", {
+			userId: user.id,
+		});
 		res.json({ message: "Password updated successfully" });
 	} catch (error) {
-		console.error(error);
+		logger.error(
+			`Error resetting password: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+			},
+		);
 		res.status(500).json({ error: "Error resetting password" });
 	}
 });
 
 async function sendResetEmail(email: string, resetToken: string) {
 	const resetLink = `Myo://reset-password?token=${resetToken}`;
-	// Create a test account if you don't have a real email service set up
-	const testAccount = await nodemailer.createTestAccount();
+	try {
+		// Create a test account if you don't have a real email service set up
+		const testAccount = await nodemailer.createTestAccount();
 
-	// Create a transporter
-	const transporter = nodemailer.createTransport({
-		host: "smtp.ethereal.email",
-		port: 587,
-		secure: false, // true for 465, false for other ports
-		auth: {
-			user: testAccount.user, // generated ethereal user
-			pass: testAccount.pass, // generated ethereal password
-		},
-	});
+		// Create a transporter
+		const transporter = nodemailer.createTransport({
+			host: "smtp.ethereal.email",
+			port: 587,
+			secure: false, // true for 465, false for other ports
+			auth: {
+				user: testAccount.user, // generated ethereal user
+				pass: testAccount.pass, // generated ethereal password
+			},
+		});
 
-	// Send mail with defined transport object
-	const info = await transporter.sendMail({
-		from: '"Myo" <noreply@myofitness.no>',
-		to: email,
-		subject: "Password Reset",
-		text: `You requested a password reset. Please use the following link to reset your password: http://yourapp.com/reset-password?token=${resetToken}`,
-		html: `<p>You requested a password reset. Please use the following link to reset your password:</p>
+		// Send mail with defined transport object
+		const info = await transporter.sendMail({
+			from: '"Myo" <noreply@myofitness.no>',
+			to: email,
+			subject: "Password Reset",
+			text: `You requested a password reset. Please use the following link to reset your password: http://yourapp.com/reset-password?token=${resetToken}`,
+			html: `<p>You requested a password reset. Please use the following link to reset your password:</p>
              <a href="${resetLink}">Reset Password</a>`,
-	});
+		});
 
-	console.log("Message sent: %s", info.messageId);
-	console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+		logger.debug("Reset email sent", {
+			email,
+			messageId: info.messageId,
+			previewUrl: nodemailer.getTestMessageUrl(info),
+		});
+	} catch (error) {
+		logger.error(
+			`Error sending reset email: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				email,
+			},
+		);
+		throw error; // Re-throw to be handled by the caller
+	}
 }
 
 export default router;

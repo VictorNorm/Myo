@@ -15,6 +15,7 @@ import crypto from "node:crypto";
 import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hoursToMilliseconds } from "date-fns";
 import prisma from "../services/db";
+import logger from "../services/logger";
 
 dotenv.config();
 
@@ -108,7 +109,6 @@ router.post(
 				10,
 			);
 
-			console.log("AUTH ROUTE REACHED");
 			const role = "USER";
 			const password_hash = await bcrypt.hash(password, 10);
 
@@ -146,7 +146,14 @@ router.post(
 					},
 				});
 			}
-			console.error(error);
+			logger.error(
+				`Error creating user: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					code: isPrismaClientKnownRequestError(error) ? error.code : undefined,
+					email: email ? `${email.substring(0, 3)}***` : undefined, // Log partial email for debugging (safely)
+				},
+			);
 			res.status(500).send("An error occurred while creating the user.");
 		}
 	},
@@ -205,7 +212,13 @@ router.get("/verify-email", async (req, res) => {
 			verified: true,
 		});
 	} catch (error) {
-		console.error("Verification error:", error);
+		logger.error(
+			`Email verification error: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				tokenPresent: !!token,
+			},
+		);
 		res.status(500).json({ message: "Server error. Please try again later." });
 	}
 });

@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import type { Decimal } from "@prisma/client/runtime/library";
 import prisma from "../services/db";
+import logger from "../services/logger";
 dotenv.config();
 
 const router = Router();
@@ -61,11 +62,13 @@ router.get(
 		const currentUser = req.user;
 
 		if (!currentUser) {
+			logger.warn("Attempted to access workouts without authentication");
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
 		const parsedProgramId = Number(programId);
 		if (Number.isNaN(parsedProgramId)) {
+			logger.warn("Invalid program ID format", { programId });
 			return res.status(400).json({ error: "Invalid program ID format" });
 		}
 
@@ -76,11 +79,21 @@ router.get(
 			});
 
 			if (!program) {
+				logger.warn("Program not found for workouts request", {
+					programId: parsedProgramId,
+					userId: currentUser.id,
+				});
 				return res.status(404).json({ error: "Program not found" });
 			}
 
 			// Check if user is authorized (either the owner or an admin)
 			if (program.userId !== currentUser.id && currentUser.role !== "ADMIN") {
+				logger.warn("Unauthorized access attempt to program workouts", {
+					programId: parsedProgramId,
+					programOwnerId: program.userId,
+					requestUserId: currentUser.id,
+					userRole: currentUser.role,
+				});
 				return res
 					.status(403)
 					.json({ error: "Not authorized to access this program's workouts" });
@@ -90,14 +103,22 @@ router.get(
 				where: { program_id: Number(programId) },
 			});
 
-			// Add more detailed logging
-			console.log(
-				`Found ${workouts.length} workouts for program ${parsedProgramId}`,
-			);
+			logger.debug("Fetched workouts for program", {
+				programId: parsedProgramId,
+				userId: currentUser.id,
+				workoutCount: workouts.length,
+			});
 
 			res.status(200).json(workouts);
 		} catch (error) {
-			console.error(error);
+			logger.error(
+				`Error fetching program workouts: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: parsedProgramId,
+					userId: currentUser?.id,
+				},
+			);
 			res.status(500).json({ error: "Internal server error" });
 		}
 	},
@@ -111,20 +132,24 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
-			console.log("Authentication failed for workout request");
+			logger.warn(
+				"Attempted to access workout exercises without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
 		try {
 			// Validate workoutId
 			if (!workoutId || Number.isNaN(Number(workoutId))) {
-				console.error("Invalid workoutId:", workoutId);
+				logger.warn("Invalid workout ID format", { workoutId, userId });
 				return res.status(400).json({ error: "Invalid workout ID" });
 			}
 
+			const parsedWorkoutId = Number.parseInt(workoutId);
+
 			const workoutExercises = await prisma.workout_exercises.findMany({
 				where: {
-					workout_id: Number.parseInt(workoutId),
+					workout_id: parsedWorkoutId,
 				},
 				include: {
 					exercises: true,
@@ -133,9 +158,18 @@ router.get(
 			});
 
 			if (!workoutExercises.length) {
-				console.log("No exercises found for workout:", workoutId);
+				logger.info("No exercises found for workout", {
+					workoutId: parsedWorkoutId,
+					userId,
+				});
 				return res.status(200).json([]); // Return empty array instead of error object
 			}
+
+			logger.debug("Fetching completed exercises for workout", {
+				workoutId: parsedWorkoutId,
+				userId,
+				exerciseCount: workoutExercises.length,
+			});
 
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
 			WITH LatestValues AS (
@@ -151,7 +185,7 @@ router.get(
 			  JOIN (
 				SELECT exercise_id, MAX("completedAt") as latest_completion
 				FROM completed_exercises
-				WHERE workout_id = ${Number.parseInt(workoutId)}
+				WHERE workout_id = ${parsedWorkoutId}
 				AND user_id = ${userId}
 				GROUP BY exercise_id
 			  ) latest ON ce.exercise_id = latest.exercise_id 
@@ -168,7 +202,7 @@ router.get(
 				we."updatedAt" as timestamp,
 				'workout' as source
 			  FROM workout_exercises we
-			  WHERE we.workout_id = ${Number.parseInt(workoutId)}
+			  WHERE we.workout_id = ${parsedWorkoutId}
 			)
 			SELECT DISTINCT ON (exercise_id) *
 			FROM LatestValues
@@ -204,13 +238,10 @@ router.get(
 				};
 			});
 
-			console.log("Fetching supersets...");
 			const supersets = await prisma.supersets.findMany({
-				where: { workout_id: Number.parseInt(workoutId) },
+				where: { workout_id: parsedWorkoutId },
 				orderBy: { order: "asc" },
 			});
-
-			console.log(`Found ${supersets.length} supersets`);
 
 			const supersetMap = supersets.reduce(
 				(acc, superset) => {
@@ -226,16 +257,26 @@ router.get(
 				superset_with: supersetMap[exercise.exercise_id] || null,
 			}));
 
-			console.log("Sending response with", finalExercises.length, "exercises");
+			logger.debug("Successfully built workout exercises response", {
+				workoutId: parsedWorkoutId,
+				userId,
+				exerciseCount: finalExercises.length,
+				completedExercisesCount: completedExercises.filter(
+					(ce) => ce.source === "completed",
+				).length,
+				supersetCount: supersets.length,
+			});
+
 			return res.status(200).json(finalExercises);
 		} catch (error) {
-			console.error("Detailed error in workout exercises endpoint:", {
-				error,
-				stack: error instanceof Error ? error.stack : undefined,
-				workoutId,
-				userId,
-				timestamp: new Date().toISOString(),
-			});
+			logger.error(
+				`Error fetching workout exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					workoutId,
+					userId,
+				},
+			);
 
 			return res.status(500).json({
 				error: "Internal server error",
@@ -250,6 +291,12 @@ router.post(
 	authenticateToken,
 	async (req, res) => {
 		const exerciseData = req.body;
+		const userId = req.user?.id;
+
+		if (!userId) {
+			logger.warn("Attempted to complete workout without authentication");
+			return res.status(401).json({ error: "User not authenticated" });
+		}
 
 		if (
 			!Array.isArray(exerciseData) ||
@@ -264,6 +311,11 @@ router.post(
 					data.rating == null,
 			)
 		) {
+			logger.warn("Invalid data format for workout completion", {
+				userId,
+				dataLength: exerciseData?.length,
+				isArray: Array.isArray(exerciseData),
+			});
 			return res.status(400).json({ message: "Invalid data format" });
 		}
 
@@ -279,12 +331,25 @@ router.post(
 			});
 
 			if (!workout || !workout.program_id) {
+				logger.warn("Workout not found or not associated with a program", {
+					workoutId: Number(exerciseData[0].workoutId),
+					userId: Number(exerciseData[0].userId),
+				});
 				throw new Error("Workout not found or not associated with a program");
 			}
 
 			const programId = workout.program_id;
 			const isAutomated = workout.programs?.programType === "AUTOMATED";
 			const programGoal = workout.programs?.goal || "HYPERTROPHY";
+
+			logger.debug("Processing workout completion", {
+				workoutId: Number(exerciseData[0].workoutId),
+				userId: Number(exerciseData[0].userId),
+				programId,
+				programType: workout.programs?.programType,
+				exerciseCount: exerciseData.length,
+				isAutomated,
+			});
 
 			// Process each exercise in a transaction
 			const result = await prisma.$transaction(async (prisma) => {
@@ -307,6 +372,11 @@ router.post(
 						});
 
 						if (!exercise) {
+							logger.error("Exercise not found", {
+								exerciseId: Number(data.exerciseId),
+								workoutId: Number(data.workoutId),
+								userId: Number(data.userId),
+							});
 							throw new Error(`Exercise ${data.exerciseId} not found`);
 						}
 
@@ -403,6 +473,17 @@ router.post(
 							goal === "STRENGTH" ? "STRENGTH" : "HYPERTROPHY",
 							equipmentSettings,
 						);
+
+						logger.debug("Calculated progression for exercise", {
+							exerciseId: Number(data.exerciseId),
+							exerciseName: exercise.name,
+							oldWeight: Number(data.weight),
+							newWeight: progressionResult.newWeight,
+							oldReps: data.reps,
+							newReps: progressionResult.newReps,
+							rating: data.rating,
+							isAdaptive: useAdaptiveIncrements,
+						});
 
 						// Save progression result for response
 						progressionResults.push({
@@ -514,9 +595,26 @@ router.post(
 				};
 			});
 
+			logger.info("Workout completed successfully", {
+				workoutId: Number(exerciseData[0].workoutId),
+				userId: Number(exerciseData[0].userId),
+				programId,
+				exerciseCount: exerciseData.length,
+				programType: result.programType,
+			});
+
 			res.status(201).json(result);
 		} catch (error) {
-			console.error("Error during database operation:", error);
+			logger.error(
+				`Error completing workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					userId: Number(exerciseData?.[0]?.userId),
+					workoutId: Number(exerciseData?.[0]?.workoutId),
+					exerciseCount: exerciseData?.length,
+				},
+			);
+
 			res.status(500).json({
 				error: "An error occurred while saving the exercise data.",
 				message: error instanceof Error ? error.message : "Unknown error",
@@ -535,6 +633,7 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.user?.id;
 		if (!userId) {
+			logger.warn("Unauthorized attempt to rate exercise");
 			return res.status(401).json({ error: "Unauthorized" });
 		}
 
@@ -553,12 +652,24 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			useAdaptiveIncrements = true, // Default to true if not provided
 		} = req.body;
 
+		logger.debug("Processing exercise rating", {
+			userId: parsedUserId,
+			exerciseId,
+			workoutId,
+			rating,
+			useAdaptiveIncrements,
+		});
+
 		// Get the exercise details
 		const exercise = await prisma.exercises.findUnique({
 			where: { id: exerciseId },
 		});
 
 		if (!exercise) {
+			logger.warn("Exercise not found for rating", {
+				exerciseId,
+				userId: parsedUserId,
+			});
 			return res.status(404).json({ error: "Exercise not found" });
 		}
 
@@ -569,6 +680,10 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 		});
 
 		if (!workout || !workout.program_id) {
+			logger.warn("Workout not found or not associated with program", {
+				workoutId,
+				userId: parsedUserId,
+			});
 			return res
 				.status(404)
 				.json({ error: "Workout not found or not associated with a program" });
@@ -612,6 +727,11 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 		});
 
 		if (!completedExercise) {
+			logger.error("Failed to record exercise completion", {
+				exerciseId,
+				userId: parsedUserId,
+				workoutId,
+			});
 			return res
 				.status(500)
 				.json({ error: "Failed to record exercise completion" });
@@ -675,6 +795,16 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			equipmentSettings,
 		);
 
+		logger.debug("Calculated progression from exercise rating", {
+			exerciseId,
+			userId: parsedUserId,
+			oldWeight: Number(weight),
+			newWeight: progressionResult.newWeight,
+			oldReps: reps,
+			newReps: progressionResult.newReps,
+			adaptiveIncrements: useAdaptiveIncrements,
+		});
+
 		// Record progression history
 		await prisma.progression_history.create({
 			data: {
@@ -713,6 +843,15 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			},
 		});
 
+		logger.info("Exercise rated and progression updated", {
+			exerciseId,
+			exerciseName: exercise.name,
+			userId: parsedUserId,
+			rating,
+			weightChange: progressionResult.newWeight - Number(weight),
+			repsChange: progressionResult.newReps - reps,
+		});
+
 		// Return the progression result
 		res.json({
 			success: true,
@@ -724,7 +863,16 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			adaptiveIncrements: useAdaptiveIncrements,
 		});
 	} catch (error) {
-		console.error("Error rating exercise:", error);
+		logger.error(
+			`Error rating exercise: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				userId: req.user?.id,
+				exerciseId: req.body?.exerciseId,
+				workoutId: req.body?.workoutId,
+			},
+		);
+
 		res.status(500).json({
 			error: "Internal server error",
 			message: error instanceof Error ? error.message : "Unknown error",
@@ -735,16 +883,40 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 router.post("/workouts/addworkout", authenticateToken, async (req, res) => {
 	const workoutName = req.body.name;
 	const programId = Number.parseInt(req.body.programId);
+	const userId = req.user?.id;
 
-	const program = await prisma.programs.findUnique({
-		where: { id: programId },
-	});
-
-	if (!program) {
-		res.status(404).json({ error: "Program does not exist." });
+	if (!userId) {
+		logger.warn("Unauthorized attempt to add workout");
+		return res.status(401).json({ error: "Unauthorized" });
 	}
 
 	try {
+		const program = await prisma.programs.findUnique({
+			where: { id: programId },
+		});
+
+		if (!program) {
+			logger.warn("Program not found for workout addition", {
+				programId,
+				userId,
+				workoutName,
+			});
+			return res.status(404).json({ error: "Program does not exist." });
+		}
+
+		// Check authorization
+		if (program.userId !== userId && req.user?.role !== "ADMIN") {
+			logger.warn("Unauthorized program workout addition attempt", {
+				programId,
+				programOwnerId: program.userId,
+				requestUserId: userId,
+				userRole: req.user?.role,
+			});
+			return res
+				.status(403)
+				.json({ error: "Not authorized to add workouts to this program" });
+		}
+
 		const workout = await prisma.workouts.create({
 			data: {
 				name: workoutName,
@@ -752,11 +924,28 @@ router.post("/workouts/addworkout", authenticateToken, async (req, res) => {
 			},
 		});
 
+		logger.info("Workout added to program", {
+			workoutId: workout.id,
+			workoutName,
+			programId,
+			programName: program.name,
+			userId,
+		});
+
 		res.status(201).json({
 			message: `You've successfully added a workout to program: ${program?.name}.`,
 		});
 	} catch (error) {
-		console.log(error);
+		logger.error(
+			`Error adding workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				workoutName,
+				programId,
+				userId,
+			},
+		);
+
 		res
 			.status(500)
 			.json({ error: "An error occurred while saving the exercise data." });

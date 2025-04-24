@@ -4,6 +4,7 @@ import type { Decimal } from "@prisma/client/runtime/library";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import prisma from "../services/db";
+import logger from "../services/logger";
 dotenv.config();
 
 const router = Router();
@@ -36,6 +37,9 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access workout template without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -56,6 +60,10 @@ router.get(
 			});
 
 			if (!workout) {
+				logger.warn("Workout not found for template", {
+					workoutId: Number(workoutId),
+					userId,
+				});
 				return res.status(404).json({ error: "Workout not found" });
 			}
 
@@ -64,6 +72,10 @@ router.get(
 
 			// Early return if no program is associated
 			if (!programId) {
+				logger.warn("Workout not associated with a program", {
+					workoutId: Number(workoutId),
+					userId,
+				});
 				return res
 					.status(400)
 					.json({ error: "Workout is not associated with a program" });
@@ -107,6 +119,15 @@ router.get(
 			let exerciseBaselines: ExerciseBaselineFromDB[] = [];
 			let lastCompletedExercises: CompletedExerciseFromDB[] = [];
 
+			logger.debug("Processing workout template", {
+				workoutId: Number(workoutId),
+				userId,
+				programId,
+				programType,
+				exerciseCount: workoutExercises.length,
+				supersetCount: supersets.length,
+			});
+
 			// Get user-specific baselines for AUTOMATED programs
 			if (programType === "AUTOMATED") {
 				exerciseBaselines = await prisma.exercise_baselines.findMany({
@@ -117,6 +138,12 @@ router.get(
 							in: workoutExercises.map((we) => we.exercise_id),
 						},
 					},
+				});
+
+				logger.debug("Retrieved exercise baselines for automated program", {
+					baselineCount: exerciseBaselines.length,
+					workoutId: Number(workoutId),
+					programId,
 				});
 			}
 
@@ -149,6 +176,12 @@ router.get(
 					JOIN LatestCompletions lc ON ce.exercise_id = lc.exercise_id AND ce."completedAt" = lc.latest_completion
 					WHERE ce.user_id = ${Number(userId)}
 				`;
+
+				logger.debug("Retrieved last completed exercises for manual program", {
+					completedExerciseCount: lastCompletedExercises.length,
+					workoutId: Number(workoutId),
+					userId,
+				});
 			}
 
 			// Create a map of last completed exercises for quick lookup
@@ -217,13 +250,15 @@ router.get(
 				};
 			});
 
-			// Add debugging info
-			console.log(
-				`Template for workout ${workoutId}, program type: ${programType}`,
-			);
-			console.log(
-				`Found ${exerciseBaselines.length} baselines, ${lastCompletedExercises.length} completed exercises`,
-			);
+			logger.debug("Successfully built workout template", {
+				workoutId: Number(workoutId),
+				userId,
+				programId,
+				programType,
+				exerciseCount: templateData.length,
+				baselineCount: exerciseBaselines.length,
+				lastCompletedCount: lastCompletedExercises.length,
+			});
 
 			// Return the structured response
 			return res.status(200).json({
@@ -234,7 +269,15 @@ router.get(
 				programGoal: workout.programs?.goal || "HYPERTROPHY",
 			});
 		} catch (error) {
-			console.error("Error fetching workout template:", error);
+			logger.error(
+				`Error fetching workout template: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					workoutId: Number(req.params.workoutId),
+					userId: req.user?.id,
+				},
+			);
+
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",

@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import authenticateToken from "../middleware/authenticateToken";
 import jwt from "jsonwebtoken";
 import prisma from "../services/db";
+import logger from "../services/logger";
 
 const router = Router();
 
@@ -10,6 +11,7 @@ router.get("/user-settings", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.user?.id;
 		if (!userId) {
+			logger.warn("Unauthorized attempt to access user settings");
 			return res.status(401).json({ error: "Unauthorized" });
 		}
 
@@ -20,12 +22,14 @@ router.get("/user-settings", authenticateToken, async (req, res) => {
 		} else if (typeof userId === "number") {
 			parsedUserId = userId;
 		} else {
-			console.log("Unexpected userId type:", typeof userId);
+			logger.warn("Invalid user ID format in settings request", { userId });
 			return res.status(400).json({ error: "Invalid user ID format" });
 		}
 
 		if (Number.isNaN(parsedUserId)) {
-			console.log("Failed to parse userId to number");
+			logger.warn("Invalid user ID format (NaN) in settings request", {
+				userId,
+			});
 			return res.status(400).json({ error: "Invalid user ID format" });
 		}
 
@@ -38,6 +42,9 @@ router.get("/user-settings", authenticateToken, async (req, res) => {
 
 		if (!userSettings) {
 			// Create default settings if they don't exist
+			logger.info("Creating default settings for user", {
+				userId: parsedUserId,
+			});
 			userSettings = await prisma.user_settings.create({
 				data: {
 					user_id: parsedUserId,
@@ -63,6 +70,13 @@ router.get("/user-settings", authenticateToken, async (req, res) => {
 			},
 		});
 
+		logger.debug("Fetched user settings", {
+			userId: parsedUserId,
+			experienceLevel: userSettings.experienceLevel,
+			useMetric: userSettings.useMetric,
+			hasProgramGoal: !!currentProgram?.goal,
+		});
+
 		// Return all settings in a consistent format
 		res.json({
 			experienceLevel: userSettings.experienceLevel,
@@ -75,7 +89,13 @@ router.get("/user-settings", authenticateToken, async (req, res) => {
 			programGoal: currentProgram?.goal || "HYPERTROPHY",
 		});
 	} catch (error) {
-		console.error("Settings error:", error);
+		logger.error(
+			`Settings fetch error: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				userId: req.user?.id,
+			},
+		);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
@@ -85,6 +105,7 @@ router.patch("/user-settings", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.user?.id;
 		if (!userId) {
+			logger.warn("Unauthorized attempt to update user settings");
 			return res.status(401).json({ error: "Unauthorized" });
 		}
 
@@ -100,6 +121,20 @@ router.patch("/user-settings", authenticateToken, async (req, res) => {
 			useMetric,
 			darkMode,
 		} = req.body;
+
+		// Log which settings are being updated
+		logger.debug("Updating user settings", {
+			userId: parsedUserId,
+			fieldsToUpdate: {
+				experienceLevel: experienceLevel !== undefined,
+				barbellIncrement: barbellIncrement !== undefined,
+				dumbbellIncrement: dumbbellIncrement !== undefined,
+				cableIncrement: cableIncrement !== undefined,
+				machineIncrement: machineIncrement !== undefined,
+				useMetric: useMetric !== undefined,
+				darkMode: darkMode !== undefined,
+			},
+		});
 
 		// Update user settings
 		await prisma.user_settings.upsert({
@@ -129,6 +164,14 @@ router.patch("/user-settings", authenticateToken, async (req, res) => {
 
 		// If experienceLevel is provided, also update the program progression settings
 		if (experienceLevel) {
+			logger.debug(
+				"Updating program progression settings with new experience level",
+				{
+					userId: parsedUserId,
+					experienceLevel,
+				},
+			);
+
 			// First get or create current program
 			let currentProgram = await prisma.programs.findFirst({
 				where: {
@@ -139,6 +182,9 @@ router.patch("/user-settings", authenticateToken, async (req, res) => {
 
 			if (!currentProgram) {
 				// Create a default program if none exists
+				logger.info("Creating default program for user settings", {
+					userId: parsedUserId,
+				});
 				currentProgram = await prisma.programs.create({
 					data: {
 						name: "Default Program",
@@ -165,14 +211,29 @@ router.patch("/user-settings", authenticateToken, async (req, res) => {
 			});
 		}
 
+		const updatedSettings = await prisma.user_settings.findUnique({
+			where: { user_id: parsedUserId },
+		});
+
+		logger.info("User settings updated successfully", {
+			userId: parsedUserId,
+			experienceLevel: updatedSettings?.experienceLevel,
+			updateProgramSettings: experienceLevel !== undefined,
+		});
+
 		res.json({
 			message: "Settings updated successfully",
-			settings: await prisma.user_settings.findUnique({
-				where: { user_id: parsedUserId },
-			}),
+			settings: updatedSettings,
 		});
 	} catch (error) {
-		console.error(error);
+		logger.error(
+			`Settings update error: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				userId: req.user?.id,
+				requestBody: JSON.stringify(req.body),
+			},
+		);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });

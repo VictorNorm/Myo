@@ -2,8 +2,9 @@ import { Router, Request } from "express";
 import { Prisma, PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
-dotenv.config();
 import prisma from "../services/db";
+import logger from "../services/logger";
+dotenv.config();
 
 const router = Router();
 
@@ -41,7 +42,12 @@ router.get("/exercises", authenticateToken, async (req, res) => {
 
 		res.status(200).json(groupedExercises);
 	} catch (error) {
-		console.error(error);
+		logger.error(
+			`Error fetching exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+			},
+		);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
@@ -95,7 +101,13 @@ router.post("/exercises", authenticateToken, async (req, res) => {
 			exercise: newExercise,
 		});
 	} catch (error) {
-		console.error("Error creating exercise:", error);
+		logger.error(
+			`Error creating exercise: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				exerciseName: name,
+			},
+		);
 		res
 			.status(500)
 			.json({ error: "An error occurred while adding the exercise." });
@@ -108,23 +120,10 @@ router.post(
 	async (req, res) => {
 		try {
 			const { workoutId, exercises, supersets } = req.body;
-			console.log("Received raw exercise data:", req.body.exercises);
 
 			if (!workoutId || !exercises || !Array.isArray(exercises)) {
 				return res.status(400).json({ error: "Invalid input data" });
 			}
-
-			console.log(
-				"Exercise data before transaction:",
-				req.body.exercises.map(
-					(ex: { id: number; sets: number; reps: number; weight: number }) => ({
-						id: ex.id,
-						sets: ex.sets,
-						reps: ex.reps,
-						weight: ex.weight,
-					}),
-				),
-			);
 
 			// Start a transaction
 			const result = await prisma.$transaction(
@@ -136,7 +135,6 @@ router.post(
 								workout_id: workoutId,
 							},
 						});
-						console.log("Deleted existing supersets");
 
 						// Then delete the workout exercises
 						await prisma.workout_exercises.deleteMany({
@@ -144,7 +142,6 @@ router.post(
 								workout_id: workoutId,
 							},
 						});
-						console.log("Deleted existing exercises");
 
 						// Create new workout exercises with specified order
 						const exerciseResults = await Promise.all(
@@ -164,7 +161,6 @@ router.post(
 								}),
 							),
 						);
-						console.log("Created new exercises:", exerciseResults);
 
 						// Create new supersets if any exist
 						if (supersets && Array.isArray(supersets) && supersets.length > 0) {
@@ -180,12 +176,17 @@ router.post(
 									}),
 								),
 							);
-							console.log("Created new supersets");
 						}
 
 						return exerciseResults;
 					} catch (e) {
-						console.error("Transaction error:", e);
+						logger.error(
+							`Transaction error in upsertExercisesToWorkout: ${e instanceof Error ? e.message : "Unknown error"}`,
+							{
+								stack: e instanceof Error ? e.stack : undefined,
+								workoutId,
+							},
+						);
 						throw e; // Re-throw to trigger transaction rollback
 					}
 				},
@@ -195,8 +196,6 @@ router.post(
 				},
 			);
 
-			console.log("Created exercise results:", result);
-
 			res.status(200).json({
 				message: "Exercises and supersets upserted to workout successfully",
 				count: result.length,
@@ -205,10 +204,10 @@ router.post(
 		} catch (e) {
 			// Type guard for Prisma errors
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				console.error("Prisma error:", {
-					message: e.message,
+				logger.error(`Prisma error in upsertExercisesToWorkout: ${e.message}`, {
 					code: e.code,
 					meta: e.meta,
+					workoutId: req.body.workoutId,
 				});
 				return res.status(500).json({
 					error: "Database error",
@@ -220,7 +219,13 @@ router.post(
 
 			// Type guard for other Error instances
 			if (e instanceof Error) {
-				console.error("Application error:", e.message);
+				logger.error(
+					`Application error in upsertExercisesToWorkout: ${e.message}`,
+					{
+						stack: e.stack,
+						workoutId: req.body.workoutId,
+					},
+				);
 				return res.status(500).json({
 					error: "Application error",
 					details: e.message,
@@ -228,7 +233,10 @@ router.post(
 			}
 
 			// Fallback for unknown error types
-			console.error("Unknown error:", e);
+			logger.error("Unknown error in upsertExercisesToWorkout", {
+				error: e,
+				workoutId: req.body.workoutId,
+			});
 			res.status(500).json({
 				error: "Internal server error",
 				details: "An unknown error occurred",
@@ -268,7 +276,13 @@ router.put("/editExercises", authenticateToken, async (req, res) => {
 
 		res.json(updatedExercise);
 	} catch (error) {
-		console.error("Error updating exercise:", error);
+		logger.error(
+			`Error updating exercise: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				exerciseId: id,
+			},
+		);
 		res.status(500).json({ error: "Failed to update exercise" });
 	}
 });

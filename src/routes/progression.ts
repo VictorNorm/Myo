@@ -2,8 +2,9 @@ import { Router, type Request } from "express";
 import { Prisma, PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
-dotenv.config();
+import logger from "../services/logger";
 import prisma from "../services/db";
+dotenv.config();
 
 const router = Router();
 
@@ -16,6 +17,9 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access progression history without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -27,6 +31,11 @@ router.get(
 			});
 
 			if (!workout || !workout.program_id) {
+				logger.warn("Workout not found or has no program", {
+					workoutId: Number(workoutId),
+					exerciseId: Number(exerciseId),
+					userId,
+				});
 				return res
 					.status(404)
 					.json({ error: "Workout not found or has no program" });
@@ -121,9 +130,27 @@ router.get(
 				progressionHistory,
 			};
 
+			logger.debug("Fetched progression history for specific exercise", {
+				workoutId: Number(workoutId),
+				exerciseId: Number(exerciseId),
+				userId,
+				programId,
+				historyCount: progressionHistory.length,
+				hasBaseline: !!baseline,
+				hasLastCompleted: !!lastCompleted,
+			});
+
 			return res.status(200).json(response);
 		} catch (error) {
-			console.error("Error fetching progression history:", error);
+			logger.error(
+				`Error fetching progression history: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					workoutId: Number(workoutId),
+					exerciseId: Number(exerciseId),
+					userId,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",
@@ -141,6 +168,9 @@ router.get(
 		const userId = req.user?.id;
 
 		if (!userId) {
+			logger.warn(
+				"Attempted to access workout progression without authentication",
+			);
 			return res.status(401).json({ error: "User not authenticated" });
 		}
 
@@ -158,6 +188,10 @@ router.get(
 			});
 
 			if (!workout || !workout.program_id) {
+				logger.warn("Workout not found or has no program", {
+					workoutId: Number(workoutId),
+					userId,
+				});
 				return res
 					.status(404)
 					.json({ error: "Workout not found or has no program" });
@@ -219,9 +253,24 @@ router.get(
 				}),
 			);
 
+			logger.debug("Fetched progression data for entire workout", {
+				workoutId: Number(workoutId),
+				userId,
+				programId,
+				exerciseCount: workout.workout_exercises.length,
+				returnedExerciseCount: progressionData.length,
+			});
+
 			return res.status(200).json(progressionData);
 		} catch (error) {
-			console.error("Error fetching workout progression:", error);
+			logger.error(
+				`Error fetching workout progression: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					workoutId: Number(workoutId),
+					userId,
+				},
+			);
 			return res.status(500).json({
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error",
