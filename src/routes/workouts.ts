@@ -9,10 +9,10 @@ import {
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import type { Decimal } from "@prisma/client/runtime/library";
+import prisma from "../services/db";
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 interface CompletedExercise {
 	workout_id: number;

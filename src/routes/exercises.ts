@@ -3,9 +3,9 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 dotenv.config();
+import prisma from "../services/db";
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Update the get exercises route to include muscle groups
 router.get("/exercises", authenticateToken, async (req, res) => {

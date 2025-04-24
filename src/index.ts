@@ -81,18 +81,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-	try {
-		// You might want to add a basic DB check here too
-		res.status(200).json({
-			status: "healthy",
-			timestamp: new Date().toISOString(),
-		});
-	} catch (error) {
-		res.status(500).json({
-			status: "unhealthy",
-			error: error instanceof Error ? error.message : "Unknown error",
-		});
-	}
+	// You might want to add a basic DB check here too
+	res.status(200).json({
+		status: "healthy",
+	});
 });
 
 // Apply global error handler

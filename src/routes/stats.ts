@@ -3,10 +3,10 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
+import prisma from "../services/db";
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 /**
  * Get progression history for all exercises in a program

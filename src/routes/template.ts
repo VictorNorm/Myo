@@ -3,10 +3,10 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
+import prisma from "../services/db";
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Define interfaces outside the route handler
 interface ExerciseBaselineFromDB {

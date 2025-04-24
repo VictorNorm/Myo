@@ -5,9 +5,9 @@ import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
 dotenv.config();
+import prisma from "../services/db";
 
 const router = Router();
-const prisma = new PrismaClient();
 
 interface Workout {
 	name: string;

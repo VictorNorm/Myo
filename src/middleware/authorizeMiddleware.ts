@@ -1,8 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { AuthenticatedUser } from "../../types/types";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../services/db";
 
 /**
  * Generic resource ownership verification function

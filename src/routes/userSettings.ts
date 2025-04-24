@@ -2,9 +2,9 @@ import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import authenticateToken from "../middleware/authenticateToken";
 import jwt from "jsonwebtoken";
+import prisma from "../services/db";
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get("/user-settings", authenticateToken, async (req, res) => {
 	try {

@@ -6,10 +6,11 @@ import bcrypt from "bcrypt";
 import crypto from "node:crypto";
 import nodemailer from "nodemailer";
 import sendResetPasswordEmail from "../middleware/sendResetPasswordEmail";
+import prisma from "../services/db";
+
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.post("/forgot-password", async (req, res) => {
 	const { email } = req.body;

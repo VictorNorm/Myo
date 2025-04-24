@@ -14,11 +14,11 @@ import signupLimiter from "../middleware/signupLimiter";
 import crypto from "node:crypto";
 import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hoursToMilliseconds } from "date-fns";
+import prisma from "../services/db";
 
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 function isValidEmail(email: string) {

@@ -2,10 +2,10 @@ import { Router, Request } from "express";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
+import prisma from "../services/db";
 dotenv.config();
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get("/users", authenticateToken, async (req, res) => {
 	const trainerId = req.body.id;
