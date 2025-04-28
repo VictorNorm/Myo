@@ -204,40 +204,41 @@ router.get(
 			});
 
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
-			WITH LatestValues AS (
-			  -- Get latest completed exercises
-			  SELECT 
-				ce.exercise_id,
-				ce.sets,
-				ce.reps,
-				ce.weight,
-				ce."completedAt" as timestamp,
-				'completed' as source
-			  FROM completed_exercises ce
-			  JOIN (
-				SELECT exercise_id, MAX("completedAt") as latest_completion
-				FROM completed_exercises
-				WHERE workout_id = ${parsedWorkoutId}
-				AND user_id = ${userId}
-				GROUP BY exercise_id
-			  ) latest ON ce.exercise_id = latest.exercise_id 
-			  AND ce."completedAt" = latest.latest_completion
-		  
-			  UNION ALL
-		  
-			  -- Get workout exercises
-			  SELECT 
-				we.exercise_id,
-				we.sets,
-				we.reps,
-				we.weight,
-				we."updatedAt" as timestamp,
-				'workout' as source
-			  FROM workout_exercises we
-			  WHERE we.workout_id = ${parsedWorkoutId}
-			)
-			SELECT DISTINCT ON (exercise_id) *
-			FROM LatestValues
+			-- First part: Latest completed exercises by the user
+			SELECT 
+			  ce.exercise_id,
+			  ce.sets,
+			  ce.reps,
+			  ce.weight,
+			  ce."completedAt" as timestamp,
+			  'completed' as source
+			FROM (
+			  SELECT DISTINCT ON (exercise_id)
+				exercise_id,
+				sets,
+				reps,
+				weight,
+				"completedAt"
+			  FROM completed_exercises
+			  WHERE workout_id = ${parsedWorkoutId}
+			  AND user_id = ${userId}
+			  ORDER BY exercise_id, "completedAt" DESC
+			) ce
+			
+			UNION ALL
+			
+			-- Second part: Workout exercises (template)
+			SELECT 
+			  we.exercise_id,
+			  we.sets,
+			  we.reps,
+			  we.weight,
+			  we."updatedAt" as timestamp,
+			  'workout' as source
+			FROM workout_exercises we
+			WHERE we.workout_id = ${parsedWorkoutId}
+			
+			-- Final ordering to get latest of either source
 			ORDER BY exercise_id, timestamp DESC
 		  `;
 

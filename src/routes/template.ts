@@ -155,27 +155,17 @@ router.get(
 			// For MANUAL programs, get the user's most recent completed exercises
 			if (programType === "MANUAL") {
 				// This query gets the most recent completed exercise for each exercise_id
-				lastCompletedExercises = await prisma.$queryRaw<
-					CompletedExerciseFromDB[]
-				>`
-					WITH LatestCompletions AS (
-						SELECT 
-							ce.exercise_id,
-							MAX(ce."completedAt") as latest_completion
-						FROM completed_exercises ce
-						WHERE ce.user_id = ${Number(userId)}
-						AND ce.workout_id = ${Number(workoutId)}
-						GROUP BY ce.exercise_id
-					)
-					SELECT 
-						ce.exercise_id,
-						ce.sets,
-						ce.reps,
-						ce.weight
-					FROM completed_exercises ce
-					JOIN LatestCompletions lc ON ce.exercise_id = lc.exercise_id AND ce."completedAt" = lc.latest_completion
-					WHERE ce.user_id = ${Number(userId)}
-				`;
+				lastCompletedExercises = await prisma.$queryRaw`
+				SELECT DISTINCT ON (exercise_id)
+				  exercise_id,
+				  sets,
+				  reps,
+				  weight
+				FROM completed_exercises
+				WHERE user_id = ${Number(userId)}
+				AND workout_id = ${Number(workoutId)}
+				ORDER BY exercise_id, "completedAt" DESC
+			  `;
 
 				logger.debug("Retrieved last completed exercises for manual program", {
 					completedExerciseCount: lastCompletedExercises.length,

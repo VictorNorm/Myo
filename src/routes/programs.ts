@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
 dotenv.config();
-import prisma from "../services/db";
+import prisma, { withRetry } from "../services/db";
 import logger from "../services/logger";
 
 const router = Router();
@@ -84,41 +84,44 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 			whereClause.status = status as ProgramStatus;
 		}
 
-		// Use prisma.$transaction to ensure atomic queries and better timeout handling
-		const [programs, statusCounts] = await prisma.$transaction([
-			// Get programs
-			prisma.programs.findMany({
-				where: whereClause,
-				orderBy: {
-					startDate: "desc",
-				},
-				// Limit fields to what's necessary
-				select: {
-					id: true,
-					name: true,
-					userId: true,
-					status: true,
-					goal: true,
-					programType: true,
-					startDate: true,
-					endDate: true,
-					// Removed createdAt and updatedAt as they don't exist in the schema
-				},
-			}),
+		// Use the withRetry wrapper for resilient database operations
+		// This will automatically handle connection issues and retry
+		const result = await withRetry(async () => {
+			return prisma.$transaction([
+				// Get programs
+				prisma.programs.findMany({
+					where: whereClause,
+					orderBy: {
+						startDate: "desc",
+					},
+					// Limit fields to what's necessary
+					select: {
+						id: true,
+						name: true,
+						userId: true,
+						status: true,
+						goal: true,
+						programType: true,
+						startDate: true,
+						endDate: true,
+					},
+				}),
 
-			// Get status counts in the same transaction
-			prisma.programs.groupBy({
-				by: ["status"],
-				where: { userId },
-				_count: {
-					status: true,
-				},
-				orderBy: {
-					// Added required orderBy property
-					status: "asc",
-				},
-			}),
-		]);
+				// Get status counts in the same transaction
+				prisma.programs.groupBy({
+					by: ["status"],
+					where: { userId },
+					_count: {
+						status: true,
+					},
+					orderBy: {
+						status: "asc",
+					},
+				}),
+			]);
+		});
+
+		const [programs, statusCounts] = result;
 
 		clearTimeout(queryTimeout);
 
@@ -126,7 +129,7 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 		const activeProgram =
 			status === "ACTIVE"
 				? programs[0] // If already filtered for ACTIVE, use first result
-				: programs.find((p) => p.status === "ACTIVE");
+				: programs.find((p: { status: string }) => p.status === "ACTIVE");
 
 		logger.debug("Fetched programs for user", {
 			userId,
@@ -367,9 +370,12 @@ router.patch(
 		}
 
 		try {
-			const program = await prisma.programs.findUnique({
-				where: { id: Number(programId) },
-			});
+			// Use withRetry for the first database operation
+			const program = await withRetry(() =>
+				prisma.programs.findUnique({
+					where: { id: Number(programId) },
+				}),
+			);
 
 			if (!program) {
 				logger.warn("Attempted to update non-existent program", {
@@ -407,34 +413,41 @@ router.patch(
 
 			// If setting to ACTIVE, ensure no other active programs
 			if (newStatus === "ACTIVE") {
-				await prisma.$transaction(async (tx) => {
-					// First, set all active programs to PENDING
-					await tx.programs.updateMany({
-						where: {
-							userId,
-							status: "ACTIVE",
-						},
-						data: {
-							status: "PENDING",
-						},
-					});
+				await withRetry(async () => {
+					// Use prisma directly within the withRetry function
+					return prisma.$transaction(async (tx) => {
+						// First, set all active programs to PENDING
+						await tx.programs.updateMany({
+							where: {
+								userId,
+								status: "ACTIVE",
+							},
+							data: {
+								status: "PENDING",
+							},
+						});
 
-					// Then set the requested program to active
-					await tx.programs.update({
-						where: { id: Number(programId) },
-						data: { status: newStatus as ProgramStatus },
+						// Then set the requested program to active
+						await tx.programs.update({
+							where: { id: Number(programId) },
+							data: { status: newStatus as ProgramStatus },
+						});
 					});
 				});
+
 				logger.info("Program activated, other active programs set to pending", {
 					programId: Number(programId),
 					userId,
 				});
 			} else {
 				// For non-ACTIVE status changes, just update the program
-				await prisma.programs.update({
-					where: { id: Number(programId) },
-					data: { status: newStatus as ProgramStatus },
-				});
+				await withRetry(() =>
+					prisma.programs.update({
+						where: { id: Number(programId) },
+						data: { status: newStatus as ProgramStatus },
+					}),
+				);
+
 				logger.info("Program status updated", {
 					programId: Number(programId),
 					userId,
