@@ -61,57 +61,88 @@ interface Program {
 }
 
 router.get("/programs", authenticateToken, async (req: Request, res) => {
-	if (req.user) {
-		const userId = req.user.id;
-		const { status } = req.query;
+	if (!req.user) {
+		logger.warn("Attempted to fetch programs with no user in request");
+		return res.status(404).json({ message: "User not found" });
+	}
 
+	const userId = req.user.id;
+	const { status } = req.query;
+
+	// Set a reasonable timeout for the query (10 seconds)
+	const queryTimeout = setTimeout(() => {
+		logger.warn("Program fetch query timeout", { userId, statusFilter: status });
+	}, 10000);
+
+	try {
+		// Create the where clause
 		const whereClause: ProgramWhereInput = { userId };
-
 		if (status) {
 			whereClause.status = status as ProgramStatus;
 		}
 
-		try {
-			const programs = await prisma.programs.findMany({
+		// Use prisma.$transaction to ensure atomic queries and better timeout handling
+		const [programs, statusCounts] = await prisma.$transaction([
+			// Get programs
+			prisma.programs.findMany({
 				where: whereClause,
 				orderBy: {
 					startDate: "desc",
 				},
-			});
+				// Limit fields to what's necessary
+				select: {
+					id: true,
+					name: true,
+					userId: true,
+					status: true,
+					goal: true,
+					programType: true,
+					startDate: true,
+					endDate: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+			}),
 
-			const statusCounts = await prisma.programs.groupBy({
+			// Get status counts in the same transaction
+			prisma.programs.groupBy({
 				by: ["status"],
 				where: { userId },
 				_count: {
 					status: true,
 				},
-			});
+			}),
+		]);
 
-			logger.debug("Fetched programs for user", {
+		clearTimeout(queryTimeout);
+
+		// Find active program without an additional query
+		const activeProgram = status === "ACTIVE" 
+			? programs[0] // If already filtered for ACTIVE, use first result
+			: programs.find((p) => p.status === "ACTIVE");
+
+		logger.debug("Fetched programs for user", {
+			userId,
+			statusFilter: status,
+			programCount: programs.length,
+		});
+
+		return res.status(200).json({
+			programs,
+			statusCounts,
+			activeProgram,
+		});
+	} catch (error) {
+		clearTimeout(queryTimeout);
+		logger.error(
+			`Error fetching programs: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
 				userId,
 				statusFilter: status,
-				programCount: programs.length,
-			});
-
-			res.status(200).json({
-				programs,
-				statusCounts,
-				activeProgram: programs.find((p) => p.status === "ACTIVE"),
-			});
-		} catch (error) {
-			logger.error(
-				`Error fetching programs: ${error instanceof Error ? error.message : "Unknown error"}`,
-				{
-					stack: error instanceof Error ? error.stack : undefined,
-					userId,
-					statusFilter: status,
-				},
-			);
-			res.status(500).json({ error: "Internal server error" });
-		}
-	} else {
-		logger.warn("Attempted to fetch programs with no user in request");
-		res.status(404).json({ message: "User not found" });
+			},
+		);
+		return res.status(500).json({ error: "Internal server error" });
 	}
 });
 

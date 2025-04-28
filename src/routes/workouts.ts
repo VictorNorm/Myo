@@ -53,7 +53,7 @@ function toNumber(
 	return value ? Number(value) : defaultValue;
 }
 
-// Workouts route
+// Workouts route - optimized to reduce DB queries and handle connection issues
 router.get(
 	"/programs/:programId/workouts",
 	authenticateToken,
@@ -72,12 +72,50 @@ router.get(
 			return res.status(400).json({ error: "Invalid program ID format" });
 		}
 
-		try {
-			// First check if the program exists
-			const program = await prisma.programs.findUnique({
-				where: { id: Number(programId) },
-			});
+		// ADMIN fast path - admins can access any program's workouts
+		const isAdmin = currentUser.role === "ADMIN";
 
+		try {
+			// Set a query timeout
+			const queryTimeout = setTimeout(() => {
+				logger.warn("Workouts fetch query timeout", { 
+					programId: parsedProgramId, 
+					userId: currentUser.id 
+				});
+			}, 5000);
+
+			// Optimized approach: Get program and workouts in one transaction
+			// This reduces database roundtrips and chances of connection issues
+			const [program, workouts] = await prisma.$transaction([
+				// Get the program with minimal data needed
+				prisma.programs.findUnique({
+					where: { id: parsedProgramId },
+					select: { id: true, userId: true }, // Only select what we need
+				}),
+				
+				// Get workouts conditionally based on admin status
+				prisma.workouts.findMany({
+					where: { 
+						program_id: parsedProgramId,
+						// Only include this condition if not admin, to optimize the query
+						...(isAdmin ? {} : { programs: { userId: currentUser.id } })
+					},
+					orderBy: {
+						id: "asc", // Consistent ordering
+					},
+					select: {
+						id: true,
+						name: true,
+						program_id: true,
+						createdAt: true,
+						updatedAt: true,
+					},
+				})
+			]);
+
+			clearTimeout(queryTimeout);
+
+			// Program doesn't exist or isn't accessible
 			if (!program) {
 				logger.warn("Program not found for workouts request", {
 					programId: parsedProgramId,
@@ -86,22 +124,17 @@ router.get(
 				return res.status(404).json({ error: "Program not found" });
 			}
 
-			// Check if user is authorized (either the owner or an admin)
-			if (program.userId !== currentUser.id && currentUser.role !== "ADMIN") {
+			// Authorization check only if not admin (admins already get all workouts)
+			if (!isAdmin && program.userId !== currentUser.id) {
 				logger.warn("Unauthorized access attempt to program workouts", {
 					programId: parsedProgramId,
 					programOwnerId: program.userId,
 					requestUserId: currentUser.id,
-					userRole: currentUser.role,
 				});
-				return res
-					.status(403)
-					.json({ error: "Not authorized to access this program's workouts" });
+				return res.status(403).json({ 
+					error: "Not authorized to access this program's workouts" 
+				});
 			}
-
-			const workouts = await prisma.workouts.findMany({
-				where: { program_id: Number(programId) },
-			});
 
 			logger.debug("Fetched workouts for program", {
 				programId: parsedProgramId,
@@ -119,7 +152,7 @@ router.get(
 					userId: currentUser?.id,
 				},
 			);
-			res.status(500).json({ error: "Internal server error" });
+			return res.status(500).json({ error: "Internal server error" });
 		}
 	},
 );

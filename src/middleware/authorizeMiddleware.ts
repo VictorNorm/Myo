@@ -2,10 +2,12 @@ import type { Request, Response, NextFunction } from "express";
 import type { AuthenticatedUser } from "../../types/types";
 import { PrismaClient } from "@prisma/client";
 import prisma from "../services/db";
+import logger from "../services/logger";
 
 /**
  * Generic resource ownership verification function
  * Maps resource types to their database queries
+ * Optimized to reduce database lookups
  */
 async function verifyResourceOwnership(
 	resourceType: string,
@@ -15,6 +17,7 @@ async function verifyResourceOwnership(
 	try {
 		switch (resourceType) {
 			case "program": {
+				// Simple direct query with index lookup
 				const program = await prisma.programs.findUnique({
 					where: { id: resourceId },
 					select: { userId: true },
@@ -23,19 +26,29 @@ async function verifyResourceOwnership(
 			}
 
 			case "workout": {
-				const workout = await prisma.workouts.findUnique({
-					where: { id: resourceId },
-					select: { program_id: true },
+				// Single query with join to avoid N+1 pattern
+				const result = await prisma.workouts.findFirst({
+					where: { 
+						id: resourceId,
+						programs: {
+							userId: userId
+						}
+					},
+					select: { 
+						id: true 
+					},
+					// Use inner join to ensure both conditions are met
+					include: {
+						programs: {
+							select: {
+								userId: true
+							}
+						}
+					}
 				});
-
-				if (workout && workout.program_id !== null) {
-					const program = await prisma.programs.findUnique({
-						where: { id: workout.program_id },
-						select: { userId: true },
-					});
-					return program?.userId === userId;
-				}
-				return false;
+				
+				// If we found a matching workout, the user has access
+				return !!result;
 			}
 
 			case "exercise":
@@ -46,17 +59,23 @@ async function verifyResourceOwnership(
 			// Add more resource types as your app grows
 
 			default:
-				console.warn(`Unknown resource type: ${resourceType}`);
+				logger.warn(`Unknown resource type: ${resourceType}`);
 				return false;
 		}
 	} catch (error) {
-		console.error(`Error verifying ownership of ${resourceType}:`, error);
+		logger.error(`Error verifying ownership of ${resourceType}: ${error instanceof Error ? error.message : "Unknown error"}`, {
+			stack: error instanceof Error ? error.stack : undefined,
+			resourceType,
+			resourceId,
+			userId
+		});
 		return false;
 	}
 }
 
 /**
  * Factory function that creates a middleware for specific resource authorization
+ * Optimized to check admin role early and minimize database queries
  *
  * @param options Configuration options for the authorization
  * @returns Express middleware function
@@ -84,14 +103,17 @@ function createAuthorizeMiddleware(options: {
 
 			// No user in request means not authenticated
 			if (!currentUser) {
+				logger.warn("Authentication required but no user in request");
 				return res.status(401).json({ error: "Authentication required" });
 			}
 
-			// Admin bypass check
+			// OPTIMIZATION: Check admin role early to avoid unnecessary processing
 			if (adminBypass && currentUser.role === "ADMIN") {
 				return next();
 			}
 
+			// Start with fastest checks (in-memory) before expensive DB operations
+			
 			// Case 1: Check if userId is explicitly provided in request
 			const requestedUserId = req.body.userId || req.params.userId;
 			if (requestedUserId) {
@@ -101,7 +123,7 @@ function createAuthorizeMiddleware(options: {
 				}
 			}
 
-			// Case 2: Check custom userId extraction if provided
+			// Case 2: Check custom userId extraction if provided (still in-memory)
 			if (extractUserId) {
 				const customUserId = extractUserId(req);
 				if (customUserId && currentUser.id === customUserId) {
@@ -109,15 +131,26 @@ function createAuthorizeMiddleware(options: {
 				}
 			}
 
-			// Case 3: Resource ownership verification
+			// Case 3: Resource ownership verification (DB operation - do this last)
 			if (resourceType && resourceIdParam) {
 				const resourceId = Number.parseInt(req.params[resourceIdParam]);
 				if (!Number.isNaN(resourceId)) {
+					const start = Date.now();
 					const isOwner = await verifyResourceOwnership(
 						resourceType,
 						resourceId,
 						currentUser.id,
 					);
+					const elapsed = Date.now() - start;
+					
+					// Log slow ownership checks
+					if (elapsed > 100) {
+						logger.warn(`Slow ownership verification (${elapsed}ms)`, {
+							resourceType,
+							resourceId,
+							userId: currentUser.id
+						});
+					}
 
 					if (isOwner) {
 						return next();
@@ -126,11 +159,26 @@ function createAuthorizeMiddleware(options: {
 			}
 
 			// If all authorization checks fail
+			logger.warn("Authorization failed", {
+				userId: currentUser.id,
+				role: currentUser.role,
+				resourceType,
+				resourceId: resourceIdParam ? req.params[resourceIdParam] : undefined
+			});
+			
 			return res.status(403).json({
 				error: "Not authorized to access or modify this resource",
 			});
 		} catch (error) {
-			console.error("Error in authorization middleware:", error);
+			logger.error(
+				`Error in authorization middleware: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					userId: (req.user as AuthenticatedUser)?.id,
+					resourceType,
+					resourceIdParam
+				}
+			);
 			return res.status(500).json({
 				error: "Authorization check failed",
 			});
