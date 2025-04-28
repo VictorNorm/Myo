@@ -71,7 +71,10 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 
 	// Set a reasonable timeout for the query (10 seconds)
 	const queryTimeout = setTimeout(() => {
-		logger.warn("Program fetch query timeout", { userId, statusFilter: status });
+		logger.warn("Program fetch query timeout", {
+			userId,
+			statusFilter: status,
+		});
 	}, 10000);
 
 	try {
@@ -99,8 +102,7 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 					programType: true,
 					startDate: true,
 					endDate: true,
-					createdAt: true,
-					updatedAt: true,
+					// Removed createdAt and updatedAt as they don't exist in the schema
 				},
 			}),
 
@@ -111,15 +113,20 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 				_count: {
 					status: true,
 				},
+				orderBy: {
+					// Added required orderBy property
+					status: "asc",
+				},
 			}),
 		]);
 
 		clearTimeout(queryTimeout);
 
 		// Find active program without an additional query
-		const activeProgram = status === "ACTIVE" 
-			? programs[0] // If already filtered for ACTIVE, use first result
-			: programs.find((p) => p.status === "ACTIVE");
+		const activeProgram =
+			status === "ACTIVE"
+				? programs[0] // If already filtered for ACTIVE, use first result
+				: programs.find((p) => p.status === "ACTIVE");
 
 		logger.debug("Fetched programs for user", {
 			userId,
@@ -196,6 +203,10 @@ router.get(
 				where: { userId: parsedUserId },
 				_count: {
 					status: true,
+				},
+				orderBy: {
+					// Added required orderBy property
+					status: "asc",
 				},
 			});
 

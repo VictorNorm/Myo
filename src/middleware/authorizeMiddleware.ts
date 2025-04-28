@@ -27,26 +27,23 @@ async function verifyResourceOwnership(
 
 			case "workout": {
 				// Single query with join to avoid N+1 pattern
+				// FIXED: Changed to use only include, not both select and include
 				const result = await prisma.workouts.findFirst({
-					where: { 
+					where: {
 						id: resourceId,
 						programs: {
-							userId: userId
-						}
+							userId: userId,
+						},
 					},
-					select: { 
-						id: true 
-					},
-					// Use inner join to ensure both conditions are met
 					include: {
 						programs: {
 							select: {
-								userId: true
-							}
-						}
-					}
+								userId: true,
+							},
+						},
+					},
 				});
-				
+
 				// If we found a matching workout, the user has access
 				return !!result;
 			}
@@ -63,12 +60,15 @@ async function verifyResourceOwnership(
 				return false;
 		}
 	} catch (error) {
-		logger.error(`Error verifying ownership of ${resourceType}: ${error instanceof Error ? error.message : "Unknown error"}`, {
-			stack: error instanceof Error ? error.stack : undefined,
-			resourceType,
-			resourceId,
-			userId
-		});
+		logger.error(
+			`Error verifying ownership of ${resourceType}: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				resourceType,
+				resourceId,
+				userId,
+			},
+		);
 		return false;
 	}
 }
@@ -113,7 +113,7 @@ function createAuthorizeMiddleware(options: {
 			}
 
 			// Start with fastest checks (in-memory) before expensive DB operations
-			
+
 			// Case 1: Check if userId is explicitly provided in request
 			const requestedUserId = req.body.userId || req.params.userId;
 			if (requestedUserId) {
@@ -142,13 +142,13 @@ function createAuthorizeMiddleware(options: {
 						currentUser.id,
 					);
 					const elapsed = Date.now() - start;
-					
+
 					// Log slow ownership checks
 					if (elapsed > 100) {
 						logger.warn(`Slow ownership verification (${elapsed}ms)`, {
 							resourceType,
 							resourceId,
-							userId: currentUser.id
+							userId: currentUser.id,
 						});
 					}
 
@@ -163,9 +163,9 @@ function createAuthorizeMiddleware(options: {
 				userId: currentUser.id,
 				role: currentUser.role,
 				resourceType,
-				resourceId: resourceIdParam ? req.params[resourceIdParam] : undefined
+				resourceId: resourceIdParam ? req.params[resourceIdParam] : undefined,
 			});
-			
+
 			return res.status(403).json({
 				error: "Not authorized to access or modify this resource",
 			});
@@ -176,8 +176,8 @@ function createAuthorizeMiddleware(options: {
 					stack: error instanceof Error ? error.stack : undefined,
 					userId: (req.user as AuthenticatedUser)?.id,
 					resourceType,
-					resourceIdParam
-				}
+					resourceIdParam,
+				},
 			);
 			return res.status(500).json({
 				error: "Authorization check failed",

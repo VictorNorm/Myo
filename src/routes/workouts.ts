@@ -78,9 +78,9 @@ router.get(
 		try {
 			// Set a query timeout
 			const queryTimeout = setTimeout(() => {
-				logger.warn("Workouts fetch query timeout", { 
-					programId: parsedProgramId, 
-					userId: currentUser.id 
+				logger.warn("Workouts fetch query timeout", {
+					programId: parsedProgramId,
+					userId: currentUser.id,
 				});
 			}, 5000);
 
@@ -92,13 +92,13 @@ router.get(
 					where: { id: parsedProgramId },
 					select: { id: true, userId: true }, // Only select what we need
 				}),
-				
+
 				// Get workouts conditionally based on admin status
 				prisma.workouts.findMany({
-					where: { 
+					where: {
 						program_id: parsedProgramId,
 						// Only include this condition if not admin, to optimize the query
-						...(isAdmin ? {} : { programs: { userId: currentUser.id } })
+						...(isAdmin ? {} : { programs: { userId: currentUser.id } }),
 					},
 					orderBy: {
 						id: "asc", // Consistent ordering
@@ -107,10 +107,9 @@ router.get(
 						id: true,
 						name: true,
 						program_id: true,
-						createdAt: true,
-						updatedAt: true,
+						// Removed createdAt and updatedAt as they don't exist in the schema
 					},
-				})
+				}),
 			]);
 
 			clearTimeout(queryTimeout);
@@ -131,8 +130,8 @@ router.get(
 					programOwnerId: program.userId,
 					requestUserId: currentUser.id,
 				});
-				return res.status(403).json({ 
-					error: "Not authorized to access this program's workouts" 
+				return res.status(403).json({
+					error: "Not authorized to access this program's workouts",
 				});
 			}
 
