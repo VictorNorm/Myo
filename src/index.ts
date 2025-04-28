@@ -90,6 +90,9 @@ app.get("/health", (req, res) => {
 // Apply global error handler
 app.use(errorHandler);
 
+logger.info(
+	`Environment PORT=${process.env.PORT}, resolved PORT=${PORT}, HOST=${HOST}`,
+);
 app
 	.listen(PORT, HOST, () => {
 		logger.info(`Server is running on http://${HOST}:${PORT}`);
