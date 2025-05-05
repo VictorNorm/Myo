@@ -17,6 +17,7 @@ import stats from "./routes/stats";
 import { errorHandler } from "./utils/errorHandler";
 import logger from "./services/logger";
 import httpLogger from "./middleware/httpLogger";
+import prisma from "./services/db";
 
 logger.info("Application starting...");
 
@@ -85,6 +86,11 @@ app.get("/health", (req, res) => {
 	res.status(200).json({
 		status: "healthy",
 	});
+});
+app.get("/metrics", async (req, res) => {
+	res.set("Content-Type", "text");
+	const metrics = await prisma.$metrics.prometheus();
+	res.status(200).end(metrics);
 });
 
 // Apply global error handler

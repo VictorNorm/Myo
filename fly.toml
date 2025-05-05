@@ -31,3 +31,8 @@ primary_region = 'ams'
   method = "GET"
   timeout = "5s"
   path = "/health"
+
+[[metrics]]
+port = 3000
+path = "/metrics"
+process = ["web"]

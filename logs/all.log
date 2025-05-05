@@ -1,0 +1,142 @@
+2025-05-03 17:12:36 info: Application starting...
+2025-05-03 17:12:36 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-05-03 17:12:36 info: Server is running on http://0.0.0.0:3000
+2025-05-03 17:12:36 info: Successfully connected to the database
+2025-05-03 18:18:02 info: SIGINT received, closing database connection...
+2025-05-03 18:18:02 info: Database connection closed successfully.
+2025-05-03 18:18:05 info: Application starting...
+2025-05-03 18:18:05 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-05-03 18:18:05 info: Server is running on http://0.0.0.0:3000
+2025-05-03 18:18:05 info: Successfully connected to the database
+2025-05-03 18:19:17 info: Query
+2025-05-03 18:19:17 info: Query
+2025-05-03 18:19:21 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 debug: Fetched programs for user
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 info: Query
+2025-05-03 18:19:34 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 18:20:21 info: SIGINT received, closing database connection...
+2025-05-03 18:20:21 info: Database connection closed successfully.
+2025-05-03 18:20:23 info: Application starting...
+2025-05-03 18:20:23 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-05-03 18:20:23 info: Server is running on http://0.0.0.0:3000
+2025-05-03 18:20:23 info: Successfully connected to the database
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:20:26 info: Query took (4 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:20:26 debug: Fetched programs for user
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:20:26 info: Query took (4 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:20:26 debug: Fetched programs for user
+2025-05-03 18:20:26 info: Query took (3 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:20:26 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:20:26 debug: Fetched programs for user
+2025-05-03 18:20:28 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:20:28 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE ("public"."programs"."userId" = $1 AND "public"."programs"."status" = CAST($2::text AS "public"."ProgramStatus")) ORDER BY "public"."programs"."startDate" DESC OFFSET $3)
+2025-05-03 18:20:28 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:20:28 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:20:28 debug: Fetched programs for user
+2025-05-03 18:20:28 info: Query took (5 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."program_id" = $1 ORDER BY "public"."workouts"."id" ASC OFFSET $2)
+2025-05-03 18:20:28 info: Query took (3 ms) - SQL> (SELECT "public"."workout_progress"."id", "public"."workout_progress"."user_id", "public"."workout_progress"."program_id", "public"."workout_progress"."workout_id", "public"."workout_progress"."completed_at", "public"."workout_progress"."next_scheduled_at", "public"."workout_progress"."created_at", "public"."workout_progress"."updated_at" FROM "public"."workout_progress" WHERE ("public"."workout_progress"."program_id" = $1 AND "public"."workout_progress"."user_id" = $2) ORDER BY "public"."workout_progress"."completed_at" DESC OFFSET $3)
+2025-05-03 18:20:28 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."id" IN ($1,$2,$3) OFFSET $4)
+2025-05-03 18:20:28 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."userId" FROM "public"."programs" WHERE ("public"."programs"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:20:41 info: Query took (2 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" LEFT JOIN "public"."programs" AS "j0" ON ("j0"."id") = ("public"."workouts"."program_id") WHERE ("public"."workouts"."program_id" = $1 AND ("j0"."userId" = $2 AND ("j0"."id" IS NOT NULL))) ORDER BY "public"."workouts"."id" ASC OFFSET $3)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:20:41 debug: Fetched workouts for program
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (SELECT 1)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."program_id" = $1 ORDER BY "public"."workouts"."id" ASC OFFSET $2)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (SELECT "public"."workout_progress"."id", "public"."workout_progress"."user_id", "public"."workout_progress"."program_id", "public"."workout_progress"."workout_id", "public"."workout_progress"."completed_at", "public"."workout_progress"."next_scheduled_at", "public"."workout_progress"."created_at", "public"."workout_progress"."updated_at" FROM "public"."workout_progress" WHERE ("public"."workout_progress"."program_id" = $1 AND "public"."workout_progress"."user_id" = $2) ORDER BY "public"."workout_progress"."completed_at" DESC OFFSET $3)
+2025-05-03 18:20:41 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."id" IN ($1,$2,$3) OFFSET $4)
+2025-05-03 18:20:41 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 18:20:45 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE ("public"."workouts"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:20:45 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."programType"::text, "public"."programs"."goal"::text FROM "public"."programs" WHERE "public"."programs"."id" IN ($1) OFFSET $2)
+2025-05-03 18:20:45 info: Query took (3 ms) - SQL> (SELECT "public"."workout_exercises"."workout_id", "public"."workout_exercises"."exercise_id", "public"."workout_exercises"."sets", "public"."workout_exercises"."reps", "public"."workout_exercises"."weight", "public"."workout_exercises"."order", "public"."workout_exercises"."createdAt", "public"."workout_exercises"."updatedAt" FROM "public"."workout_exercises" WHERE "public"."workout_exercises"."workout_id" = $1 ORDER BY "public"."workout_exercises"."order" ASC OFFSET $2)
+2025-05-03 18:20:45 info: Query took (3 ms) - SQL> (SELECT "public"."exercises"."id", "public"."exercises"."name", "public"."exercises"."equipment"::text, "public"."exercises"."category"::text FROM "public"."exercises" WHERE "public"."exercises"."id" IN ($1,$2) OFFSET $3)
+2025-05-03 18:20:45 info: Query took (3 ms) - SQL> (SELECT "public"."supersets"."id", "public"."supersets"."workout_id", "public"."supersets"."first_exercise_id", "public"."supersets"."second_exercise_id", "public"."supersets"."order", "public"."supersets"."createdAt", "public"."supersets"."updatedAt" FROM "public"."supersets" WHERE "public"."supersets"."workout_id" = $1 OFFSET $2)
+2025-05-03 18:20:45 debug: Processing workout template
+2025-05-03 18:20:45 info: Query took (3 ms) - SQL> (SELECT "public"."exercise_baselines"."id", "public"."exercise_baselines"."exercise_id", "public"."exercise_baselines"."user_id", "public"."exercise_baselines"."program_id", "public"."exercise_baselines"."weight", "public"."exercise_baselines"."reps", "public"."exercise_baselines"."sets", "public"."exercise_baselines"."createdAt" FROM "public"."exercise_baselines" WHERE ("public"."exercise_baselines"."user_id" = $1 AND "public"."exercise_baselines"."program_id" = $2 AND "public"."exercise_baselines"."exercise_id" IN ($3,$4)) OFFSET $5)
+2025-05-03 18:20:45 debug: Retrieved exercise baselines for automated program
+2025-05-03 18:20:45 debug: Successfully built workout template
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT 1)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE ("public"."programs"."userId" = $1 AND "public"."programs"."status" = CAST($2::text AS "public"."ProgramStatus")) ORDER BY "public"."programs"."startDate" DESC OFFSET $3)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:04 debug: Fetched programs for user
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."program_id" = $1 ORDER BY "public"."workouts"."id" ASC OFFSET $2)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT "public"."workout_progress"."id", "public"."workout_progress"."user_id", "public"."workout_progress"."program_id", "public"."workout_progress"."workout_id", "public"."workout_progress"."completed_at", "public"."workout_progress"."next_scheduled_at", "public"."workout_progress"."created_at", "public"."workout_progress"."updated_at" FROM "public"."workout_progress" WHERE ("public"."workout_progress"."program_id" = $1 AND "public"."workout_progress"."user_id" = $2) ORDER BY "public"."workout_progress"."completed_at" DESC OFFSET $3)
+2025-05-03 18:22:04 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."id" IN ($1,$2,$3) OFFSET $4)
+2025-05-03 18:22:04 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 18:22:05 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:05 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:22:05 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:05 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:05 debug: Fetched programs for user
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."userId" FROM "public"."programs" WHERE ("public"."programs"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate", "public"."programs"."status"::text, "public"."programs"."totalWorkouts" FROM "public"."programs" WHERE ("public"."programs"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:07 info: Query took (3 ms) - SQL> (UPDATE "public"."programs" SET "status" = CAST($1::text AS "public"."ProgramStatus") WHERE ("public"."programs"."userId" = $2 AND "public"."programs"."status" = CAST($3::text AS "public"."ProgramStatus")))
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (UPDATE "public"."programs" SET "status" = CAST($1::text AS "public"."ProgramStatus") WHERE ("public"."programs"."id" = $2 AND 1=1) RETURNING "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate", "public"."programs"."status"::text, "public"."programs"."totalWorkouts")
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:07 info: Program activated, other active programs set to pending
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:07 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:07 debug: Fetched programs for user
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."userId" FROM "public"."programs" WHERE ("public"."programs"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate", "public"."programs"."status"::text, "public"."programs"."totalWorkouts" FROM "public"."programs" WHERE ("public"."programs"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (UPDATE "public"."programs" SET "status" = CAST($1::text AS "public"."ProgramStatus") WHERE ("public"."programs"."userId" = $2 AND "public"."programs"."status" = CAST($3::text AS "public"."ProgramStatus")))
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (UPDATE "public"."programs" SET "status" = CAST($1::text AS "public"."ProgramStatus") WHERE ("public"."programs"."id" = $2 AND 1=1) RETURNING "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate", "public"."programs"."status"::text, "public"."programs"."totalWorkouts")
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:12 info: Program activated, other active programs set to pending
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:12 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:12 debug: Fetched programs for user
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE ("public"."programs"."userId" = $1 AND "public"."programs"."status" = CAST($2::text AS "public"."ProgramStatus")) ORDER BY "public"."programs"."startDate" DESC OFFSET $3)
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:13 debug: Fetched programs for user
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."program_id" = $1 ORDER BY "public"."workouts"."id" ASC OFFSET $2)
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (SELECT "public"."workout_progress"."id", "public"."workout_progress"."user_id", "public"."workout_progress"."program_id", "public"."workout_progress"."workout_id", "public"."workout_progress"."completed_at", "public"."workout_progress"."next_scheduled_at", "public"."workout_progress"."created_at", "public"."workout_progress"."updated_at" FROM "public"."workout_progress" WHERE ("public"."workout_progress"."program_id" = $1 AND "public"."workout_progress"."user_id" = $2) ORDER BY "public"."workout_progress"."completed_at" DESC OFFSET $3)
+2025-05-03 18:22:13 info: Query took (0 ms) - SQL> (SELECT "public"."workouts"."id", "public"."workouts"."name", "public"."workouts"."program_id" FROM "public"."workouts" WHERE "public"."workouts"."id" IN ($1,$2,$3) OFFSET $4)
+2025-05-03 18:22:13 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 18:22:23 info: Query took (0 ms) - SQL> (SELECT 1)
+2025-05-03 18:22:23 info: Query took (0 ms) - SQL> (BEGIN)
+2025-05-03 18:22:23 info: Query took (0 ms) - SQL> (SELECT "public"."programs"."id", "public"."programs"."name", "public"."programs"."userId", "public"."programs"."status"::text, "public"."programs"."goal"::text, "public"."programs"."programType"::text, "public"."programs"."startDate", "public"."programs"."endDate" FROM "public"."programs" WHERE "public"."programs"."userId" = $1 ORDER BY "public"."programs"."startDate" DESC OFFSET $2)
+2025-05-03 18:22:23 info: Query took (0 ms) - SQL> (SELECT COUNT("public"."programs"."status"), "public"."programs"."status"::text FROM "public"."programs" WHERE "public"."programs"."userId" = $1 GROUP BY "public"."programs"."status" ORDER BY "public"."programs"."status" ASC OFFSET $2)
+2025-05-03 18:22:23 info: Query took (0 ms) - SQL> (COMMIT)
+2025-05-03 18:22:23 debug: Fetched programs for user
+2025-05-03 19:21:13 info: SIGINT received, closing database connection...
+2025-05-03 19:21:13 info: Database connection closed successfully.
+2025-05-03 19:25:49 info: Application starting...
+2025-05-03 19:25:49 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-05-03 19:25:49 info: Server is running on http://0.0.0.0:3000
+2025-05-03 19:25:49 info: Successfully connected to the database
+2025-05-03 19:26:43 debug: Fetched user settings
+2025-05-03 19:26:47 debug: Fetched programs for user
+2025-05-03 19:26:47 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 19:26:48 debug: Fetched workouts for program
+2025-05-03 19:26:48 debug: First workout returned with new cycle flag (completed all workouts)
+2025-05-03 19:26:49 debug: Processing workout template
+2025-05-03 19:26:49 debug: Retrieved exercise baselines for automated program
+2025-05-03 19:26:49 debug: Successfully built workout template
+2025-05-03 19:26:51 debug: Fetched programs for user
+2025-05-03 19:26:51 debug: First workout returned with new cycle flag (completed all workouts)

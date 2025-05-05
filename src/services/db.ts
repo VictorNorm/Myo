@@ -1,12 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import logger from "./logger";
-
+import client from "prom-client";
 // Connection management variables
 const MAX_RETRIES = 5;
 const RETRY_DELAY_MS = 500;
 const SLOW_QUERY_THRESHOLD_MS = 500; // Configurable threshold for slow queries
 const CONNECTION_POOL_SIZE = 3; // Limit the connection pool size to prevent exhaustion
-
+const QUERY_TIMER = new client.Histogram({
+	name: "db_timer",
+	help: "time spent performing queries",
+});
 // Create a singleton instance of PrismaClient with optimized configuration
 const prisma = new PrismaClient({
 	log: [
@@ -35,7 +38,6 @@ const CIRCUIT_BREAKER_THRESHOLD = 10; // Max consecutive failures before circuit
 let circuitBreakerOpen = false;
 let circuitBreakerResetTime = 0;
 const CIRCUIT_BREAKER_RESET_TIMEOUT = 60000; // 1 minute timeout before retrying after circuit break
-
 async function connectWithRetry() {
 	// Check circuit breaker first
 	if (circuitBreakerOpen) {
