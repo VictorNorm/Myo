@@ -131,11 +131,11 @@ router.get("/programs", authenticateToken, async (req: Request, res) => {
 				? programs[0] // If already filtered for ACTIVE, use first result
 				: programs.find((p: { status: string }) => p.status === "ACTIVE");
 
-		logger.debug("Fetched programs for user", {
-			userId,
-			statusFilter: status,
-			programCount: programs.length,
-		});
+		// logger.debug("Fetched programs for user", {
+		// 	userId,
+		// 	statusFilter: status,
+		// 	programCount: programs.length,
+		// });
 
 		return res.status(200).json({
 			programs,
@@ -213,11 +213,11 @@ router.get(
 				},
 			});
 
-			logger.debug("Fetched programs for specific user", {
-				userId: parsedUserId,
-				statusFilter: status,
-				programCount: userPrograms.length,
-			});
+			// logger.debug("Fetched programs for specific user", {
+			// 	userId: parsedUserId,
+			// 	statusFilter: status,
+			// 	programCount: userPrograms.length,
+			// });
 
 			res.status(200).json({
 				userPrograms,
@@ -279,14 +279,14 @@ router.get(
 
 			// If no workouts completed, return first workout
 			if (completedWorkouts.length === 0) {
-				logger.debug(
-					"First workout in program returned (no completed workouts)",
-					{
-						programId: Number(programId),
-						userId,
-						workoutId: allWorkouts[0].id,
-					},
-				);
+				// logger.debug(
+				// 	"First workout in program returned (no completed workouts)",
+				// 	{
+				// 		programId: Number(programId),
+				// 		userId,
+				// 		workoutId: allWorkouts[0].id,
+				// 	},
+				// );
 				return res.json({
 					...allWorkouts[0],
 					workout_progress: [],
@@ -304,12 +304,12 @@ router.get(
 
 			// If we're not at the end of the sequence, return next workout
 			if (currentIndex < allWorkouts.length - 1) {
-				logger.debug("Next workout in sequence returned", {
-					programId: Number(programId),
-					userId,
-					lastCompletedWorkoutId: latestCompleted.workout_id,
-					nextWorkoutId: allWorkouts[currentIndex + 1].id,
-				});
+				// logger.debug("Next workout in sequence returned", {
+				// 	programId: Number(programId),
+				// 	userId,
+				// 	lastCompletedWorkoutId: latestCompleted.workout_id,
+				// 	nextWorkoutId: allWorkouts[currentIndex + 1].id,
+				// });
 				return res.json({
 					...allWorkouts[currentIndex + 1],
 					workout_progress: [],
@@ -318,15 +318,15 @@ router.get(
 			}
 
 			// If we are at the end, return first workout with new cycle flag
-			logger.debug(
-				"First workout returned with new cycle flag (completed all workouts)",
-				{
-					programId: Number(programId),
-					userId,
-					lastCompletedWorkoutId: latestCompleted.workout_id,
-					nextWorkoutId: allWorkouts[0].id,
-				},
-			);
+			// logger.debug(
+			// 	"First workout returned with new cycle flag (completed all workouts)",
+			// 	{
+			// 		programId: Number(programId),
+			// 		userId,
+			// 		lastCompletedWorkoutId: latestCompleted.workout_id,
+			// 		nextWorkoutId: allWorkouts[0].id,
+			// 	},
+			// );
 			return res.json({
 				...allWorkouts[0],
 				workout_progress: [],
@@ -478,7 +478,7 @@ router.patch(
 router.get("/allprograms", authenticateToken, async (req: Request, res) => {
 	try {
 		const programs = await prisma.programs.findMany();
-		logger.debug("Fetched all programs", { count: programs.length });
+		// logger.debug("Fetched all programs", { count: programs.length });
 		res.status(200).json({ programs });
 	} catch (error) {
 		logger.error(
@@ -596,12 +596,12 @@ router.post(
 							status: "PENDING",
 						},
 					});
-					logger.debug(
-						"Set all active programs to PENDING for new active program",
-						{
-							userId: Number.parseInt(userId),
-						},
-					);
+					// logger.debug(
+					// 	"Set all active programs to PENDING for new active program",
+					// 	{
+					// 		userId: Number.parseInt(userId),
+					// 	},
+					// );
 				}
 
 				// Create the program with new fields
@@ -723,10 +723,10 @@ router.delete(
 				});
 
 				const workoutIds = workouts.map((w) => w.id);
-				logger.debug("Deleting program and related data", {
-					programId,
-					workoutCount: workoutIds.length,
-				});
+				// logger.debug("Deleting program and related data", {
+				// 	programId,
+				// 	workoutCount: workoutIds.length,
+				// });
 
 				// Delete all supersets for these workouts
 				await tx.supersets.deleteMany({

@@ -55,6 +55,7 @@ model exercises {
   minWeight           Decimal?                @db.Decimal(6, 2)  // Minimum possible weight
   maxWeight           Decimal?                @db.Decimal(6, 2)  // Maximum available weight
   notes               String?                 // For special instructions
+  videoUrl            String?
   createdAt           DateTime                 @default(now()) @db.Timestamptz(0)
 
   progression_history progression_history[]

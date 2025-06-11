@@ -93,6 +93,7 @@ router.get(
 							name: true,
 							equipment: true,
 							category: true,
+							videoUrl: true,
 						},
 					},
 				},

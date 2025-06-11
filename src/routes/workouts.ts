@@ -135,11 +135,11 @@ router.get(
 				});
 			}
 
-			logger.debug("Fetched workouts for program", {
-				programId: parsedProgramId,
-				userId: currentUser.id,
-				workoutCount: workouts.length,
-			});
+			// logger.debug("Fetched workouts for program", {
+			// 	programId: parsedProgramId,
+			// 	userId: currentUser.id,
+			// 	workoutCount: workouts.length,
+			// });
 
 			res.status(200).json(workouts);
 		} catch (error) {
@@ -197,11 +197,11 @@ router.get(
 				return res.status(200).json([]); // Return empty array instead of error object
 			}
 
-			logger.debug("Fetching completed exercises for workout", {
-				workoutId: parsedWorkoutId,
-				userId,
-				exerciseCount: workoutExercises.length,
-			});
+			// logger.debug("Fetching completed exercises for workout", {
+			// 	workoutId: parsedWorkoutId,
+			// 	userId,
+			// 	exerciseCount: workoutExercises.length,
+			// });
 
 			const completedExercises = await prisma.$queryRaw<CompletedExercise[]>`
 			-- First part: Latest completed exercises by the user
@@ -290,15 +290,15 @@ router.get(
 				superset_with: supersetMap[exercise.exercise_id] || null,
 			}));
 
-			logger.debug("Successfully built workout exercises response", {
-				workoutId: parsedWorkoutId,
-				userId,
-				exerciseCount: finalExercises.length,
-				completedExercisesCount: completedExercises.filter(
-					(ce) => ce.source === "completed",
-				).length,
-				supersetCount: supersets.length,
-			});
+			// logger.debug("Successfully built workout exercises response", {
+			// 	workoutId: parsedWorkoutId,
+			// 	userId,
+			// 	exerciseCount: finalExercises.length,
+			// 	completedExercisesCount: completedExercises.filter(
+			// 		(ce) => ce.source === "completed",
+			// 	).length,
+			// 	supersetCount: supersets.length,
+			// });
 
 			return res.status(200).json(finalExercises);
 		} catch (error) {
@@ -375,14 +375,14 @@ router.post(
 			const isAutomated = workout.programs?.programType === "AUTOMATED";
 			const programGoal = workout.programs?.goal || "HYPERTROPHY";
 
-			logger.debug("Processing workout completion", {
-				workoutId: Number(exerciseData[0].workoutId),
-				userId: Number(exerciseData[0].userId),
-				programId,
-				programType: workout.programs?.programType,
-				exerciseCount: exerciseData.length,
-				isAutomated,
-			});
+			// logger.debug("Processing workout completion", {
+			// 	workoutId: Number(exerciseData[0].workoutId),
+			// 	userId: Number(exerciseData[0].userId),
+			// 	programId,
+			// 	programType: workout.programs?.programType,
+			// 	exerciseCount: exerciseData.length,
+			// 	isAutomated,
+			// });
 
 			// Process each exercise in a transaction
 			const result = await prisma.$transaction(async (prisma) => {
@@ -507,16 +507,16 @@ router.post(
 							equipmentSettings,
 						);
 
-						logger.debug("Calculated progression for exercise", {
-							exerciseId: Number(data.exerciseId),
-							exerciseName: exercise.name,
-							oldWeight: Number(data.weight),
-							newWeight: progressionResult.newWeight,
-							oldReps: data.reps,
-							newReps: progressionResult.newReps,
-							rating: data.rating,
-							isAdaptive: useAdaptiveIncrements,
-						});
+						// logger.debug("Calculated progression for exercise", {
+						// 	exerciseId: Number(data.exerciseId),
+						// 	exerciseName: exercise.name,
+						// 	oldWeight: Number(data.weight),
+						// 	newWeight: progressionResult.newWeight,
+						// 	oldReps: data.reps,
+						// 	newReps: progressionResult.newReps,
+						// 	rating: data.rating,
+						// 	isAdaptive: useAdaptiveIncrements,
+						// });
 
 						// Save progression result for response
 						progressionResults.push({
@@ -660,8 +660,6 @@ router.post(
 	},
 );
 
-// Add this right after your /workouts/completeWorkout route
-
 router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.user?.id;
@@ -685,13 +683,13 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			useAdaptiveIncrements = true, // Default to true if not provided
 		} = req.body;
 
-		logger.debug("Processing exercise rating", {
-			userId: parsedUserId,
-			exerciseId,
-			workoutId,
-			rating,
-			useAdaptiveIncrements,
-		});
+		// logger.debug("Processing exercise rating", {
+		// 	userId: parsedUserId,
+		// 	exerciseId,
+		// 	workoutId,
+		// 	rating,
+		// 	useAdaptiveIncrements,
+		// });
 
 		// Get the exercise details
 		const exercise = await prisma.exercises.findUnique({
@@ -828,15 +826,15 @@ router.post("/workouts/rate-exercise", authenticateToken, async (req, res) => {
 			equipmentSettings,
 		);
 
-		logger.debug("Calculated progression from exercise rating", {
-			exerciseId,
-			userId: parsedUserId,
-			oldWeight: Number(weight),
-			newWeight: progressionResult.newWeight,
-			oldReps: reps,
-			newReps: progressionResult.newReps,
-			adaptiveIncrements: useAdaptiveIncrements,
-		});
+		// logger.debug("Calculated progression from exercise rating", {
+		// 	exerciseId,
+		// 	userId: parsedUserId,
+		// 	oldWeight: Number(weight),
+		// 	newWeight: progressionResult.newWeight,
+		// 	oldReps: reps,
+		// 	newReps: progressionResult.newReps,
+		// 	adaptiveIncrements: useAdaptiveIncrements,
+		// });
 
 		// Record progression history
 		await prisma.progression_history.create({

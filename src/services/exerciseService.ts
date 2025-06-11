@@ -79,6 +79,7 @@ export const exerciseService = {
 			minWeight: toDecimal(input.minWeight),
 			maxWeight: toDecimal(input.maxWeight),
 			notes: notes,
+			videoUrl: null
 		});
 		return formatExerciseData(exercise);
 	},

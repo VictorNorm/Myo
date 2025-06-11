@@ -294,15 +294,18 @@ router.get(
 			// Get all dates within the period
 			const allDates: Record<string, number> = {};
 			if (Object.keys(dateFilter).length > 0) {
-				const startDate = new Date(dateFilter.gte);
-				const endDate = new Date(dateFilter.lte);
-				for (
-					let date = new Date(startDate);
-					date <= endDate;
-					date.setDate(date.getDate() + 1)
-				) {
-					const dateStr = date.toISOString().split("T")[0];
+				// Assuming dateFilter.gte and dateFilter.lte are Date objects representing UTC boundaries
+				const currentDate = new Date(
+					`${dateFilter.gte.toISOString().split("T")[0]}T00:00:00.000Z`,
+				); // Start of day UTC
+				const finalDate = new Date(
+					`${dateFilter.lte.toISOString().split("T")[0]}T00:00:00.000Z`,
+				); // Start of day UTC
+
+				while (currentDate <= finalDate) {
+					const dateStr = currentDate.toISOString().split("T")[0]; // YYYY-MM-DD (UTC)
 					allDates[dateStr] = volumeByDate[dateStr] || 0;
+					currentDate.setUTCDate(currentDate.getUTCDate() + 1); // Advance by one day in UTC
 				}
 			}
 
