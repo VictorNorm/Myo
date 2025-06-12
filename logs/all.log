@@ -2085,3 +2085,117 @@
 2025-06-11 10:13:24 debug: Successfully built workout template
 2025-06-11 10:14:48 info: SIGINT received, closing database connection...
 2025-06-11 10:14:48 info: Database connection closed successfully.
+2025-06-11 10:22:30 info: Application starting...
+2025-06-11 10:22:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:22:30 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:22:30 info: Successfully connected to the database
+2025-06-11 10:23:32 debug: Fetched user settings
+2025-06-11 10:23:45 debug: Processing workout template
+2025-06-11 10:23:45 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:23:45 debug: Successfully built workout template
+2025-06-11 10:24:44 info: SIGINT received, closing database connection...
+2025-06-11 10:24:44 info: Database connection closed successfully.
+2025-06-11 10:24:46 info: Application starting...
+2025-06-11 10:24:46 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:24:46 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:24:46 info: Successfully connected to the database
+2025-06-11 10:24:51 debug: Processing workout template
+2025-06-11 10:24:51 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:24:51 debug: Successfully built workout template
+2025-06-11 10:25:11 debug: Processing workout template
+2025-06-11 10:25:11 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:25:11 debug: Successfully built workout template
+2025-06-11 10:28:20 debug: Processing workout template
+2025-06-11 10:28:20 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:28:20 debug: Successfully built workout template
+2025-06-11 10:28:35 info: SIGINT received, closing database connection...
+2025-06-11 10:28:35 info: Database connection closed successfully.
+2025-06-11 10:28:42 info: Application starting...
+2025-06-11 10:28:42 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:28:42 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:28:42 info: Successfully connected to the database
+2025-06-11 10:28:57 debug: Processing workout template
+2025-06-11 10:28:57 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:28:57 debug: Successfully built workout template
+2025-06-11 10:28:58 debug: Processing workout template
+2025-06-11 10:28:58 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:28:58 debug: Successfully built workout template
+2025-06-11 10:29:00 debug: Processing workout template
+2025-06-11 10:29:00 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:29:00 debug: Successfully built workout template
+2025-06-11 10:44:21 info: SIGINT received, closing database connection...
+2025-06-11 10:44:21 info: Database connection closed successfully.
+2025-06-11 10:44:23 info: Application starting...
+2025-06-11 10:44:24 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:44:24 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:44:24 info: Successfully connected to the database
+2025-06-11 10:44:28 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-11 10:44:28 debug: Processing workout template
+2025-06-11 10:44:28 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:44:28 debug: Successfully built workout template
+2025-06-11 10:54:46 info: SIGINT received, closing database connection...
+2025-06-11 10:54:46 info: Database connection closed successfully.
+2025-06-11 10:54:50 info: Application starting...
+2025-06-11 10:54:50 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:54:50 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:54:50 info: Successfully connected to the database
+2025-06-11 10:55:11 debug: Fetched user settings
+2025-06-11 10:55:40 debug: Processing workout template
+2025-06-11 10:55:40 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:55:40 debug: Successfully built workout template
+2025-06-11 10:56:03 info: SIGINT received, closing database connection...
+2025-06-11 10:56:03 info: Database connection closed successfully.
+2025-06-11 10:56:05 info: Application starting...
+2025-06-11 10:56:05 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-11 10:56:05 info: Server is running on http://0.0.0.0:3000
+2025-06-11 10:56:05 info: Successfully connected to the database
+2025-06-11 10:56:12 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-11 10:56:12 warn: 🔍 Backend - Total exercises found:
+2025-06-11 10:56:12 warn: 🔍 Backend - First exercise raw:
+2025-06-11 10:56:12 debug: Processing workout template
+2025-06-11 10:56:12 debug: Retrieved exercise baselines for automated program
+2025-06-11 10:56:12 debug: Successfully built workout template
+2025-06-11 10:58:25 info: SIGINT received, closing database connection...
+2025-06-11 10:58:25 info: Database connection closed successfully.
+2025-06-12 10:27:39 info: Application starting...
+2025-06-12 10:27:39 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-12 10:27:39 info: Server is running on http://0.0.0.0:3000
+2025-06-12 10:27:39 info: Successfully connected to the database
+2025-06-12 10:32:01 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-12 10:32:01 warn: 🔍 Backend - Total exercises found:
+2025-06-12 10:32:01 warn: 🔍 Backend - First exercise raw:
+2025-06-12 10:32:01 debug: Processing workout template
+2025-06-12 10:32:01 debug: Retrieved exercise baselines for automated program
+2025-06-12 10:32:01 debug: Successfully built workout template
+2025-06-12 10:33:29 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-12 10:33:29 warn: 🔍 Backend - Total exercises found:
+2025-06-12 10:33:29 warn: 🔍 Backend - First exercise raw:
+2025-06-12 10:33:29 debug: Processing workout template
+2025-06-12 10:33:29 debug: Retrieved exercise baselines for automated program
+2025-06-12 10:33:29 debug: Successfully built workout template
+2025-06-12 10:40:23 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-12 10:40:23 warn: 🔍 Backend - Total exercises found:
+2025-06-12 10:40:23 warn: 🔍 Backend - First exercise raw:
+2025-06-12 10:40:23 debug: Processing workout template
+2025-06-12 10:40:23 debug: Retrieved exercise baselines for automated program
+2025-06-12 10:40:23 debug: Successfully built workout template
+2025-06-12 10:40:59 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-12 10:40:59 warn: 🔍 Backend - Total exercises found:
+2025-06-12 10:40:59 warn: 🔍 Backend - First exercise raw:
+2025-06-12 10:40:59 debug: Processing workout template
+2025-06-12 10:40:59 debug: Retrieved exercise baselines for automated program
+2025-06-12 10:40:59 debug: Successfully built workout template
+2025-06-12 10:49:30 info: SIGINT received, closing database connection...
+2025-06-12 10:49:30 info: Database connection closed successfully.
+2025-06-12 10:49:33 info: Application starting...
+2025-06-12 10:49:33 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-12 10:49:33 info: Server is running on http://0.0.0.0:3000
+2025-06-12 10:49:33 info: Successfully connected to the database
+2025-06-12 10:49:37 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-12 10:49:37 warn: 🔍 Backend - Total exercises found:
+2025-06-12 10:49:37 warn: 🔍 Backend - First exercise raw:
+2025-06-12 10:49:37 debug: Processing workout template
+2025-06-12 10:49:37 debug: Retrieved exercise baselines for automated program
+2025-06-12 10:49:37 debug: Successfully built workout template
+2025-06-12 10:50:09 info: SIGINT received, closing database connection...
+2025-06-12 10:50:09 info: Database connection closed successfully.

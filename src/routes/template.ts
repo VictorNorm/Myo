@@ -101,6 +101,11 @@ router.get(
 					order: "asc",
 				},
 			});
+			logger.warn(
+				'🔍 Backend - Sample exercise with video URL:', workoutExercises[0]?.exercises,
+			);
+			logger.warn('🔍 Backend - Total exercises found:', workoutExercises.length);
+			logger.warn('🔍 Backend - First exercise raw:', workoutExercises[0]);
 
 			// Get supersets for this workout
 			const supersets = await prisma.supersets.findMany({
@@ -229,10 +234,7 @@ router.get(
 					weight: weightValue, // Use the numerical value in the response
 					order: exercise.order,
 					exercises: {
-						id: exercise.exercises.id,
-						name: exercise.exercises.name,
-						equipment: exercise.exercises.equipment,
-						category: exercise.exercises.category,
+						...exercise.exercises
 					},
 					equipment_type: exercise.exercises.equipment,
 					is_compound: exercise.exercises.category === "COMPOUND",
