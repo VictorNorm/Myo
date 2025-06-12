@@ -537,6 +537,8 @@ router.post(
 			setActive = false, // New parameter, defaults to false
 		} = req.body;
 
+		logger.info("DEBUG: User object before authorization check", { user: req.user });
+
 		// Validate input
 		if (
 			!programName ||

@@ -2199,3 +2199,20 @@
 2025-06-12 10:49:37 debug: Successfully built workout template
 2025-06-12 10:50:09 info: SIGINT received, closing database connection...
 2025-06-12 10:50:09 info: Database connection closed successfully.
+2025-06-12 13:30:23 info: Application starting...
+2025-06-12 13:30:23 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-12 13:30:23 info: Server is running on http://0.0.0.0:3000
+2025-06-12 13:30:23 info: Successfully connected to the database
+2025-06-12 13:30:29 debug: Fetched all users
+2025-06-12 13:30:29 debug: Fetched all users
+2025-06-12 13:30:54 info: Created program with workouts
+2025-06-12 13:32:27 info: SIGINT received, closing database connection...
+2025-06-12 13:32:27 info: Database connection closed successfully.
+2025-06-12 13:32:30 info: Application starting...
+2025-06-12 13:32:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-12 13:32:30 info: Server is running on http://0.0.0.0:3000
+2025-06-12 13:32:30 info: Successfully connected to the database
+2025-06-12 13:32:47 info: DEBUG: User object before authorization check
+2025-06-12 13:32:47 info: Created program with workouts
+2025-06-12 13:39:47 info: SIGINT received, closing database connection...
+2025-06-12 13:39:47 info: Database connection closed successfully.
