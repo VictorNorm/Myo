@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { exerciseService } from "../services/exerciseService";
 import { body, validationResult } from "express-validator";
+import logger from "../services/logger";
 
 export const exerciseValidators = {
 	create: [
@@ -61,7 +62,7 @@ export const exerciseController = {
 			const exercises = await exerciseService.getAllExercises();
 			res.status(200).json(exercises);
 		} catch (error) {
-			console.error("Error fetching exercises:", error);
+			logger.error("Error fetching exercises:", error);
 			res.status(500).json({
 				error: "Failed to fetch exercises",
 				details: error instanceof Error ? error.message : "Unknown error",
@@ -85,7 +86,7 @@ export const exerciseController = {
 
 			res.status(200).json(exercise);
 		} catch (error) {
-			console.error("Error fetching exercise:", error);
+			logger.error("Error fetching exercise:", error);
 			res.status(500).json({
 				error: "Failed to fetch exercise",
 				details: error instanceof Error ? error.message : "Unknown error",
@@ -103,7 +104,7 @@ export const exerciseController = {
 			const exercise = await exerciseService.createExercise(req.body);
 			res.status(201).json(exercise);
 		} catch (error) {
-			console.error("Error creating exercise:", error);
+			logger.error("Error creating exercise:", error);
 			res.status(500).json({
 				error: "Failed to create exercise",
 				details: error instanceof Error ? error.message : "Unknown error",
@@ -127,7 +128,7 @@ export const exerciseController = {
 			const exercise = await exerciseService.updateExercise(id, req.body);
 			res.status(200).json(exercise);
 		} catch (error) {
-			console.error("Error updating exercise:", error);
+			logger.error("Error updating exercise:", error);
 			res.status(500).json({
 				error: "Failed to update exercise",
 				details: error instanceof Error ? error.message : "Unknown error",
@@ -146,7 +147,7 @@ export const exerciseController = {
 			await exerciseService.deleteExercise(id);
 			res.status(204).send();
 		} catch (error) {
-			console.error("Error deleting exercise:", error);
+			logger.error("Error deleting exercise:", error);
 			res.status(500).json({
 				error: "Failed to delete exercise",
 				details: error instanceof Error ? error.message : "Unknown error",

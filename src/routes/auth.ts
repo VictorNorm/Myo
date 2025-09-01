@@ -1,4 +1,5 @@
-import { Router, Request } from "express";
+import { Router, Request, Response } from "express";
+import type { AuthenticatedUser } from "../../types/types";
 import { PrismaClient } from "@prisma/client";
 // biome-ignore lint/style/useImportType: <explanation>
 import { Prisma } from "@prisma/client";
@@ -66,12 +67,12 @@ router.post(
 		body("firstName").notEmpty().withMessage("First name is required"),
 		body("lastName").notEmpty().withMessage("Last name is required"),
 		body("email").isEmail().withMessage("Invalid email format"),
-		body("password")
-			.isLength({ min: 4 })
-			.withMessage("Password must be at least 4 characters long"),
+			body("password")
+				.isLength({ min: 8 })
+				.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+				.withMessage("Password must be at least 8 characters with uppercase, lowercase, number, and special character"),
 	],
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	async (req: any, res: any) => {
+	async (req: Request, res: Response) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({
@@ -224,8 +225,7 @@ router.get("/verify-email", async (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	passport.authenticate("local", async (err: any, user: any, info: any) => {
+	passport.authenticate("local", async (err: Error | null, user: any, info: object) => {
 		if (err) {
 			return next(err); // Handle errors from Passport
 		}

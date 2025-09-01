@@ -2216,3 +2216,209 @@
 2025-06-12 13:32:47 info: Created program with workouts
 2025-06-12 13:39:47 info: SIGINT received, closing database connection...
 2025-06-12 13:39:47 info: Database connection closed successfully.
+2025-06-13 12:05:36 info: Application starting...
+2025-06-13 12:05:36 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-06-13 12:05:36 info: Server is running on http://0.0.0.0:3000
+2025-06-13 12:05:36 info: Successfully connected to the database
+2025-06-13 12:07:44 debug: Fetched user settings
+2025-06-13 12:07:54 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-13 12:07:54 warn: 🔍 Backend - Total exercises found:
+2025-06-13 12:07:54 warn: 🔍 Backend - First exercise raw:
+2025-06-13 12:07:54 debug: Processing workout template
+2025-06-13 12:07:54 debug: Retrieved last completed exercises for manual program
+2025-06-13 12:07:54 debug: Successfully built workout template
+2025-06-13 12:07:56 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-13 12:07:56 warn: 🔍 Backend - Total exercises found:
+2025-06-13 12:07:56 warn: 🔍 Backend - First exercise raw:
+2025-06-13 12:07:56 debug: Processing workout template
+2025-06-13 12:07:56 debug: Retrieved last completed exercises for manual program
+2025-06-13 12:07:56 debug: Successfully built workout template
+2025-06-13 12:08:08 info: Program activated, other active programs set to pending
+2025-06-13 12:08:12 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-13 12:08:12 warn: 🔍 Backend - Total exercises found:
+2025-06-13 12:08:12 warn: 🔍 Backend - First exercise raw:
+2025-06-13 12:08:12 debug: Processing workout template
+2025-06-13 12:08:12 debug: Retrieved exercise baselines for automated program
+2025-06-13 12:08:12 debug: Successfully built workout template
+2025-06-13 12:23:58 debug: Fetched user settings
+2025-06-13 12:52:02 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-13 12:52:02 warn: 🔍 Backend - Total exercises found:
+2025-06-13 12:52:02 warn: 🔍 Backend - First exercise raw:
+2025-06-13 12:52:02 debug: Processing workout template
+2025-06-13 12:52:02 debug: Retrieved exercise baselines for automated program
+2025-06-13 12:52:02 debug: Successfully built workout template
+2025-06-13 12:55:36 debug: Fetched user settings
+2025-06-13 12:55:47 warn: 🔍 Backend - Sample exercise with video URL:
+2025-06-13 12:55:47 warn: 🔍 Backend - Total exercises found:
+2025-06-13 12:55:47 warn: 🔍 Backend - First exercise raw:
+2025-06-13 12:55:47 debug: Processing workout template
+2025-06-13 12:55:47 debug: Retrieved exercise baselines for automated program
+2025-06-13 12:55:47 debug: Successfully built workout template
+2025-06-13 12:56:09 info: Workout completed successfully
+2025-09-01 10:00:14 info: Application starting...
+2025-09-01 10:00:14 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 10:00:14 info: Server is running on http://0.0.0.0:3000
+2025-09-01 10:00:15 info: Successfully connected to the database
+2025-09-01 12:37:10 info: Application starting...
+2025-09-01 12:37:10 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 12:37:10 info: Server is running on http://0.0.0.0:3000
+2025-09-01 12:37:10 info: Successfully connected to the database
+2025-09-01 12:39:50 debug: Fetched workouts for program
+2025-09-01 12:39:51 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 12:39:51 warn: 🔍 Backend - Total exercises found:
+2025-09-01 12:39:51 warn: 🔍 Backend - First exercise raw:
+2025-09-01 12:39:51 debug: Processing workout template
+2025-09-01 12:39:51 debug: Retrieved exercise baselines for automated program
+2025-09-01 12:39:51 debug: Successfully built workout template
+2025-09-01 12:40:46 info: Program activated, other active programs set to pending
+2025-09-01 12:40:48 debug: Fetched workouts for program
+2025-09-01 12:40:49 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 12:40:49 warn: 🔍 Backend - Total exercises found:
+2025-09-01 12:40:49 warn: 🔍 Backend - First exercise raw:
+2025-09-01 12:40:49 debug: Processing workout template
+2025-09-01 12:40:49 debug: Retrieved exercise baselines for automated program
+2025-09-01 12:40:49 debug: Successfully built workout template
+2025-09-01 12:40:52 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 12:40:52 warn: 🔍 Backend - Total exercises found:
+2025-09-01 12:40:52 warn: 🔍 Backend - First exercise raw:
+2025-09-01 12:40:52 debug: Processing workout template
+2025-09-01 12:40:52 debug: Retrieved exercise baselines for automated program
+2025-09-01 12:40:52 debug: Successfully built workout template
+2025-09-01 12:41:04 info: Program activated, other active programs set to pending
+2025-09-01 12:41:10 debug: Fetched workouts for program
+2025-09-01 12:41:11 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 12:41:11 warn: 🔍 Backend - Total exercises found:
+2025-09-01 12:41:11 warn: 🔍 Backend - First exercise raw:
+2025-09-01 12:41:11 debug: Processing workout template
+2025-09-01 12:41:11 debug: Retrieved exercise baselines for automated program
+2025-09-01 12:41:11 debug: Successfully built workout template
+2025-09-01 12:41:59 info: SIGINT received, closing database connection...
+2025-09-01 12:41:59 info: Database connection closed successfully.
+2025-09-01 13:13:54 info: Application starting...
+2025-09-01 13:13:54 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 13:13:54 info: Server is running on http://0.0.0.0:3000
+2025-09-01 13:13:54 info: Successfully connected to the database
+2025-09-01 13:15:54 debug: Fetched workouts for program
+2025-09-01 13:15:54 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:15:54 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:15:54 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:15:54 debug: Processing workout template
+2025-09-01 13:15:54 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:15:54 debug: Successfully built workout template
+2025-09-01 13:16:02 info: Program activated, other active programs set to pending
+2025-09-01 13:16:04 debug: Fetched workouts for program
+2025-09-01 13:16:05 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:16:05 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:16:05 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:16:05 debug: Processing workout template
+2025-09-01 13:16:05 debug: Retrieved last completed exercises for manual program
+2025-09-01 13:16:05 debug: Successfully built workout template
+2025-09-01 13:16:09 info: Program activated, other active programs set to pending
+2025-09-01 13:16:12 debug: Fetched workouts for program
+2025-09-01 13:16:13 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:16:13 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:16:13 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:16:13 debug: Processing workout template
+2025-09-01 13:16:13 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:16:13 debug: Successfully built workout template
+2025-09-01 13:16:16 debug: Fetched workouts for program
+2025-09-01 13:16:33 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:16:33 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:16:33 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:16:33 debug: Processing workout template
+2025-09-01 13:16:33 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:16:33 debug: Successfully built workout template
+2025-09-01 13:16:42 debug: Fetched workouts for program
+2025-09-01 13:17:07 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:17:07 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:17:07 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:17:07 debug: Processing workout template
+2025-09-01 13:17:07 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:17:07 debug: Successfully built workout template
+2025-09-01 13:17:11 debug: Fetched workouts for program
+2025-09-01 13:17:12 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:17:12 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:17:12 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:17:12 debug: Processing workout template
+2025-09-01 13:17:12 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:17:12 debug: Successfully built workout template
+2025-09-01 13:17:25 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:17:25 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:17:25 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:17:25 debug: Processing workout template
+2025-09-01 13:17:25 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:17:25 debug: Successfully built workout template
+2025-09-01 13:17:28 debug: Fetched workouts for program
+2025-09-01 13:18:01 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:18:01 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:18:01 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:18:01 debug: Processing workout template
+2025-09-01 13:18:01 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:18:01 debug: Successfully built workout template
+2025-09-01 13:18:04 debug: Fetched workouts for program
+2025-09-01 13:23:09 info: SIGINT received, closing database connection...
+2025-09-01 13:23:09 info: Database connection closed successfully.
+2025-09-01 13:23:12 info: Application starting...
+2025-09-01 13:23:12 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 13:23:12 info: Server is running on http://0.0.0.0:3000
+2025-09-01 13:23:12 info: Successfully connected to the database
+2025-09-01 13:23:18 info: Program activated, other active programs set to pending
+2025-09-01 13:23:20 info: Program activated, other active programs set to pending
+2025-09-01 13:23:23 debug: Fetched workouts for program
+2025-09-01 13:23:24 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:23:24 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:23:24 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:23:24 debug: Processing workout template
+2025-09-01 13:23:24 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:23:24 debug: Successfully built workout template
+2025-09-01 13:23:27 debug: Processing workout completion
+2025-09-01 13:23:27 debug: Fetched workouts for program
+2025-09-01 13:23:27 info: Workout completed successfully
+2025-09-01 13:23:31 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:23:31 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:23:31 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:23:31 debug: Processing workout template
+2025-09-01 13:23:31 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:23:31 debug: Successfully built workout template
+2025-09-01 13:23:41 debug: Fetched workouts for program
+2025-09-01 13:23:41 debug: Processing workout completion
+2025-09-01 13:23:41 info: Workout completed successfully
+2025-09-01 13:23:43 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 13:23:43 warn: 🔍 Backend - Total exercises found:
+2025-09-01 13:23:43 warn: 🔍 Backend - First exercise raw:
+2025-09-01 13:23:43 debug: Processing workout template
+2025-09-01 13:23:43 debug: Retrieved exercise baselines for automated program
+2025-09-01 13:23:43 debug: Successfully built workout template
+2025-09-01 14:00:16 info: SIGINT received, closing database connection...
+2025-09-01 14:00:16 info: Database connection closed successfully.
+2025-09-01 14:04:44 info: Application starting...
+2025-09-01 14:04:44 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 14:04:44 info: Server is running on http://0.0.0.0:3000
+2025-09-01 14:04:44 info: Successfully connected to the database
+2025-09-01 14:05:01 debug: Fetching user settings
+2025-09-01 14:05:01 debug: Fetched user settings successfully
+2025-09-01 14:09:56 info: SIGINT received, closing database connection...
+2025-09-01 14:09:56 info: Database connection closed successfully.
+2025-09-01 14:09:59 info: Application starting...
+2025-09-01 14:09:59 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-01 14:09:59 info: Server is running on http://0.0.0.0:3000
+2025-09-01 14:09:59 info: Successfully connected to the database
+2025-09-01 14:10:06 debug: Fetched workouts for program
+2025-09-01 14:10:06 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 14:10:06 warn: 🔍 Backend - Total exercises found:
+2025-09-01 14:10:06 warn: 🔍 Backend - First exercise raw:
+2025-09-01 14:10:06 debug: Processing workout template
+2025-09-01 14:10:06 debug: Retrieved exercise baselines for automated program
+2025-09-01 14:10:06 debug: Successfully built workout template
+2025-09-01 14:10:12 debug: Fetched workouts for program
+2025-09-01 14:10:12 debug: Processing workout completion
+2025-09-01 14:10:12 info: Workout completed successfully
+2025-09-01 14:10:13 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-01 14:10:13 warn: 🔍 Backend - Total exercises found:
+2025-09-01 14:10:13 warn: 🔍 Backend - First exercise raw:
+2025-09-01 14:10:13 debug: Processing workout template
+2025-09-01 14:10:13 debug: Retrieved exercise baselines for automated program
+2025-09-01 14:10:13 debug: Successfully built workout template
+2025-09-01 14:10:20 debug: Fetched workouts for program
+2025-09-01 14:10:25 info: SIGINT received, closing database connection...
+2025-09-01 14:10:25 info: Database connection closed successfully.

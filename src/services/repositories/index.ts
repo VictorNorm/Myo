@@ -1,2 +1,7 @@
 // Export all repositories
 export * from "./exerciseRepository";
+export * from "./workoutRepository";
+export * from "./muscleGroupRepository";
+export * from "./userRepository";
+export * from "./userSettingsRepository";
+export * from "./progressionRepository";

@@ -75,7 +75,7 @@ router.post("/reset-password", async (req, res) => {
 		}
 
 		// Verify the provided token against the hashed token in the database
-		const isValidToken = bcrypt.compare(token, user.resetToken);
+		const isValidToken = await bcrypt.compare(token, user.resetToken);
 
 		if (!isValidToken) {
 			logger.warn("Invalid reset token verification", {
