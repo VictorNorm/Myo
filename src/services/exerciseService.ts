@@ -22,6 +22,18 @@ interface UpdateExerciseInput {
 	notes?: string | null;
 }
 
+interface UpsertExerciseInput {
+	id: number;
+	sets: number;
+	reps: number;
+	weight: number;
+}
+
+interface SupersetInput {
+	first_exercise_id: number;
+	second_exercise_id: number;
+}
+
 interface MuscleGroupJoin {
 	exercise_id: number;
 	muscle_group_id: number;
@@ -104,5 +116,17 @@ export const exerciseService = {
 
 	deleteExercise: async (id: number) => {
 		return exerciseRepository.delete(id);
+	},
+
+	upsertExercisesToWorkout: async (
+		workoutId: number,
+		exercises: UpsertExerciseInput[],
+		supersets?: SupersetInput[]
+	) => {
+		return exerciseRepository.upsertExercisesToWorkout(
+			workoutId,
+			exercises,
+			supersets
+		);
 	},
 };

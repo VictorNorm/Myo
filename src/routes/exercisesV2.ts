@@ -14,4 +14,11 @@ router.post("/api/v2/exercises", exerciseValidators.create, exerciseController.c
 router.put("/api/v2/exercises/:id", exerciseValidators.update, exerciseController.updateExercise);
 router.delete("/api/v2/exercises/:id", exerciseController.deleteExercise);
 
+// Upsert exercises to workout (add/update exercises within a specific workout)
+router.post(
+  "/api/v2/exercises/upsertExercisesToWorkout",
+  exerciseValidators.upsertExercisesToWorkout,
+  exerciseController.upsertExercisesToWorkout
+);
+
 export default router;
