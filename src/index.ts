@@ -1,18 +1,18 @@
 import express from "express";
 import auth from "./routes/auth";
-import programs from "./routes/programs";
+import programsV2 from "./routes/programsV2";
 import workoutsV2 from "./routes/workoutsV2";
 import exercisesV2 from "./routes/exercisesV2";
 import usersV2 from "./routes/usersV2";
 import passport from "passport";
 import cors from "cors";
 import helmet from "helmet";
-import password from "./routes/password";
+import passwordV2 from "./routes/passwordV2";
 import muscleGroupsV2 from "./routes/muscleGroupsV2";
 import progressionV2 from "./routes/progressionV2";
-import template from "./routes/template";
+import templateV2 from "./routes/templateV2";
 import userSettingsV2 from "./routes/userSettingsV2";
-import stats from "./routes/stats";
+import statsV2 from "./routes/statsV2";
 import { errorHandler } from "./utils/errorHandler";
 import logger from "./services/logger";
 import httpLogger from "./middleware/httpLogger";
@@ -65,15 +65,15 @@ app.options("*", cors());
 
 // Apply routes
 app.use(auth);
-app.use(programs);
+app.use(programsV2);
 app.use(workoutsV2);
 app.use(usersV2);
-app.use(password);
+app.use(passwordV2);
 app.use(muscleGroupsV2);
 app.use(progressionV2);
-app.use(template);
+app.use(templateV2);
 app.use(userSettingsV2);
-app.use(stats);
+app.use(statsV2);
 app.use(exercisesV2);
 
 app.get("/", (req, res) => {

@@ -2422,3 +2422,90 @@
 2025-09-01 14:10:20 debug: Fetched workouts for program
 2025-09-01 14:10:25 info: SIGINT received, closing database connection...
 2025-09-01 14:10:25 info: Database connection closed successfully.
+2025-09-02 14:00:27 info: Application starting...
+2025-09-02 14:00:27 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-02 14:00:27 info: Server is running on http://0.0.0.0:3000
+2025-09-02 14:00:28 info: Successfully connected to the database
+2025-09-02 14:00:32 debug: Fetched programs for user
+2025-09-02 14:00:32 debug: Retrieved next workout
+2025-09-02 14:00:33 debug: Fetched workouts for program
+2025-09-02 14:00:33 debug: Retrieved next workout
+2025-09-02 14:00:34 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-02 14:00:34 warn: 🔍 Backend - Total exercises found:
+2025-09-02 14:00:34 warn: 🔍 Backend - First exercise raw:
+2025-09-02 14:00:34 debug: Processing workout template
+2025-09-02 14:00:34 debug: Retrieved exercise baselines for automated program
+2025-09-02 14:00:34 debug: Successfully built workout template
+2025-09-02 14:00:36 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-02 14:00:36 warn: 🔍 Backend - Total exercises found:
+2025-09-02 14:00:36 warn: 🔍 Backend - First exercise raw:
+2025-09-02 14:00:36 debug: Processing workout template
+2025-09-02 14:00:36 debug: Retrieved exercise baselines for automated program
+2025-09-02 14:00:36 debug: Successfully built workout template
+2025-09-02 14:00:40 debug: Processing workout completion
+2025-09-02 14:00:41 debug: Fetched workouts for program
+2025-09-02 14:00:41 info: Workout completed successfully
+2025-09-02 14:00:41 debug: Retrieved next workout
+2025-09-02 14:00:46 debug: Fetched programs for user
+2025-09-02 14:00:46 debug: Retrieved next workout
+2025-09-02 14:00:47 debug: Fetched workouts for program
+2025-09-02 14:00:47 debug: Retrieved next workout
+2025-09-02 14:00:48 debug: Fetched programs for user
+2025-09-02 14:00:48 debug: Retrieved next workout
+2025-09-02 14:00:51 debug: Fetched programs for user
+2025-09-02 14:00:51 debug: Fetched programs for user
+2025-09-02 14:00:51 debug: Fetched programs for user
+2025-09-02 14:00:53 info: Updated program status
+2025-09-02 14:00:53 debug: Fetched programs for user
+2025-09-02 14:00:56 info: Updated program status
+2025-09-02 14:00:56 debug: Fetched programs for user
+2025-09-02 14:00:57 debug: Fetched programs for user
+2025-09-02 14:00:57 debug: Retrieved next workout
+2025-09-02 14:00:58 debug: Fetched workouts for program
+2025-09-02 14:00:58 debug: Retrieved next workout
+2025-09-02 14:00:59 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-02 14:00:59 warn: 🔍 Backend - Total exercises found:
+2025-09-02 14:00:59 warn: 🔍 Backend - First exercise raw:
+2025-09-02 14:00:59 debug: Processing workout template
+2025-09-02 14:00:59 debug: Retrieved exercise baselines for automated program
+2025-09-02 14:00:59 debug: Successfully built workout template
+2025-09-02 14:01:02 debug: Fetched workouts for program
+2025-09-02 14:01:02 debug: Processing workout completion
+2025-09-02 14:01:02 info: Workout completed successfully
+2025-09-02 14:01:02 debug: Retrieved next workout
+2025-09-02 14:01:04 debug: Fetched programs for user
+2025-09-02 14:01:04 debug: Retrieved next workout
+2025-09-02 14:01:05 debug: Fetched workouts for program
+2025-09-02 14:01:05 debug: Retrieved next workout
+2025-09-02 14:01:08 debug: Fetched programs for user
+2025-09-02 14:01:08 debug: Retrieved next workout
+2025-09-02 14:18:11 debug: Fetched workouts for program
+2025-09-02 14:18:11 debug: Retrieved next workout
+2025-09-02 14:18:11 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-02 14:18:11 warn: 🔍 Backend - Total exercises found:
+2025-09-02 14:18:11 warn: 🔍 Backend - First exercise raw:
+2025-09-02 14:18:11 debug: Processing workout template
+2025-09-02 14:18:11 debug: Retrieved exercise baselines for automated program
+2025-09-02 14:18:11 debug: Successfully built workout template
+2025-09-02 14:18:16 debug: Processing workout completion
+2025-09-02 14:18:16 debug: Fetched workouts for program
+2025-09-02 14:18:16 info: Workout completed successfully
+2025-09-02 14:18:16 debug: Retrieved next workout
+2025-09-02 14:18:17 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-02 14:18:17 warn: 🔍 Backend - Total exercises found:
+2025-09-02 14:18:17 warn: 🔍 Backend - First exercise raw:
+2025-09-02 14:18:17 debug: Processing workout template
+2025-09-02 14:18:17 debug: Retrieved exercise baselines for automated program
+2025-09-02 14:18:17 debug: Successfully built workout template
+2025-09-02 14:27:36 info: SIGINT received, closing database connection...
+2025-09-02 14:27:36 info: Database connection closed successfully.
+2025-09-02 14:27:39 info: Application starting...
+2025-09-02 14:27:39 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-02 14:27:39 info: Server is running on http://0.0.0.0:3000
+2025-09-02 14:27:39 info: Successfully connected to the database
+2025-09-02 14:27:40 debug: Fetched programs for user
+2025-09-02 14:27:40 debug: Retrieved next workout
+2025-09-02 14:27:43 debug: Fetched workouts for program
+2025-09-02 14:27:43 debug: Retrieved next workout
+2025-09-02 14:27:45 debug: Fetched programs for user
+2025-09-02 14:27:45 debug: Retrieved next workout
