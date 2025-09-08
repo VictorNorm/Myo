@@ -33,6 +33,19 @@ enum Goal {
   STRENGTH
 }
 
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum ProgramCategory {
+  STRENGTH
+  HYPERTROPHY
+  POWERLIFTING
+  GENERAL
+}
+
 enum Equipment {
   DUMBBELL
   BARBELL
@@ -63,6 +76,7 @@ model exercises {
   muscle_groups       exercise_muscle_groups[]
   workout_exercises   workout_exercises[]
   baselines    exercise_baselines[]
+  template_exercises  template_exercises[]
 }
 
 model exercise_baselines {
@@ -316,4 +330,62 @@ enum MuscleGroup {
   Glute
   Leg
   Compound
+}
+
+model program_templates {
+  id                Int                @id @default(autoincrement())
+  name              String
+  description       String?
+  difficulty_level  DifficultyLevel
+  frequency_per_week Int
+  duration_weeks    Int?
+  category          ProgramCategory
+  goal              Goal
+  program_type      ProgramType
+  is_active         Boolean            @default(true)
+  created_by_admin  Boolean            @default(true)
+  created_at        DateTime           @default(now()) @db.Timestamptz(0)
+  updated_at        DateTime           @default(now()) @updatedAt @db.Timestamptz(0)
+
+  // Relationships
+  template_workouts template_workouts[]
+
+  @@index([difficulty_level])
+  @@index([category])
+  @@index([goal])
+  @@index([is_active])
+}
+
+model template_workouts {
+  id               Int                @id @default(autoincrement())
+  template_id      Int
+  name             String
+  order            Int
+  created_at       DateTime           @default(now()) @db.Timestamptz(0)
+
+  // Relationships
+  program_template program_templates   @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  template_exercises template_exercises[]
+
+  @@index([template_id])
+  @@index([order])
+}
+
+model template_exercises {
+  id                   Int               @id @default(autoincrement())
+  template_workout_id  Int
+  exercise_id          Int
+  sets                 Int
+  reps                 Int
+  weight               Decimal?          @db.Decimal(10, 2)
+  order                Int
+  notes                String?
+
+  // Relationships  
+  template_workout     template_workouts @relation(fields: [template_workout_id], references: [id], onDelete: Cascade)
+  exercise             exercises         @relation(fields: [exercise_id], references: [id])
+
+  @@index([template_workout_id])
+  @@index([exercise_id])
+  @@index([order])
 }

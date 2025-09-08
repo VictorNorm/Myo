@@ -2930,3 +2930,46 @@
 2025-09-08 10:51:52 debug: Calculated volume data
 2025-09-08 10:52:44 info: SIGINT received, closing database connection...
 2025-09-08 10:52:44 info: Database connection closed successfully.
+2025-09-08 12:17:55 info: Application starting...
+2025-09-08 12:17:56 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-08 12:17:56 info: Server is running on http://0.0.0.0:3000
+2025-09-08 12:17:56 info: Successfully connected to the database
+2025-09-08 12:26:37 debug: Fetching user settings
+2025-09-08 12:26:37 debug: Fetched user settings successfully
+2025-09-08 12:28:28 debug: Fetched programs for user
+2025-09-08 12:28:28 debug: Retrieved next workout
+2025-09-08 12:28:29 debug: Fetched programs for user
+2025-09-08 12:28:29 debug: Fetched programs for user
+2025-09-08 12:28:29 debug: Fetched programs for user
+2025-09-08 12:28:30 debug: Fetched programs for user
+2025-09-08 12:28:30 debug: Fetched programs for user
+2025-09-08 12:28:30 debug: Calculated volume data
+2025-09-08 12:28:30 debug: Retrieved exercise progression data
+2025-09-08 12:28:30 debug: Calculated workout frequency data
+2025-09-08 12:28:30 debug: Calculated volume data
+2025-09-08 12:28:30 debug: Retrieved exercise progression data
+2025-09-08 12:28:30 debug: Calculated workout frequency data
+2025-09-08 12:28:35 debug: Fetched programs for user
+2025-09-08 12:28:35 debug: Retrieved next workout
+2025-09-08 12:28:36 debug: Fetched workouts for program
+2025-09-08 12:28:36 debug: Retrieved next workout
+2025-09-08 12:28:37 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-08 12:28:37 warn: 🔍 Backend - Total exercises found:
+2025-09-08 12:28:37 warn: 🔍 Backend - First exercise raw:
+2025-09-08 12:28:37 debug: Processing workout template
+2025-09-08 12:28:37 debug: Retrieved exercise baselines for automated program
+2025-09-08 12:28:37 debug: Successfully built workout template
+2025-09-08 12:28:40 debug: Processing workout completion
+2025-09-08 12:28:40 debug: Fetched workouts for program
+2025-09-08 12:28:40 info: Workout completed successfully
+2025-09-08 12:28:40 debug: Retrieved next workout
+2025-09-08 12:28:41 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-08 12:28:41 warn: 🔍 Backend - Total exercises found:
+2025-09-08 12:28:41 warn: 🔍 Backend - First exercise raw:
+2025-09-08 12:28:41 debug: Processing workout template
+2025-09-08 12:28:41 debug: Retrieved exercise baselines for automated program
+2025-09-08 12:28:41 debug: Successfully built workout template
+2025-09-08 12:28:44 debug: Fetched programs for user
+2025-09-08 12:28:44 debug: Retrieved next workout
+2025-09-08 12:45:42 info: SIGINT received, closing database connection...
+2025-09-08 12:45:42 info: Database connection closed successfully.

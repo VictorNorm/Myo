@@ -5,3 +5,4 @@ export * from "./muscleGroupController";
 export * from "./userController";
 export * from "./userSettingsController";
 export * from "./progressionController";
+export * from "./programTemplateController";

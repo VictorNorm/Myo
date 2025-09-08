@@ -13,6 +13,7 @@ import progressionV2 from "./routes/progressionV2";
 import templateV2 from "./routes/templateV2";
 import userSettingsV2 from "./routes/userSettingsV2";
 import statsV2 from "./routes/statsV2";
+import programTemplatesV2 from "./routes/programTemplatesV2";
 import { errorHandler } from "./utils/errorHandler";
 import logger from "./services/logger";
 import httpLogger from "./middleware/httpLogger";
@@ -75,6 +76,7 @@ app.use(templateV2);
 app.use(userSettingsV2);
 app.use(statsV2);
 app.use(exercisesV2);
+app.use(programTemplatesV2);
 
 app.get("/", (req, res) => {
 	res.json({ message: "Hello World" });

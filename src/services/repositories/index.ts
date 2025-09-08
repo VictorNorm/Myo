@@ -5,3 +5,4 @@ export * from "./muscleGroupRepository";
 export * from "./userRepository";
 export * from "./userSettingsRepository";
 export * from "./progressionRepository";
+export * from "./programTemplateRepository";
