@@ -17,6 +17,13 @@ router.post(
 	passwordController.forgotPassword
 );
 
+// V2 alias for forgot-password
+router.post(
+	"/api/v2/forgot-password",
+	passwordValidators.forgotPassword,
+	passwordController.forgotPassword
+);
+
 /**
  * POST /reset-password
  * Complete password reset using valid token
@@ -27,6 +34,13 @@ router.post(
  */
 router.post(
 	"/reset-password",
+	passwordValidators.resetPassword,
+	passwordController.resetPassword
+);
+
+// V2 alias for reset-password
+router.post(
+	"/api/v2/reset-password",
 	passwordValidators.resetPassword,
 	passwordController.resetPassword
 );

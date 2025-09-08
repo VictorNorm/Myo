@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import type { AuthenticatedUser } from "../../types/types";
 import { PrismaClient } from "@prisma/client";
 // biome-ignore lint/style/useImportType: <explanation>
@@ -60,105 +60,105 @@ function generateVerificationToken() {
 	return crypto.randomBytes(32).toString("hex");
 }
 
-router.post(
-	"/signup",
-	signupLimiter,
-	[
-		body("firstName").notEmpty().withMessage("First name is required"),
-		body("lastName").notEmpty().withMessage("Last name is required"),
-		body("email").isEmail().withMessage("Invalid email format"),
-			body("password")
-				.isLength({ min: 8 })
-				.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
-				.withMessage("Password must be at least 8 characters with uppercase, lowercase, number, and special character"),
-	],
-	async (req: Request, res: Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
+const signupValidation = [
+	body("firstName").notEmpty().withMessage("First name is required"),
+	body("lastName").notEmpty().withMessage("Last name is required"),
+	body("email").isEmail().withMessage("Invalid email format"),
+	body("password")
+		.isLength({ min: 8 })
+		.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+		.withMessage("Password must be at least 8 characters with uppercase, lowercase, number, and special character"),
+];
+
+const signupHandler = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({
+			data: {
+				message: "Validation failed",
+				errors: errors.array(),
+			},
+		});
+	}
+
+	const { firstName, lastName, email, password } = req.body;
+
+	try {
+		if (!firstName || !lastName || !email || !password) {
+			res.status(400).json({
+				data: {
+					message: "All fields are required",
+				},
+			});
+			return;
+		}
+
+		const existingUser = await prisma.users.findFirst({
+			where: { username: email },
+		});
+
+		if (existingUser) {
+			return res.status(400).json({
+				data: { message: "A user is already registered with that email." },
+			});
+		}
+
+		const verificationToken = await bcrypt.hash(
+			crypto.randomBytes(32).toString(),
+			10,
+		);
+
+		const role = "USER";
+		const password_hash = await bcrypt.hash(password, 10);
+
+		const newUser = await prisma.users.create({
+			data: {
+				firstname: firstName,
+				lastname: lastName,
+				username: email.toLowerCase(),
+				password_hash,
+				role,
+				verificationToken,
+				verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+				emailVerified: false,
+			},
+		});
+
+		// Call the function to send verification email
+		await sendVerificationEmail(email, verificationToken);
+
+		res.status(200).json({
+			data: {
+				message:
+					"You've successfully created an account. Please verify your email.",
+			},
+		});
+	} catch (error) {
+		const prismaError = error as PrismaClientKnownRequestError;
+		if (
+			prismaError.code === "P2002" &&
+			prismaError.meta?.target === "username"
+		) {
 			return res.status(400).json({
 				data: {
-					message: "Validation failed",
-					errors: errors.array(),
+					message: "Email is already in use.",
 				},
 			});
 		}
+		logger.error(
+			`Error creating user: ${error instanceof Error ? error.message : "Unknown error"}`,
+			{
+				stack: error instanceof Error ? error.stack : undefined,
+				code: isPrismaClientKnownRequestError(error) ? error.code : undefined,
+				email: email ? `${email.substring(0, 3)}***` : undefined, // Log partial email for debugging (safely)
+			},
+		);
+		res.status(500).send("An error occurred while creating the user.");
+	}
+};
 
-		const { firstName, lastName, email, password } = req.body;
-
-		try {
-			if (!firstName || !lastName || !email || !password) {
-				res.status(400).json({
-					data: {
-						message: "All fields are required",
-					},
-				});
-				return;
-			}
-
-			const existingUser = await prisma.users.findFirst({
-				where: { username: email },
-			});
-
-			if (existingUser) {
-				return res.status(400).json({
-					data: { message: "A user is already registered with that email." },
-				});
-			}
-
-			const verificationToken = await bcrypt.hash(
-				crypto.randomBytes(32).toString(),
-				10,
-			);
-
-			const role = "USER";
-			const password_hash = await bcrypt.hash(password, 10);
-
-			const newUser = await prisma.users.create({
-				data: {
-					firstname: firstName,
-					lastname: lastName,
-					username: email.toLowerCase(),
-					password_hash,
-					role,
-					verificationToken,
-					verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-					emailVerified: false,
-				},
-			});
-
-			// Call the function to send verification email
-			await sendVerificationEmail(email, verificationToken);
-
-			res.status(200).json({
-				data: {
-					message:
-						"You've successfully created an account. Please verify your email.",
-				},
-			});
-		} catch (error) {
-			const prismaError = error as PrismaClientKnownRequestError;
-			if (
-				prismaError.code === "P2002" &&
-				prismaError.meta?.target === "username"
-			) {
-				return res.status(400).json({
-					data: {
-						message: "Email is already in use.",
-					},
-				});
-			}
-			logger.error(
-				`Error creating user: ${error instanceof Error ? error.message : "Unknown error"}`,
-				{
-					stack: error instanceof Error ? error.stack : undefined,
-					code: isPrismaClientKnownRequestError(error) ? error.code : undefined,
-					email: email ? `${email.substring(0, 3)}***` : undefined, // Log partial email for debugging (safely)
-				},
-			);
-			res.status(500).send("An error occurred while creating the user.");
-		}
-	},
-);
+router.post("/signup", signupLimiter, signupValidation, signupHandler);
+router.post("/api/v2/signup", signupLimiter, signupValidation, signupHandler); // V2 alias
 
 router.get("/verify-email", async (req, res) => {
 	const token = req.query.token;
@@ -224,7 +224,7 @@ router.get("/verify-email", async (req, res) => {
 	}
 });
 
-router.post("/login", (req, res, next) => {
+const loginHandler = (req: Request, res: Response, next: NextFunction) => {
 	passport.authenticate("local", async (err: Error | null, user: any, info: object) => {
 		if (err) {
 			return next(err); // Handle errors from Passport
@@ -257,7 +257,10 @@ router.post("/login", (req, res, next) => {
 			next(error); // Handle errors in token generation
 		}
 	})(req, res, next);
-});
+};
+
+router.post("/login", loginHandler);
+router.post("/api/v2/login", loginHandler); // V2 alias
 
 router.get("/protectedRouted", authenticateToken, async (req, res) => {
 	res.status(200).json({

@@ -17,4 +17,15 @@ router.get(
 	templateController.getWorkoutTemplate
 );
 
+/**
+ * V2 alias: GET /api/v2/workouts/:workoutId/template
+ * Provides /api/v2/ prefixed path for frontend compatibility
+ */
+router.get(
+	"/api/v2/workouts/:workoutId/template",
+	authenticateToken,
+	templateValidators.getWorkoutTemplate,
+	templateController.getWorkoutTemplate
+);
+
 export default router;
