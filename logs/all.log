@@ -2869,3 +2869,64 @@
 2025-09-06 10:44:45 debug: Retrieved next workout
 2025-09-06 10:44:59 info: SIGINT received, closing database connection...
 2025-09-06 10:44:59 info: Database connection closed successfully.
+2025-09-08 10:49:22 info: Application starting...
+2025-09-08 10:49:22 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-08 10:49:22 info: Server is running on http://0.0.0.0:3000
+2025-09-08 10:49:22 info: Successfully connected to the database
+2025-09-08 10:51:33 debug: Fetched programs for user
+2025-09-08 10:51:33 debug: Retrieved next workout
+2025-09-08 10:51:35 debug: Fetched workouts for program
+2025-09-08 10:51:35 debug: Retrieved next workout
+2025-09-08 10:51:35 warn: 🔍 Backend - Sample exercise with video URL:
+2025-09-08 10:51:35 warn: 🔍 Backend - Total exercises found:
+2025-09-08 10:51:35 warn: 🔍 Backend - First exercise raw:
+2025-09-08 10:51:35 debug: Processing workout template
+2025-09-08 10:51:35 debug: Retrieved exercise baselines for automated program
+2025-09-08 10:51:35 debug: Successfully built workout template
+2025-09-08 10:51:38 debug: Processing workout completion
+2025-09-08 10:51:38 debug: Fetched workouts for program
+2025-09-08 10:51:38 info: Workout completed successfully
+2025-09-08 10:51:39 debug: Retrieved next workout
+2025-09-08 10:51:40 debug: Fetched programs for user
+2025-09-08 10:51:40 debug: Retrieved next workout
+2025-09-08 10:51:41 debug: Fetched programs for user
+2025-09-08 10:51:41 debug: Fetched programs for user
+2025-09-08 10:51:41 debug: Fetched programs for user
+2025-09-08 10:51:43 info: Updated program status
+2025-09-08 10:51:43 debug: Fetched programs for user
+2025-09-08 10:51:46 info: Updated program status
+2025-09-08 10:51:46 debug: Fetched programs for user
+2025-09-08 10:51:47 debug: Fetched programs for user
+2025-09-08 10:51:47 debug: Calculated volume data
+2025-09-08 10:51:47 debug: Fetched programs for user
+2025-09-08 10:51:47 debug: Calculated workout frequency data
+2025-09-08 10:51:47 debug: Retrieved exercise progression data
+2025-09-08 10:51:47 debug: Calculated workout frequency data
+2025-09-08 10:51:47 debug: Calculated volume data
+2025-09-08 10:51:47 debug: Retrieved exercise progression data
+2025-09-08 10:51:50 debug: Fetched programs for user
+2025-09-08 10:51:50 debug: Calculated volume data
+2025-09-08 10:51:50 debug: Retrieved exercise progression data
+2025-09-08 10:51:50 debug: Calculated volume data
+2025-09-08 10:51:50 debug: Calculated workout frequency data
+2025-09-08 10:51:50 debug: Retrieved exercise progression data
+2025-09-08 10:51:50 debug: Calculated workout frequency data
+2025-09-08 10:51:50 debug: Retrieved exercise progression data
+2025-09-08 10:51:51 debug: Fetched programs for user
+2025-09-08 10:51:51 debug: Calculated workout frequency data
+2025-09-08 10:51:51 debug: Retrieved exercise progression data
+2025-09-08 10:51:51 debug: Calculated volume data
+2025-09-08 10:51:51 debug: Retrieved exercise progression data
+2025-09-08 10:51:51 debug: Calculated workout frequency data
+2025-09-08 10:51:51 debug: Retrieved exercise progression data
+2025-09-08 10:51:51 debug: Calculated volume data
+2025-09-08 10:51:52 debug: Fetched programs for user
+2025-09-08 10:51:52 debug: Calculated workout frequency data
+2025-09-08 10:51:52 debug: Retrieved exercise progression data
+2025-09-08 10:51:52 debug: Retrieved exercise progression data
+2025-09-08 10:51:52 debug: Calculated volume data
+2025-09-08 10:51:52 debug: Calculated workout frequency data
+2025-09-08 10:51:52 debug: Retrieved exercise progression data
+2025-09-08 10:51:52 debug: Calculated volume data
+2025-09-08 10:52:44 info: SIGINT received, closing database connection...
+2025-09-08 10:52:44 info: Database connection closed successfully.
