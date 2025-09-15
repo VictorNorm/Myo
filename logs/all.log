@@ -2973,3 +2973,57 @@
 2025-09-08 12:28:44 debug: Retrieved next workout
 2025-09-08 12:45:42 info: SIGINT received, closing database connection...
 2025-09-08 12:45:42 info: Database connection closed successfully.
+2025-09-08 14:06:58 info: Application starting...
+2025-09-08 14:06:58 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-08 14:06:58 info: Server is running on http://0.0.0.0:3000
+2025-09-08 14:06:58 info: Successfully connected to the database
+2025-09-08 14:07:01 debug: Fetched programs for user
+2025-09-08 14:07:01 debug: Retrieved next workout
+2025-09-08 14:07:05 debug: Fetched programs for user
+2025-09-08 14:07:05 debug: Retrieved next workout
+2025-09-08 14:07:08 info: Retrieved all program templates
+2025-09-08 14:07:08 debug: Fetched programs for user
+2025-09-08 14:07:08 debug: Fetched programs for user
+2025-09-08 14:07:08 debug: Fetched programs for user
+2025-09-08 14:08:58 debug: Fetched programs for user
+2025-09-08 14:09:14 debug: Fetched programs for user
+2025-09-08 14:09:22 debug: Fetched programs for user
+2025-09-08 14:09:29 debug: Fetched programs for user
+2025-09-08 14:09:30 debug: Fetched programs for user
+2025-09-08 14:09:30 debug: Fetched programs for user
+2025-09-08 14:09:30 debug: Calculated volume data
+2025-09-08 14:09:30 debug: Calculated workout frequency data
+2025-09-08 14:09:30 debug: Calculated volume data
+2025-09-08 14:09:30 debug: Retrieved exercise progression data
+2025-09-08 14:09:30 debug: Retrieved exercise progression data
+2025-09-08 14:09:30 debug: Calculated workout frequency data
+2025-09-08 14:09:33 debug: Fetched programs for user
+2025-09-08 14:09:33 debug: Retrieved exercise progression data
+2025-09-08 14:09:33 debug: Calculated volume data
+2025-09-08 14:09:33 debug: Calculated workout frequency data
+2025-09-08 14:09:38 info: SIGINT received, closing database connection...
+2025-09-08 14:09:38 info: Database connection closed successfully.
+2025-09-15 09:26:11 info: Application starting...
+2025-09-15 09:26:11 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-15 09:26:11 info: Server is running on http://0.0.0.0:3000
+2025-09-15 09:26:11 info: Successfully connected to the database
+2025-09-15 09:26:15 info: SIGINT received, closing database connection...
+2025-09-15 09:26:15 info: Database connection closed successfully.
+2025-09-15 10:29:55 info: Application starting...
+2025-09-15 10:29:55 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-15 10:29:55 info: Server is running on http://0.0.0.0:3000
+2025-09-15 10:29:55 info: Successfully connected to the database
+2025-09-15 10:31:36 debug: Fetched programs for user
+2025-09-15 10:31:36 debug: Retrieved next workout
+2025-09-15 10:31:38 info: Retrieved all program templates
+2025-09-15 10:31:38 debug: Fetched programs for user
+2025-09-15 10:31:38 debug: Fetched programs for user
+2025-09-15 10:31:38 debug: Fetched programs for user
+2025-09-15 10:39:46 info: SIGINT received, closing database connection...
+2025-09-15 10:39:46 info: Database connection closed successfully.
+2025-09-15 10:39:48 info: Application starting...
+2025-09-15 10:39:48 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-09-15 10:39:48 info: Server is running on http://0.0.0.0:3000
+2025-09-15 10:39:48 info: Successfully connected to the database
+2025-09-15 10:40:48 info: SIGINT received, closing database connection...
+2025-09-15 10:40:48 info: Database connection closed successfully.
