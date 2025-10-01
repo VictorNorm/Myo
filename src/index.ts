@@ -16,6 +16,7 @@ import statsV2 from "./routes/statsV2";
 import programTemplatesV2 from "./routes/programTemplatesV2";
 import programGenerationV2 from "./routes/programGenerationV2";
 import { errorHandler } from "./utils/errorHandler";
+import { exerciseMappingService } from './services/exerciseMappingService';
 import logger from "./services/logger";
 import httpLogger from "./middleware/httpLogger";
 import prisma from "./services/db";
@@ -65,6 +66,23 @@ app.use(
 
 app.options("*", cors());
 
+async function initializeServices() {
+  try {
+    logger.info('Initializing services...');
+    
+    // Initialize exercise mapping cache
+    await exerciseMappingService.initializeCache();
+    
+    logger.info('All services initialized successfully');
+  } catch (error) {
+    logger.error('Failed to initialize services', {
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+    // Don't crash the server, but log the error
+    // The services will initialize lazily when first used
+  }
+}
+
 // Apply routes
 app.use(auth);
 app.use(programsV2);
@@ -102,8 +120,9 @@ logger.info(
 	`Environment PORT=${process.env.PORT}, resolved PORT=${PORT}, HOST=${HOST}`,
 );
 app
-	.listen(PORT, HOST, () => {
+	.listen(PORT, HOST, async () => {
 		logger.info(`Server is running on http://${HOST}:${PORT}`);
+		await initializeServices();
 	})
 	.on("error", (err) => {
 		logger.error(`Failed to start server: ${err.message}`);

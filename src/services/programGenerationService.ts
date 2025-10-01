@@ -1,8 +1,9 @@
-// Program Generation Service
-// Integrates program generation algorithm with existing program creation system
+// Updated programGenerationService.ts with complete exercise handling
 
 import { generateProgram } from './programGenerator';
 import { programService, CreateProgramWithWorkoutsRequest } from './programService';
+import { exerciseMappingService } from './exerciseMappingService';
+import prisma from '../services/db';
 import logger from './logger';
 import { 
   UserPreferences, 
@@ -50,21 +51,24 @@ export const programGenerationService = {
 
       const generatedProgram = generateProgram(request.preferences);
 
-      // Convert generated program to database format
+      // Convert generated program to database format (basic program + workouts)
       const programRequest = await convertToCreateProgramRequest(
         generatedProgram,
         request.userId,
         request.programName
       );
 
-      // Create the program in the database
+      // Create the program and workouts (without exercises initially)
       const createdProgram = await programService.createProgramWithWorkouts(
         request.userId,
         false, // isAdmin - user creating their own program
         programRequest
       );
 
-      logger.info('Successfully generated and created program', {
+      // Now add exercises to the created workouts
+      await addExercisesToProgram(createdProgram.id, generatedProgram);
+
+      logger.info('Successfully generated and created program with exercises', {
         userId: request.userId,
         programId: createdProgram.id,
         programType: generatedProgram.type,
@@ -158,8 +162,23 @@ export const programGenerationService = {
         };
       }
 
-      // Generate the program structure
+      // Validate that all exercise names exist in database
       const generatedProgram = generateProgram(preferences);
+      const allExerciseNames = extractAllExerciseNames(generatedProgram);
+      
+      const exerciseValidation = await exerciseMappingService.validateExerciseNames(allExerciseNames);
+      if (!exerciseValidation.valid) {
+        logger.warn('Program preview contains invalid exercise names', {
+          missing: exerciseValidation.missing,
+          found: exerciseValidation.found
+        });
+        
+        return {
+          success: false,
+          message: 'Some exercises in generated program are not available in database',
+          validationErrors: exerciseValidation.missing.map(name => `Exercise not found: ${name}`)
+        };
+      }
 
       logger.debug('Generated program preview', {
         programType: generatedProgram.type,
@@ -235,8 +254,107 @@ async function convertToCreateProgramRequest(
 }
 
 /**
+ * Add exercises to created program workouts
+ * @param programId - Created program ID
+ * @param generatedProgram - Generated program structure with exercises
+ */
+async function addExercisesToProgram(
+  programId: number,
+  generatedProgram: GeneratedProgram
+): Promise<void> {
+  try {
+    // Get the created workouts from the database
+    const createdWorkouts = await prisma.workouts.findMany({
+      where: { program_id: programId },
+      orderBy: { id: 'asc' }
+    });
+
+    if (createdWorkouts.length !== generatedProgram.workouts.length) {
+      throw new Error(`Workout count mismatch: created ${createdWorkouts.length}, expected ${generatedProgram.workouts.length}`);
+    }
+
+    // Initialize exercise cache if needed
+    await exerciseMappingService.initializeCache();
+
+    // Process each workout
+    for (let i = 0; i < generatedProgram.workouts.length; i++) {
+      const generatedWorkout = generatedProgram.workouts[i];
+      const createdWorkout = createdWorkouts[i];
+
+      // Extract exercises from superset structure
+      const exercises = extractExercisesFromSupersets(generatedWorkout.exercises);
+      
+      if (exercises.length === 0) {
+        logger.warn('No exercises found in generated workout', {
+          workoutName: generatedWorkout.name,
+          workoutId: createdWorkout.id
+        });
+        continue;
+      }
+
+      // Get exercise IDs for all exercises in this workout
+      const exerciseNames = exercises.map(ex => ex.name);
+      const exerciseMap = await exerciseMappingService.getMultipleExerciseIds(exerciseNames);
+
+      // Prepare workout_exercises data
+      const workoutExercisesToCreate = [];
+      for (const exercise of exercises) {
+        const exerciseId = exerciseMap.get(exercise.name);
+        
+        if (!exerciseId) {
+          logger.error('Exercise not found in database', {
+            exerciseName: exercise.name,
+            workoutName: generatedWorkout.name
+          });
+          throw new Error(`Exercise "${exercise.name}" not found in database`);
+        }
+
+        // Parse reps (convert "8-10" to middle value, e.g., 9)
+        const reps = parseRepsFromRange(exercise.reps);
+
+        workoutExercisesToCreate.push({
+          workout_id: createdWorkout.id,
+          exercise_id: exerciseId,
+          sets: exercise.sets,
+          reps: reps,
+          weight: exercise.weight || 0,
+          order: exercise.order
+        });
+      }
+
+      // Create all exercises for this workout
+      if (workoutExercisesToCreate.length > 0) {
+        await prisma.workout_exercises.createMany({
+          data: workoutExercisesToCreate
+        });
+
+        logger.info('Added exercises to workout', {
+          workoutId: createdWorkout.id,
+          workoutName: generatedWorkout.name,
+          exerciseCount: workoutExercisesToCreate.length
+        });
+      }
+    }
+
+    logger.info('Successfully added all exercises to program', {
+      programId,
+      workoutCount: createdWorkouts.length,
+      totalExercises: generatedProgram.workouts.reduce((sum, w) => 
+        sum + extractExercisesFromSupersets(w.exercises).length, 0
+      )
+    });
+
+  } catch (error) {
+    logger.error('Failed to add exercises to program', {
+      programId,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+    throw error;
+  }
+}
+
+/**
  * Helper function to extract exercises from superset structure
- * This would be used when creating workout_exercises records
  * @param supersets - Superset structures
  * @returns Flat array of exercises with their details
  */
@@ -246,8 +364,7 @@ function extractExercisesFromSupersets(supersets: SupersetStructure[]) {
     sets: number;
     reps: string;
     order: number;
-    isSuperset: boolean;
-    supersetPartner?: string;
+    weight?: number;
   }> = [];
 
   let order = 1;
@@ -261,34 +378,54 @@ function extractExercisesFromSupersets(supersets: SupersetStructure[]) {
         sets: exercise.sets,
         reps: exercise.reps,
         order,
-        isSuperset: false
+        weight: exercise.weight
       });
       order++;
     } else {
       // Superset - pair the exercises
-      const [first, second] = superset.exercises;
-      
-      exercises.push({
-        name: first.name,
-        sets: first.sets,
-        reps: first.reps,
-        order,
-        isSuperset: true,
-        supersetPartner: second.name
-      });
-      
-      exercises.push({
-        name: second.name,
-        sets: second.sets,
-        reps: second.reps,
-        order,
-        isSuperset: true,
-        supersetPartner: first.name
-      });
-      
+      for (const exercise of superset.exercises) {
+        exercises.push({
+          name: exercise.name,
+          sets: exercise.sets,
+          reps: exercise.reps,
+          order,
+          weight: exercise.weight
+        });
+      }
       order++;
     }
   }
 
   return exercises;
+}
+
+/**
+ * Extract all unique exercise names from generated program
+ * @param program - Generated program
+ * @returns Array of unique exercise names
+ */
+function extractAllExerciseNames(program: GeneratedProgram): string[] {
+  const exerciseNames = new Set<string>();
+  
+  for (const workout of program.workouts) {
+    const exercises = extractExercisesFromSupersets(workout.exercises);
+    for (const exercise of exercises) {
+      exerciseNames.add(exercise.name);
+    }
+  }
+  
+  return Array.from(exerciseNames);
+}
+
+/**
+ * Parse rep range string to middle value
+ * @param repsRange - Rep range like "8-10" or "12"
+ * @returns Middle rep value as integer
+ */
+function parseRepsFromRange(repsRange: string): number {
+  if (repsRange.includes('-')) {
+    const [min, max] = repsRange.split('-').map(r => parseInt(r.trim()));
+    return Math.round((min + max) / 2);
+  }
+  return parseInt(repsRange);
 }
