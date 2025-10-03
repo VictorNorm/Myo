@@ -3042,3 +3042,799 @@
 2025-09-29 11:49:54 info: All services initialized successfully
 2025-09-29 12:05:05 info: SIGINT received, closing database connection...
 2025-09-29 12:05:05 info: Database connection closed successfully.
+2025-10-01 08:19:41 info: Application starting...
+2025-10-01 08:19:41 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-01 08:19:41 info: Server is running on http://0.0.0.0:3000
+2025-10-01 08:19:41 info: Initializing services...
+2025-10-01 08:19:41 info: Successfully connected to the database
+2025-10-01 08:19:41 info: Exercise cache initialized
+2025-10-01 08:19:41 info: All services initialized successfully
+2025-10-01 08:19:52 debug: Fetched programs for user
+2025-10-01 08:19:52 debug: Retrieved next workout
+2025-10-01 08:19:55 info: Retrieved all program templates
+2025-10-01 08:19:55 debug: Fetched programs for user
+2025-10-01 08:19:55 debug: Fetched programs for user
+2025-10-01 08:19:55 debug: Fetched programs for user
+2025-10-01 08:19:59 debug: Fetched programs for user
+2025-10-01 08:19:59 debug: Retrieved next workout
+2025-10-01 08:20:01 debug: Fetched workouts for program
+2025-10-01 08:20:01 debug: Retrieved next workout
+2025-10-01 08:20:02 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-01 08:20:02 warn: 🔍 Backend - Total exercises found:
+2025-10-01 08:20:02 warn: 🔍 Backend - First exercise raw:
+2025-10-01 08:20:02 debug: Processing workout template
+2025-10-01 08:20:02 debug: Retrieved exercise baselines for automated program
+2025-10-01 08:20:02 debug: Successfully built workout template
+2025-10-01 08:20:04 debug: Fetched programs for user
+2025-10-01 08:20:04 debug: Retrieved next workout
+2025-10-01 08:20:05 debug: Fetched programs for user
+2025-10-01 08:24:52 debug: Fetched programs for user
+2025-10-01 08:33:08 debug: Fetched programs for user
+2025-10-01 08:39:26 info: Retrieved all program templates
+2025-10-01 08:39:26 debug: Fetched programs for user
+2025-10-01 08:39:26 debug: Fetched programs for user
+2025-10-01 08:39:26 debug: Fetched programs for user
+2025-10-01 08:42:47 info: Retrieved all program templates
+2025-10-01 08:42:47 debug: Fetched programs for user
+2025-10-01 08:42:47 debug: Fetched programs for user
+2025-10-01 08:42:47 debug: Fetched programs for user
+2025-10-01 08:55:07 debug: Fetched programs for user
+2025-10-01 11:05:22 info: Forgot password request received
+2025-10-01 11:05:22 warn: Password reset attempted for non-existent user
+2025-10-01 11:07:30 info: SIGINT received, closing database connection...
+2025-10-01 11:07:30 info: Database connection closed successfully.
+2025-10-01 11:07:34 info: Application starting...
+2025-10-01 11:07:34 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-01 11:07:34 info: Server is running on http://0.0.0.0:3000
+2025-10-01 11:07:34 info: Initializing services...
+2025-10-01 11:07:34 info: Successfully connected to the database
+2025-10-01 11:07:34 info: Exercise cache initialized
+2025-10-01 11:07:34 info: All services initialized successfully
+2025-10-01 11:10:16 info: Forgot password request received
+2025-10-01 11:10:16 warn: Password reset attempted for non-existent user
+2025-10-01 11:43:26 info: SIGINT received, closing database connection...
+2025-10-01 11:43:26 info: Database connection closed successfully.
+2025-10-01 11:43:28 info: Application starting...
+2025-10-01 11:43:28 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-01 11:43:28 info: Server is running on http://0.0.0.0:3000
+2025-10-01 11:43:28 info: Initializing services...
+2025-10-01 11:43:28 info: Successfully connected to the database
+2025-10-01 11:43:28 info: Exercise cache initialized
+2025-10-01 11:43:28 info: All services initialized successfully
+2025-10-01 11:45:11 debug: Fetched programs for user
+2025-10-01 11:45:11 debug: Retrieved next workout
+2025-10-01 11:45:12 info: Retrieved all program templates
+2025-10-01 11:45:12 debug: Fetched programs for user
+2025-10-01 11:45:12 debug: Fetched programs for user
+2025-10-01 11:45:12 debug: Fetched programs for user
+2025-10-01 11:45:55 info: Created program with workouts
+2025-10-01 11:46:09 debug: Fetched programs for user
+2025-10-02 08:40:26 info: Application starting...
+2025-10-02 08:40:26 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-02 08:40:26 info: Server is running on http://0.0.0.0:3000
+2025-10-02 08:40:26 info: Initializing services...
+2025-10-02 08:40:26 info: Successfully connected to the database
+2025-10-02 08:40:26 info: Exercise cache initialized
+2025-10-02 08:40:26 info: All services initialized successfully
+2025-10-02 08:53:34 info: Application starting...
+2025-10-02 08:53:34 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-02 08:53:34 info: Server is running on http://0.0.0.0:3000
+2025-10-02 08:53:34 info: Initializing services...
+2025-10-02 08:53:34 info: Successfully connected to the database
+2025-10-02 08:53:34 info: Exercise cache initialized
+2025-10-02 08:53:34 info: All services initialized successfully
+2025-10-02 08:53:44 debug: Fetched programs for user
+2025-10-02 08:53:44 debug: Retrieved next workout
+2025-10-02 08:53:45 debug: Fetched workouts for program
+2025-10-02 08:53:45 debug: Retrieved next workout
+2025-10-02 08:53:50 debug: Fetched programs for user
+2025-10-02 08:53:50 debug: Retrieved next workout
+2025-10-02 08:53:51 debug: Fetched workouts for program
+2025-10-02 08:53:51 debug: Retrieved next workout
+2025-10-02 08:53:53 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-02 08:53:53 warn: 🔍 Backend - Total exercises found:
+2025-10-02 08:53:53 warn: 🔍 Backend - First exercise raw:
+2025-10-02 08:53:53 debug: Processing workout template
+2025-10-02 08:53:53 debug: Retrieved exercise baselines for automated program
+2025-10-02 08:53:53 debug: Successfully built workout template
+2025-10-02 08:53:55 debug: Fetched programs for user
+2025-10-02 08:53:55 debug: Retrieved next workout
+2025-10-02 08:53:56 info: Retrieved all program templates
+2025-10-02 08:53:56 debug: Fetched programs for user
+2025-10-02 08:53:56 debug: Fetched programs for user
+2025-10-02 08:53:56 debug: Fetched programs for user
+2025-10-02 08:54:08 info: Updated program status
+2025-10-02 08:54:08 debug: Fetched programs for user
+2025-10-02 08:54:12 info: Updated program status
+2025-10-02 08:54:12 debug: Fetched programs for user
+2025-10-02 08:54:15 info: Updated program status
+2025-10-02 08:54:15 debug: Fetched programs for user
+2025-10-02 08:54:17 info: Updated program status
+2025-10-02 08:54:17 debug: Fetched programs for user
+2025-10-02 08:54:19 info: Updated program status
+2025-10-02 08:54:19 debug: Fetched programs for user
+2025-10-02 08:55:00 debug: Fetched programs for user
+2025-10-02 08:55:28 info: Created program with workouts
+2025-10-02 08:56:47 info: Created program with workouts
+2025-10-02 08:56:54 debug: Fetched programs for user
+2025-10-02 08:56:59 debug: Fetched programs for user
+2025-10-02 08:57:04 debug: Fetched programs for user
+2025-10-02 08:57:07 info: Updated program status
+2025-10-02 08:57:08 debug: Fetched programs for user
+2025-10-02 08:57:09 debug: Fetched programs for user
+2025-10-02 08:57:09 debug: Retrieved next workout
+2025-10-02 08:57:13 debug: Fetched workouts for program
+2025-10-02 08:57:13 debug: Retrieved next workout
+2025-10-02 08:57:15 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-02 08:57:15 warn: 🔍 Backend - Total exercises found:
+2025-10-02 08:57:15 warn: 🔍 Backend - First exercise raw:
+2025-10-02 08:57:15 debug: Processing workout template
+2025-10-02 08:57:15 debug: Retrieved exercise baselines for automated program
+2025-10-02 08:57:15 debug: Successfully built workout template
+2025-10-02 08:57:16 debug: Fetched programs for user
+2025-10-02 08:57:16 debug: Retrieved next workout
+2025-10-02 08:57:17 debug: Fetched programs for user
+2025-10-02 08:57:19 debug: Fetched programs for user
+2025-10-02 08:57:19 debug: Fetched workouts for program
+2025-10-02 08:57:20 info: No exercises found for workout
+2025-10-02 08:57:20 debug: Successfully fetched workout exercises
+2025-10-02 09:00:35 debug: Fetched programs for user
+2025-10-02 09:00:35 debug: Retrieved next workout
+2025-10-02 09:00:36 debug: Fetched workouts for program
+2025-10-02 09:00:36 debug: Retrieved next workout
+2025-10-02 09:00:37 debug: Fetched programs for user
+2025-10-02 09:00:37 debug: Retrieved next workout
+2025-10-02 09:00:38 info: Retrieved all program templates
+2025-10-02 09:00:38 debug: Fetched programs for user
+2025-10-02 09:00:38 debug: Fetched programs for user
+2025-10-02 09:00:38 debug: Fetched programs for user
+2025-10-02 09:00:55 info: Updated program status
+2025-10-02 09:00:55 debug: Fetched programs for user
+2025-10-02 09:01:07 info: Deleted program with cascade
+2025-10-02 09:01:07 debug: Fetched programs for user
+2025-10-02 09:01:13 debug: Fetched programs for user
+2025-10-02 09:01:13 debug: Fetched workouts for program
+2025-10-02 09:01:16 info: No exercises found for workout
+2025-10-02 09:01:16 debug: Successfully fetched workout exercises
+2025-10-02 09:07:08 debug: Fetched programs for user
+2025-10-02 09:07:08 debug: Retrieved next workout
+2025-10-02 09:07:11 info: Retrieved all program templates
+2025-10-02 09:07:11 debug: Fetched programs for user
+2025-10-02 09:07:11 debug: Fetched programs for user
+2025-10-02 09:07:11 debug: Fetched programs for user
+2025-10-02 09:07:36 debug: Fetched programs for user
+2025-10-02 09:21:31 debug: Fetched programs for user
+2025-10-02 09:22:57 debug: Fetching all users
+2025-10-02 09:22:57 debug: Successfully fetched and transformed users
+2025-10-02 09:22:57 debug: Fetching all users
+2025-10-02 09:22:57 debug: Successfully fetched and transformed users
+2025-10-02 09:23:01 debug: Fetching all users
+2025-10-02 09:23:01 debug: Successfully fetched and transformed users
+2025-10-02 09:23:01 debug: Fetching all users
+2025-10-02 09:23:01 debug: Successfully fetched and transformed users
+2025-10-02 09:23:18 debug: Fetching all users
+2025-10-02 09:23:18 debug: Successfully fetched and transformed users
+2025-10-02 09:23:18 debug: Fetching all users
+2025-10-02 09:23:18 debug: Successfully fetched and transformed users
+2025-10-02 09:23:42 debug: Fetching all users
+2025-10-02 09:23:42 debug: Successfully fetched and transformed users
+2025-10-02 09:23:42 debug: Fetching all users
+2025-10-02 09:23:42 debug: Successfully fetched and transformed users
+2025-10-02 09:23:53 debug: Fetching all users
+2025-10-02 09:23:53 debug: Successfully fetched and transformed users
+2025-10-02 09:23:53 debug: Fetching all users
+2025-10-02 09:23:53 debug: Successfully fetched and transformed users
+2025-10-02 09:24:43 debug: Fetching all users
+2025-10-02 09:24:43 debug: Successfully fetched and transformed users
+2025-10-02 09:24:43 debug: Fetching all users
+2025-10-02 09:24:43 debug: Successfully fetched and transformed users
+2025-10-02 09:26:24 debug: Fetching all users
+2025-10-02 09:26:24 debug: Successfully fetched and transformed users
+2025-10-02 09:26:24 debug: Fetching all users
+2025-10-02 09:26:24 debug: Successfully fetched and transformed users
+2025-10-02 09:32:33 debug: Fetching user settings
+2025-10-02 09:32:33 debug: Fetched user settings successfully
+2025-10-02 09:44:53 info: Retrieved all program templates
+2025-10-02 09:44:53 debug: Fetched programs for user
+2025-10-02 09:44:53 debug: Fetched programs for user
+2025-10-02 09:44:53 debug: Fetched programs for user
+2025-10-02 09:44:59 debug: Fetched programs for user
+2025-10-02 09:50:46 info: SIGINT received, closing database connection...
+2025-10-02 09:50:46 info: Database connection closed successfully.
+2025-10-02 09:50:49 info: Application starting...
+2025-10-02 09:50:49 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-02 09:50:49 info: Server is running on http://0.0.0.0:3000
+2025-10-02 09:50:49 info: Initializing services...
+2025-10-02 09:50:49 info: Successfully connected to the database
+2025-10-02 09:50:49 info: Exercise cache initialized
+2025-10-02 09:50:49 info: All services initialized successfully
+2025-10-02 09:51:01 debug: Fetched programs for user
+2025-10-02 09:51:35 info: Generating quick setup program
+2025-10-02 09:51:35 info: Generating quick setup program
+2025-10-02 09:51:35 info: Generating program from preferences
+2025-10-02 09:51:35 info: Created program with workouts
+2025-10-02 09:51:35 info: Exercise cache initialized
+2025-10-02 09:51:35 info: Added exercises to workout
+2025-10-02 09:51:35 info: Successfully added all exercises to program
+2025-10-02 09:51:35 info: Successfully generated and created program with exercises
+2025-10-02 09:51:36 debug: Fetched programs for user
+2025-10-02 09:51:36 debug: Fetched programs for user
+2025-10-02 09:51:36 debug: Fetched programs for user
+2025-10-02 09:51:41 debug: Fetched programs for user
+2025-10-02 09:51:41 debug: Fetched workouts for program
+2025-10-02 09:51:43 debug: Successfully fetched workout exercises
+2025-10-02 09:51:57 debug: Fetched programs for user
+2025-10-02 09:52:19 info: Generating program from preferences
+2025-10-02 09:52:19 info: Created program with workouts
+2025-10-02 09:52:19 info: Exercise cache initialized
+2025-10-02 09:52:19 info: Added exercises to workout
+2025-10-02 09:52:19 info: Successfully added all exercises to program
+2025-10-02 09:52:19 info: Successfully generated and created program with exercises
+2025-10-02 09:54:59 debug: Fetching user settings
+2025-10-02 09:54:59 debug: Fetched user settings successfully
+2025-10-02 09:55:34 info: Retrieved all program templates
+2025-10-02 09:55:34 debug: Fetched programs for user
+2025-10-02 09:55:34 debug: Fetched programs for user
+2025-10-02 09:55:34 debug: Fetched programs for user
+2025-10-02 09:56:18 info: Generating program from preferences
+2025-10-02 09:56:18 info: Created program with workouts
+2025-10-02 09:56:18 info: Exercise cache initialized
+2025-10-02 09:56:18 info: Added exercises to workout
+2025-10-02 09:56:18 info: Successfully added all exercises to program
+2025-10-02 09:56:18 info: Successfully generated and created program with exercises
+2025-10-02 10:30:55 debug: Fetching user settings
+2025-10-02 10:30:55 debug: Fetched user settings successfully
+2025-10-02 10:31:02 info: Retrieved all program templates
+2025-10-02 10:31:02 debug: Fetched programs for user
+2025-10-02 10:31:02 debug: Fetched programs for user
+2025-10-02 10:31:02 debug: Fetched programs for user
+2025-10-02 10:31:34 info: Generating program from preferences
+2025-10-02 10:31:34 info: Created program with workouts
+2025-10-02 10:31:34 info: Exercise cache initialized
+2025-10-02 10:31:34 info: Added exercises to workout
+2025-10-02 10:31:34 info: Successfully added all exercises to program
+2025-10-02 10:31:34 info: Successfully generated and created program with exercises
+2025-10-02 10:31:34 debug: Fetched programs for user
+2025-10-02 10:31:34 debug: Fetched programs for user
+2025-10-02 10:31:34 debug: Fetched programs for user
+2025-10-02 10:31:38 debug: Fetched programs for user
+2025-10-02 10:31:38 debug: Retrieved next workout
+2025-10-02 10:31:39 debug: Fetched programs for user
+2025-10-02 10:31:45 info: Updated program status
+2025-10-02 10:31:45 debug: Fetched programs for user
+2025-10-02 10:31:48 info: Updated program status
+2025-10-02 10:31:48 debug: Fetched programs for user
+2025-10-02 10:31:49 info: Updated program status
+2025-10-02 10:31:49 debug: Fetched programs for user
+2025-10-02 10:31:51 info: Updated program status
+2025-10-02 10:31:51 debug: Fetched programs for user
+2025-10-02 10:31:53 info: Updated program status
+2025-10-02 10:31:54 debug: Fetched programs for user
+2025-10-02 10:31:55 info: Updated program status
+2025-10-02 10:31:55 debug: Fetched programs for user
+2025-10-02 10:31:57 info: Updated program status
+2025-10-02 10:31:57 debug: Fetched programs for user
+2025-10-02 10:31:59 info: Updated program status
+2025-10-02 10:31:59 debug: Fetched programs for user
+2025-10-02 10:32:00 info: Updated program status
+2025-10-02 10:32:01 debug: Fetched programs for user
+2025-10-02 10:32:40 info: Deleted program with cascade
+2025-10-02 10:32:40 debug: Fetched programs for user
+2025-10-02 10:32:42 info: Deleted program with cascade
+2025-10-02 10:32:42 debug: Fetched programs for user
+2025-10-02 10:32:43 info: Deleted program with cascade
+2025-10-02 10:32:43 debug: Fetched programs for user
+2025-10-02 10:32:45 info: Deleted program with cascade
+2025-10-02 10:32:45 debug: Fetched programs for user
+2025-10-02 10:32:47 info: Deleted program with cascade
+2025-10-02 10:32:47 debug: Fetched programs for user
+2025-10-02 10:32:48 info: Deleted program with cascade
+2025-10-02 10:32:48 debug: Fetched programs for user
+2025-10-02 10:32:50 info: Deleted program with cascade
+2025-10-02 10:32:50 debug: Fetched programs for user
+2025-10-02 10:32:52 info: Deleted program with cascade
+2025-10-02 10:32:52 debug: Fetched programs for user
+2025-10-02 10:32:55 error: Error deleting program: 
+Invalid `tx.programs.delete()` invocation in
+C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\programRepository.ts:447:28
+
+  444 });
+  445 
+  446 // 9. Finally delete the program
+→ 447 await tx.programs.delete(
+Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
+2025-10-02 10:33:00 error: Error deleting program: 
+Invalid `tx.programs.delete()` invocation in
+C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\programRepository.ts:447:28
+
+  444 });
+  445 
+  446 // 9. Finally delete the program
+→ 447 await tx.programs.delete(
+Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
+2025-10-02 10:34:51 info: Generating program from preferences
+2025-10-02 10:34:51 info: Created program with workouts
+2025-10-02 10:34:51 info: Exercise cache initialized
+2025-10-02 10:34:51 info: Added exercises to workout
+2025-10-02 10:34:51 info: Successfully added all exercises to program
+2025-10-02 10:34:51 info: Successfully generated and created program with exercises
+2025-10-02 10:34:51 debug: Fetched programs for user
+2025-10-02 10:34:51 debug: Fetched programs for user
+2025-10-02 10:34:51 debug: Fetched programs for user
+2025-10-02 10:34:55 debug: Fetched programs for user
+2025-10-02 10:34:55 debug: Retrieved next workout
+2025-10-02 10:34:56 debug: Fetched workouts for program
+2025-10-02 10:34:57 debug: Retrieved next workout
+2025-10-02 10:34:59 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-02 10:34:59 warn: 🔍 Backend - Total exercises found:
+2025-10-02 10:34:59 warn: 🔍 Backend - First exercise raw:
+2025-10-02 10:34:59 debug: Processing workout template
+2025-10-02 10:34:59 debug: Retrieved exercise baselines for automated program
+2025-10-02 10:34:59 debug: Successfully built workout template
+2025-10-02 10:35:16 debug: Fetched programs for user
+2025-10-02 10:35:16 debug: Retrieved next workout
+2025-10-02 10:37:25 debug: Fetched workouts for program
+2025-10-02 10:37:25 debug: Retrieved next workout
+2025-10-02 10:37:27 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-02 10:37:27 warn: 🔍 Backend - Total exercises found:
+2025-10-02 10:37:27 warn: 🔍 Backend - First exercise raw:
+2025-10-02 10:37:27 debug: Processing workout template
+2025-10-02 10:37:27 debug: Retrieved exercise baselines for automated program
+2025-10-02 10:37:27 debug: Successfully built workout template
+2025-10-02 10:50:47 debug: Fetching all users
+2025-10-02 10:50:47 debug: Successfully fetched and transformed users
+2025-10-02 10:50:47 debug: Fetching all users
+2025-10-02 10:50:47 debug: Successfully fetched and transformed users
+2025-10-02 10:50:58 debug: Fetching all users
+2025-10-02 10:50:58 debug: Successfully fetched and transformed users
+2025-10-02 10:50:58 debug: Fetching all users
+2025-10-02 10:50:58 debug: Successfully fetched and transformed users
+2025-10-02 10:51:38 debug: Fetching all users
+2025-10-02 10:51:38 debug: Successfully fetched and transformed users
+2025-10-02 10:51:38 debug: Fetching all users
+2025-10-02 10:51:38 debug: Successfully fetched and transformed users
+2025-10-02 10:52:30 debug: Fetching all users
+2025-10-02 10:52:30 debug: Successfully fetched and transformed users
+2025-10-02 10:52:30 debug: Fetching all users
+2025-10-02 10:52:30 debug: Successfully fetched and transformed users
+2025-10-02 11:25:58 debug: Fetching all users
+2025-10-02 11:25:58 debug: Successfully fetched and transformed users
+2025-10-02 11:25:58 debug: Fetching all users
+2025-10-02 11:25:58 debug: Successfully fetched and transformed users
+2025-10-02 11:26:08 debug: Fetching all users
+2025-10-02 11:26:08 debug: Successfully fetched and transformed users
+2025-10-02 11:26:08 debug: Fetching all users
+2025-10-02 11:26:08 debug: Successfully fetched and transformed users
+2025-10-02 11:26:18 debug: Fetching all users
+2025-10-02 11:26:18 debug: Successfully fetched and transformed users
+2025-10-02 11:26:18 debug: Fetched programs for user
+2025-10-02 11:26:31 debug: Fetching all users
+2025-10-02 11:26:31 debug: Successfully fetched and transformed users
+2025-10-02 11:26:31 debug: Fetched programs for user
+2025-10-02 11:26:39 debug: Fetching all users
+2025-10-02 11:26:39 debug: Successfully fetched and transformed users
+2025-10-02 11:26:39 debug: Fetched programs for user
+2025-10-02 11:33:44 debug: Fetching all users
+2025-10-02 11:33:44 debug: Successfully fetched and transformed users
+2025-10-02 11:33:44 debug: Fetching all users
+2025-10-02 11:33:44 debug: Successfully fetched and transformed users
+2025-10-02 11:34:11 debug: Fetching all users
+2025-10-02 11:34:11 debug: Successfully fetched and transformed users
+2025-10-02 11:34:11 debug: Fetching all users
+2025-10-02 11:34:11 debug: Successfully fetched and transformed users
+2025-10-02 11:43:14 debug: Fetching all users
+2025-10-02 11:43:14 debug: Successfully fetched and transformed users
+2025-10-02 11:43:14 debug: Fetching all users
+2025-10-02 11:43:14 debug: Successfully fetched and transformed users
+2025-10-02 11:44:09 debug: Fetching all users
+2025-10-02 11:44:09 debug: Successfully fetched and transformed users
+2025-10-02 11:44:09 debug: Fetched programs for user
+2025-10-02 11:44:09 debug: Fetching all users
+2025-10-02 11:44:09 debug: Successfully fetched and transformed users
+2025-10-02 11:44:09 debug: Fetched programs for user
+2025-10-02 11:44:18 debug: Fetched programs for user
+2025-10-02 11:44:18 debug: Fetched programs for user
+2025-10-02 12:41:50 debug: Fetching all users
+2025-10-02 12:41:50 debug: Successfully fetched and transformed users
+2025-10-02 12:41:50 debug: Fetching all users
+2025-10-02 12:41:50 debug: Successfully fetched and transformed users
+2025-10-02 12:42:04 debug: Fetching all users
+2025-10-02 12:42:04 debug: Successfully fetched and transformed users
+2025-10-02 12:42:04 debug: Fetching all users
+2025-10-02 12:42:04 debug: Successfully fetched and transformed users
+2025-10-02 12:42:05 debug: Fetching all users
+2025-10-02 12:42:05 debug: Successfully fetched and transformed users
+2025-10-02 12:42:05 debug: Fetching all users
+2025-10-02 12:42:05 debug: Fetched programs for user
+2025-10-02 12:42:05 debug: Fetched programs for user
+2025-10-02 12:42:05 debug: Successfully fetched and transformed users
+2025-10-02 12:42:07 debug: Fetched programs for user
+2025-10-02 12:42:07 debug: Fetched programs for user
+2025-10-02 12:42:11 debug: Fetching all users
+2025-10-02 12:42:11 debug: Successfully fetched and transformed users
+2025-10-02 12:42:11 debug: Fetched programs for user
+2025-10-02 12:42:11 debug: Fetching all users
+2025-10-02 12:42:11 debug: Successfully fetched and transformed users
+2025-10-02 12:42:11 debug: Fetched programs for user
+2025-10-02 12:44:23 debug: Fetching all users
+2025-10-02 12:44:23 debug: Successfully fetched and transformed users
+2025-10-02 12:44:23 debug: Fetched programs for user
+2025-10-02 12:44:23 debug: Fetching all users
+2025-10-02 12:44:23 debug: Successfully fetched and transformed users
+2025-10-02 12:44:23 debug: Fetched programs for user
+2025-10-02 12:45:38 debug: Fetched programs for user
+2025-10-02 12:45:38 debug: Fetching all users
+2025-10-02 12:45:38 debug: Successfully fetched and transformed users
+2025-10-02 12:45:38 debug: Fetching all users
+2025-10-02 12:45:38 debug: Fetched programs for user
+2025-10-02 12:45:38 debug: Successfully fetched and transformed users
+2025-10-02 12:51:01 debug: Fetching all users
+2025-10-02 12:51:01 debug: Fetched programs for user
+2025-10-02 12:51:01 debug: Fetched programs for user
+2025-10-02 12:51:01 debug: Successfully fetched and transformed users
+2025-10-02 12:51:01 debug: Fetching all users
+2025-10-02 12:51:01 debug: Successfully fetched and transformed users
+2025-10-02 12:51:11 debug: Fetching all users
+2025-10-02 12:51:11 debug: Successfully fetched and transformed users
+2025-10-02 12:51:11 debug: Fetching all users
+2025-10-02 12:51:11 debug: Successfully fetched and transformed users
+2025-10-02 12:51:21 debug: Fetching all users
+2025-10-02 12:51:21 debug: Successfully fetched and transformed users
+2025-10-02 12:51:21 debug: Fetching all users
+2025-10-02 12:51:21 debug: Successfully fetched and transformed users
+2025-10-02 12:51:32 debug: Fetching all users
+2025-10-02 12:51:32 debug: Successfully fetched and transformed users
+2025-10-02 12:51:32 debug: Fetched programs for user
+2025-10-02 12:51:32 debug: Fetching all users
+2025-10-02 12:51:32 debug: Successfully fetched and transformed users
+2025-10-02 12:51:32 debug: Fetched programs for user
+2025-10-02 12:51:36 debug: Fetching all users
+2025-10-02 12:51:36 debug: Successfully fetched and transformed users
+2025-10-02 12:51:36 debug: Fetching all users
+2025-10-02 12:51:36 debug: Successfully fetched and transformed users
+2025-10-02 12:51:37 debug: Fetching all users
+2025-10-02 12:51:37 debug: Successfully fetched and transformed users
+2025-10-02 12:51:37 debug: Fetched programs for user
+2025-10-02 12:51:37 debug: Fetching all users
+2025-10-02 12:51:37 debug: Successfully fetched and transformed users
+2025-10-02 12:51:37 debug: Fetched programs for user
+2025-10-02 12:51:39 debug: Fetched programs for user
+2025-10-02 12:51:39 debug: Fetched programs for user
+2025-10-02 12:51:44 debug: Fetching all users
+2025-10-02 12:51:44 debug: Successfully fetched and transformed users
+2025-10-02 12:51:44 debug: Fetching all users
+2025-10-02 12:51:44 debug: Fetched programs for user
+2025-10-02 12:51:44 debug: Successfully fetched and transformed users
+2025-10-02 12:51:44 debug: Fetched programs for user
+2025-10-03 08:20:37 info: Application starting...
+2025-10-03 08:20:37 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-03 08:20:37 info: Server is running on http://0.0.0.0:3000
+2025-10-03 08:20:37 info: Initializing services...
+2025-10-03 08:20:37 info: Successfully connected to the database
+2025-10-03 08:20:37 info: Exercise cache initialized
+2025-10-03 08:20:37 info: All services initialized successfully
+2025-10-03 08:20:51 debug: Fetching all users
+2025-10-03 08:20:51 debug: Successfully fetched and transformed users
+2025-10-03 08:20:51 debug: Fetching all users
+2025-10-03 08:20:51 debug: Successfully fetched and transformed users
+2025-10-03 08:20:52 debug: Fetching all users
+2025-10-03 08:20:52 debug: Successfully fetched and transformed users
+2025-10-03 08:20:52 debug: Fetching all users
+2025-10-03 08:20:52 debug: Fetched programs for user
+2025-10-03 08:20:52 debug: Fetched programs for user
+2025-10-03 08:20:52 debug: Successfully fetched and transformed users
+2025-10-03 08:20:54 debug: Fetched programs for user
+2025-10-03 08:20:54 debug: Fetched programs for user
+2025-10-03 08:21:01 debug: Fetching all users
+2025-10-03 08:21:01 debug: Successfully fetched and transformed users
+2025-10-03 08:21:01 debug: Fetched programs for user
+2025-10-03 08:21:01 debug: Fetching all users
+2025-10-03 08:21:01 debug: Successfully fetched and transformed users
+2025-10-03 08:21:01 debug: Fetched programs for user
+2025-10-03 08:21:11 debug: Fetching all users
+2025-10-03 08:21:11 debug: Successfully fetched and transformed users
+2025-10-03 08:21:11 debug: Fetching all users
+2025-10-03 08:21:11 debug: Successfully fetched and transformed users
+2025-10-03 08:22:20 debug: Fetching all users
+2025-10-03 08:22:20 debug: Successfully fetched and transformed users
+2025-10-03 08:22:20 debug: Fetching all users
+2025-10-03 08:22:20 debug: Successfully fetched and transformed users
+2025-10-03 08:22:31 debug: Fetching all users
+2025-10-03 08:22:31 debug: Successfully fetched and transformed users
+2025-10-03 08:22:31 debug: Fetched programs for user
+2025-10-03 08:22:31 debug: Fetching all users
+2025-10-03 08:22:31 debug: Successfully fetched and transformed users
+2025-10-03 08:22:31 debug: Fetched programs for user
+2025-10-03 08:22:36 debug: Fetching all users
+2025-10-03 08:22:36 debug: Successfully fetched and transformed users
+2025-10-03 08:22:36 debug: Fetching all users
+2025-10-03 08:22:36 debug: Successfully fetched and transformed users
+2025-10-03 08:22:50 debug: Fetching all users
+2025-10-03 08:22:50 debug: Successfully fetched and transformed users
+2025-10-03 08:22:50 debug: Fetching all users
+2025-10-03 08:22:50 debug: Successfully fetched and transformed users
+2025-10-03 08:22:53 debug: Fetching all users
+2025-10-03 08:22:53 debug: Successfully fetched and transformed users
+2025-10-03 08:22:53 debug: Fetching all users
+2025-10-03 08:22:53 debug: Successfully fetched and transformed users
+2025-10-03 08:22:54 debug: Fetching all users
+2025-10-03 08:22:54 debug: Successfully fetched and transformed users
+2025-10-03 08:22:54 debug: Fetched programs for user
+2025-10-03 08:22:54 debug: Fetching all users
+2025-10-03 08:22:54 debug: Successfully fetched and transformed users
+2025-10-03 08:22:54 debug: Fetched programs for user
+2025-10-03 08:22:55 debug: Fetched programs for user
+2025-10-03 08:22:55 debug: Fetched programs for user
+2025-10-03 08:22:55 debug: Fetching all users
+2025-10-03 08:22:55 debug: Successfully fetched and transformed users
+2025-10-03 08:22:55 debug: Fetching all users
+2025-10-03 08:22:55 debug: Successfully fetched and transformed users
+2025-10-03 08:22:57 debug: Fetching all users
+2025-10-03 08:22:57 debug: Successfully fetched and transformed users
+2025-10-03 08:22:57 debug: Fetched programs for user
+2025-10-03 08:22:57 debug: Fetching all users
+2025-10-03 08:22:57 debug: Successfully fetched and transformed users
+2025-10-03 08:22:57 debug: Fetched programs for user
+2025-10-03 08:22:58 debug: Fetching all users
+2025-10-03 08:22:58 debug: Successfully fetched and transformed users
+2025-10-03 08:22:58 debug: Fetching all users
+2025-10-03 08:22:58 debug: Successfully fetched and transformed users
+2025-10-03 08:23:00 debug: Fetching all users
+2025-10-03 08:23:00 debug: Successfully fetched and transformed users
+2025-10-03 08:23:00 debug: Fetching all users
+2025-10-03 08:23:00 debug: Successfully fetched and transformed users
+2025-10-03 08:23:01 debug: Fetching all users
+2025-10-03 08:23:01 debug: Successfully fetched and transformed users
+2025-10-03 08:23:01 debug: Fetching all users
+2025-10-03 08:23:01 debug: Successfully fetched and transformed users
+2025-10-03 08:23:06 debug: Fetching all users
+2025-10-03 08:23:06 debug: Successfully fetched and transformed users
+2025-10-03 08:23:06 debug: Fetching all users
+2025-10-03 08:23:06 debug: Successfully fetched and transformed users
+2025-10-03 08:24:27 debug: Fetching all users
+2025-10-03 08:24:27 debug: Successfully fetched and transformed users
+2025-10-03 08:24:27 debug: Fetching all users
+2025-10-03 08:24:27 debug: Successfully fetched and transformed users
+2025-10-03 08:24:43 debug: Fetching all users
+2025-10-03 08:24:43 debug: Successfully fetched and transformed users
+2025-10-03 08:24:43 debug: Fetched programs for user
+2025-10-03 08:24:43 debug: Fetching all users
+2025-10-03 08:24:43 debug: Successfully fetched and transformed users
+2025-10-03 08:24:43 debug: Fetched programs for user
+2025-10-03 08:25:00 debug: Fetched programs for user
+2025-10-03 08:25:00 debug: Fetched programs for user
+2025-10-03 08:25:24 debug: Fetching all users
+2025-10-03 08:25:24 debug: Successfully fetched and transformed users
+2025-10-03 08:25:24 debug: Fetched programs for user
+2025-10-03 08:25:24 debug: Fetching all users
+2025-10-03 08:25:24 debug: Successfully fetched and transformed users
+2025-10-03 08:25:24 debug: Fetched programs for user
+2025-10-03 08:29:13 debug: Fetching all users
+2025-10-03 08:29:13 debug: Successfully fetched and transformed users
+2025-10-03 08:29:13 debug: Fetching all users
+2025-10-03 08:29:13 debug: Successfully fetched and transformed users
+2025-10-03 08:30:04 debug: Fetching all users
+2025-10-03 08:30:04 debug: Successfully fetched and transformed users
+2025-10-03 08:30:04 debug: Fetched programs for user
+2025-10-03 08:30:04 debug: Fetching all users
+2025-10-03 08:30:04 debug: Successfully fetched and transformed users
+2025-10-03 08:30:04 debug: Fetched programs for user
+2025-10-03 08:30:07 debug: Fetching all users
+2025-10-03 08:30:07 debug: Successfully fetched and transformed users
+2025-10-03 08:30:07 debug: Fetched programs for user
+2025-10-03 08:30:07 debug: Fetching all users
+2025-10-03 08:30:07 debug: Successfully fetched and transformed users
+2025-10-03 08:30:07 debug: Fetched programs for user
+2025-10-03 08:57:01 debug: Fetching all users
+2025-10-03 08:57:01 debug: Successfully fetched and transformed users
+2025-10-03 08:57:01 debug: Fetching all users
+2025-10-03 08:57:01 debug: Successfully fetched and transformed users
+2025-10-03 08:57:03 debug: Fetching all users
+2025-10-03 08:57:03 debug: Successfully fetched and transformed users
+2025-10-03 08:57:03 debug: Fetching all users
+2025-10-03 08:57:03 debug: Successfully fetched and transformed users
+2025-10-03 08:57:04 debug: Fetching all users
+2025-10-03 08:57:04 debug: Successfully fetched and transformed users
+2025-10-03 08:57:04 debug: Fetching all users
+2025-10-03 08:57:04 debug: Fetched programs for user
+2025-10-03 08:57:04 debug: Fetched programs for user
+2025-10-03 08:57:04 debug: Successfully fetched and transformed users
+2025-10-03 08:57:07 debug: Fetched programs for user
+2025-10-03 08:57:07 debug: Fetched programs for user
+2025-10-03 08:57:10 debug: Fetching all users
+2025-10-03 08:57:10 debug: Successfully fetched and transformed users
+2025-10-03 08:57:10 debug: Fetching all users
+2025-10-03 08:57:10 debug: Successfully fetched and transformed users
+2025-10-03 08:59:02 debug: Fetching all users
+2025-10-03 08:59:02 debug: Fetched programs for user
+2025-10-03 08:59:02 debug: Successfully fetched and transformed users
+2025-10-03 08:59:02 debug: Fetching all users
+2025-10-03 08:59:02 debug: Fetched programs for user
+2025-10-03 08:59:02 debug: Successfully fetched and transformed users
+2025-10-03 08:59:52 debug: Fetching all users
+2025-10-03 08:59:52 debug: Successfully fetched and transformed users
+2025-10-03 08:59:52 debug: Fetching all users
+2025-10-03 08:59:52 debug: Fetched programs for user
+2025-10-03 08:59:52 debug: Successfully fetched and transformed users
+2025-10-03 08:59:52 debug: Fetched programs for user
+2025-10-03 09:03:48 debug: Fetched workouts for program
+2025-10-03 09:03:49 debug: Successfully fetched workout exercises
+2025-10-03 09:12:44 debug: Fetching all users
+2025-10-03 09:12:44 debug: Successfully fetched and transformed users
+2025-10-03 09:12:44 debug: Fetched programs for user
+2025-10-03 09:12:55 debug: Fetching all users
+2025-10-03 09:12:55 debug: Successfully fetched and transformed users
+2025-10-03 09:12:55 debug: Fetched programs for user
+2025-10-03 09:12:55 debug: Fetching all users
+2025-10-03 09:12:55 debug: Successfully fetched and transformed users
+2025-10-03 09:12:55 debug: Fetched programs for user
+2025-10-03 09:12:57 debug: Fetched workouts for program
+2025-10-03 09:12:58 debug: Successfully fetched workout exercises
+2025-10-03 09:14:28 debug: Successfully fetched workout exercises
+2025-10-03 09:17:27 debug: Fetched programs for user
+2025-10-03 09:17:27 debug: Retrieved next workout
+2025-10-03 09:17:28 debug: Fetched workouts for program
+2025-10-03 09:17:28 debug: Retrieved next workout
+2025-10-03 09:17:28 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:17:28 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:17:28 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:17:28 debug: Processing workout template
+2025-10-03 09:17:28 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:17:28 debug: Successfully built workout template
+2025-10-03 09:17:37 debug: Fetched workouts for program
+2025-10-03 09:17:37 debug: Processing workout completion
+2025-10-03 09:17:37 debug: Retrieved next workout
+2025-10-03 09:17:37 info: Workout completed successfully
+2025-10-03 09:17:38 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:17:38 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:17:38 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:17:38 debug: Processing workout template
+2025-10-03 09:17:38 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:17:38 debug: Successfully built workout template
+2025-10-03 09:17:45 debug: Fetched workouts for program
+2025-10-03 09:17:45 debug: Processing workout completion
+2025-10-03 09:17:45 info: Workout completed successfully
+2025-10-03 09:17:45 debug: Retrieved next workout
+2025-10-03 09:17:46 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:17:46 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:17:46 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:17:46 debug: Processing workout template
+2025-10-03 09:17:46 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:17:46 debug: Successfully built workout template
+2025-10-03 09:17:56 debug: Fetched programs for user
+2025-10-03 09:17:56 debug: Retrieved next workout
+2025-10-03 09:21:54 debug: Fetched workouts for program
+2025-10-03 09:21:54 debug: Retrieved next workout
+2025-10-03 09:21:54 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:21:54 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:21:54 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:21:54 debug: Processing workout template
+2025-10-03 09:21:54 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:21:54 debug: Successfully built workout template
+2025-10-03 09:22:08 debug: Processing workout completion
+2025-10-03 09:22:08 debug: Fetched workouts for program
+2025-10-03 09:22:08 info: Workout completed successfully
+2025-10-03 09:22:08 debug: Retrieved next workout
+2025-10-03 09:22:09 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:22:09 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:22:09 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:22:09 debug: Processing workout template
+2025-10-03 09:22:09 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:22:09 debug: Successfully built workout template
+2025-10-03 09:22:17 debug: Processing workout completion
+2025-10-03 09:22:17 debug: Fetched workouts for program
+2025-10-03 09:22:17 info: Workout completed successfully
+2025-10-03 09:22:17 debug: Retrieved next workout
+2025-10-03 09:22:19 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 09:22:19 warn: 🔍 Backend - Total exercises found:
+2025-10-03 09:22:19 warn: 🔍 Backend - First exercise raw:
+2025-10-03 09:22:19 debug: Processing workout template
+2025-10-03 09:22:19 debug: Retrieved exercise baselines for automated program
+2025-10-03 09:22:19 debug: Successfully built workout template
+2025-10-03 09:44:27 debug: Fetching all users
+2025-10-03 09:44:27 debug: Successfully fetched and transformed users
+2025-10-03 09:44:27 debug: Fetching all users
+2025-10-03 09:44:27 debug: Successfully fetched and transformed users
+2025-10-03 09:46:35 debug: Fetching all users
+2025-10-03 09:46:35 debug: Successfully fetched and transformed users
+2025-10-03 09:46:35 debug: Fetching all users
+2025-10-03 09:46:35 debug: Successfully fetched and transformed users
+2025-10-03 09:46:37 debug: Fetching all users
+2025-10-03 09:46:37 debug: Successfully fetched and transformed users
+2025-10-03 09:46:37 debug: Fetching all users
+2025-10-03 09:46:37 debug: Successfully fetched and transformed users
+2025-10-03 09:56:53 debug: Fetching all users
+2025-10-03 09:56:53 debug: Successfully fetched and transformed users
+2025-10-03 09:56:53 debug: Fetching all users
+2025-10-03 09:56:53 debug: Successfully fetched and transformed users
+2025-10-03 09:59:54 debug: Fetching all users
+2025-10-03 09:59:54 debug: Successfully fetched and transformed users
+2025-10-03 09:59:54 debug: Fetching all users
+2025-10-03 09:59:54 debug: Successfully fetched and transformed users
+2025-10-03 10:03:40 debug: Fetching all users
+2025-10-03 10:03:40 debug: Successfully fetched and transformed users
+2025-10-03 10:03:40 debug: Fetching all users
+2025-10-03 10:03:40 debug: Successfully fetched and transformed users
+2025-10-03 10:05:32 debug: Fetching all users
+2025-10-03 10:05:32 debug: Successfully fetched and transformed users
+2025-10-03 10:05:32 debug: Fetching all users
+2025-10-03 10:05:32 debug: Successfully fetched and transformed users
+2025-10-03 10:05:32 debug: Fetching all users
+2025-10-03 10:05:32 debug: Successfully fetched and transformed users
+2025-10-03 10:05:32 debug: Fetching all users
+2025-10-03 10:05:32 debug: Successfully fetched and transformed users
+2025-10-03 10:06:17 info: Created program with workouts
+2025-10-03 10:06:26 debug: Fetched programs for user
+2025-10-03 10:06:26 debug: Retrieved next workout
+2025-10-03 10:06:27 info: Retrieved all program templates
+2025-10-03 10:06:28 debug: Fetched programs for user
+2025-10-03 10:06:28 debug: Fetched programs for user
+2025-10-03 10:06:28 debug: Fetched programs for user
+2025-10-03 10:06:30 info: Updated program status
+2025-10-03 10:06:31 debug: Fetched programs for user
+2025-10-03 10:06:32 debug: Fetched programs for user
+2025-10-03 10:06:32 debug: Retrieved next workout
+2025-10-03 10:06:33 debug: Fetched workouts for program
+2025-10-03 10:06:33 debug: Retrieved next workout
+2025-10-03 10:06:34 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 10:06:34 warn: 🔍 Backend - Total exercises found:
+2025-10-03 10:06:34 warn: 🔍 Backend - First exercise raw:
+2025-10-03 10:06:34 debug: Processing workout template
+2025-10-03 10:06:34 debug: Retrieved last completed exercises for manual program
+2025-10-03 10:06:34 debug: Successfully built workout template
+2025-10-03 10:06:38 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 10:06:38 warn: 🔍 Backend - Total exercises found:
+2025-10-03 10:06:38 warn: 🔍 Backend - First exercise raw:
+2025-10-03 10:06:38 debug: Processing workout template
+2025-10-03 10:06:38 debug: Retrieved last completed exercises for manual program
+2025-10-03 10:06:38 debug: Successfully built workout template
+2025-10-03 10:06:55 debug: Fetching all users
+2025-10-03 10:06:55 debug: Successfully fetched and transformed users
+2025-10-03 10:06:55 debug: Fetched programs for user
+2025-10-03 10:06:55 debug: Fetching all users
+2025-10-03 10:06:55 debug: Successfully fetched and transformed users
+2025-10-03 10:06:55 debug: Fetched programs for user
+2025-10-03 10:07:00 debug: Fetched workouts for program
+2025-10-03 10:07:01 info: No exercises found for workout
+2025-10-03 10:07:01 debug: Successfully fetched workout exercises
+2025-10-03 10:07:35 debug: Successfully fetched workout exercises
+2025-10-03 10:07:38 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 10:07:38 warn: 🔍 Backend - Total exercises found:
+2025-10-03 10:07:38 warn: 🔍 Backend - First exercise raw:
+2025-10-03 10:07:38 debug: Processing workout template
+2025-10-03 10:07:38 debug: Retrieved last completed exercises for manual program
+2025-10-03 10:07:38 debug: Successfully built workout template
+2025-10-03 10:07:46 debug: Processing workout completion
+2025-10-03 10:07:46 debug: Fetched workouts for program
+2025-10-03 10:07:46 info: Workout completed successfully
+2025-10-03 10:07:46 debug: Retrieved next workout
+2025-10-03 10:07:48 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 10:07:48 warn: 🔍 Backend - Total exercises found:
+2025-10-03 10:07:48 warn: 🔍 Backend - First exercise raw:
+2025-10-03 10:07:48 debug: Processing workout template
+2025-10-03 10:07:48 debug: Retrieved last completed exercises for manual program
+2025-10-03 10:07:48 debug: Successfully built workout template
+2025-10-03 10:07:59 debug: Fetched workouts for program
+2025-10-03 10:07:59 debug: Processing workout completion
+2025-10-03 10:07:59 info: Workout completed successfully
+2025-10-03 10:07:59 debug: Retrieved next workout
+2025-10-03 10:08:01 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-03 10:08:01 warn: 🔍 Backend - Total exercises found:
+2025-10-03 10:08:01 warn: 🔍 Backend - First exercise raw:
+2025-10-03 10:08:01 debug: Processing workout template
+2025-10-03 10:08:01 debug: Retrieved last completed exercises for manual program
+2025-10-03 10:08:01 debug: Successfully built workout template
+2025-10-03 11:43:45 debug: Fetching all users
+2025-10-03 11:43:45 debug: Successfully fetched and transformed users
+2025-10-03 12:14:04 debug: Fetching all users
+2025-10-03 12:14:04 debug: Fetched programs for user
+2025-10-03 12:14:04 debug: Fetched programs for user
+2025-10-03 12:14:05 debug: Successfully fetched and transformed users
+2025-10-03 12:14:05 debug: Fetching all users
+2025-10-03 12:14:05 debug: Successfully fetched and transformed users
+2025-10-03 12:14:05 debug: Fetching all users
+2025-10-03 12:14:05 debug: Successfully fetched and transformed users
+2025-10-03 12:14:05 debug: Fetching all users
+2025-10-03 12:14:05 debug: Successfully fetched and transformed users
+2025-10-03 12:27:51 info: SIGINT received, closing database connection...
+2025-10-03 12:27:51 info: Database connection closed successfully.

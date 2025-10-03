@@ -68,6 +68,9 @@ export const programValidators = {
 			.trim()
 			.isLength({ min: 1, max: 255 })
 			.withMessage("Program name must be a non-empty string (max 255 characters)"),
+		body("workouts.*.exercises")
+			.isArray({ min: 1 })
+			.withMessage("Each workout must have at least one exercise"),
 		body("goal")
 			.isIn(["HYPERTROPHY", "STRENGTH"])
 			.withMessage("Goal must be either HYPERTROPHY or STRENGTH"),

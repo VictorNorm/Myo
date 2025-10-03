@@ -14,7 +14,7 @@ const router = Router();
  * Requires authentication
  */
 router.post(
-  "/programs/generate",
+  "/api/v2/programs/generate",
   authenticateToken,
   programGenerationValidators.generateProgram,
   programGenerationController.generateProgram
@@ -27,7 +27,7 @@ router.post(
  * No authentication required for preview
  */
 router.post(
-  "/programs/preview",
+  "/api/v2/programs/preview",
   programGenerationValidators.previewProgram,
   programGenerationController.previewProgram
 );
@@ -39,7 +39,7 @@ router.post(
  * Requires authentication
  */
 router.post(
-  "/programs/quick-setup",
+  "/api/v2/programs/quick-setup",
   authenticateToken,
   programGenerationValidators.quickSetup,
   programGenerationController.quickSetup
@@ -52,7 +52,7 @@ router.post(
  * No authentication required
  */
 router.get(
-  "/programs/recommended-preferences/:experience",
+  "/api/v2/programs/recommended-preferences/:experience",
   programGenerationController.getRecommendedPreferences
 );
 
