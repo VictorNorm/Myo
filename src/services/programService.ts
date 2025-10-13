@@ -6,6 +6,7 @@ import {
 	type NextWorkoutResult,
 	type CreateProgramInput,
 	type CreateProgramWithWorkoutsInput,
+	type CreateProgramWithWorkoutsAndExercisesInput,
 	type UpdateProgramStatusInput,
 } from "./repositories/programRepository";
 import logger from "./logger";
@@ -31,6 +32,19 @@ export interface CreateProgramRequest {
 export interface CreateProgramWithWorkoutsRequest extends CreateProgramRequest {
 	workouts: Array<{
 		name: string;
+		exercises?: Array<{
+			exerciseId: number;
+			sets: number;
+			reps: number;
+			weight: number;
+			order?: number;
+		}>;
+	}>;
+	baselines?: Array<{
+		exerciseId: number;
+		sets: number;
+		reps: number;
+		weight: number;
 	}>;
 	shouldActivate?: boolean;
 	targetUserId?: number; // For admin creation
@@ -228,7 +242,28 @@ export const programService = {
 			}
 		}
 
-		const createData: CreateProgramWithWorkoutsInput = {
+		// NEW VALIDATION: AUTOMATED programs with exercises must have baselines
+		if (data.programType === 'AUTOMATED') {
+			const hasExercises = data.workouts.some(w => w.exercises && w.exercises.length > 0);
+			if (hasExercises && (!data.baselines || data.baselines.length === 0)) {
+				throw new Error("AUTOMATED programs with exercises require baselines");
+			}
+		}
+
+		// NEW VALIDATION: Validate baseline exercises exist in workouts
+		if (data.baselines && data.baselines.length > 0) {
+			const allExerciseIds = new Set(
+				data.workouts.flatMap(w => w.exercises?.map(e => e.exerciseId) || [])
+			);
+			
+			for (const baseline of data.baselines) {
+				if (!allExerciseIds.has(baseline.exerciseId)) {
+					throw new Error(`Baseline references exercise ID ${baseline.exerciseId} which is not in any workout`);
+				}
+			}
+		}
+
+		const createData: CreateProgramWithWorkoutsAndExercisesInput = {
 			name: data.name,
 			userId: targetUserId,
 			goal: data.goal,
@@ -236,18 +271,20 @@ export const programService = {
 			startDate: new Date(data.startDate),
 			endDate: data.endDate ? new Date(data.endDate) : null,
 			workouts: data.workouts,
+			baselines: data.baselines,
 			shouldActivate: data.shouldActivate || false,
 		};
 
-		const program = await programRepository.createWithWorkouts(createData);
+		const program = await programRepository.createWithWorkoutsAndExercises(createData);
 
-		logger.info("Created program with workouts", {
+		logger.info("Created program with workouts, exercises, and baselines", {
 			programId: program.id,
 			requestingUserId,
 			targetUserId,
 			programName: data.name,
 			workoutCount: data.workouts.length,
-			shouldActivate: data.shouldActivate,
+			exerciseCount: data.workouts.reduce((sum, w) => sum + (w.exercises?.length || 0), 0),
+			baselineCount: data.baselines?.length || 0,
 			isAdminCreation: targetUserId !== requestingUserId,
 		});
 

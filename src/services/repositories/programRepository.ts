@@ -52,6 +52,32 @@ export interface CreateProgramWithWorkoutsInput extends CreateProgramInput {
 	shouldActivate?: boolean;
 }
 
+export interface CreateProgramWithWorkoutsAndExercisesInput {
+	name: string;
+	userId: number;
+	goal: "HYPERTROPHY" | "STRENGTH";
+	programType: "MANUAL" | "AUTOMATED";
+	startDate: Date;
+	endDate: Date | null;
+	workouts: Array<{
+		name: string;
+		exercises?: Array<{
+			exerciseId: number;
+			sets: number;
+			reps: number;
+			weight: number;
+			order?: number;
+		}>;
+	}>;
+	baselines?: Array<{
+		exerciseId: number;
+		sets: number;
+		reps: number;
+		weight: number;
+	}>;
+	shouldActivate: boolean;
+}
+
 export interface UpdateProgramStatusInput {
 	status: ProgramStatus;
 	endDate?: Date | null;
@@ -238,6 +264,95 @@ export const programRepository = {
 				data: workoutsData,
 			});
 
+			return {
+				id: program.id,
+				name: program.name,
+				userId: program.userId,
+				status: program.status,
+				goal: program.goal,
+				programType: program.programType,
+				startDate: program.startDate,
+				endDate: program.endDate,
+			};
+		});
+	},
+
+	async createWithWorkoutsAndExercises(
+		data: CreateProgramWithWorkoutsAndExercisesInput
+	): Promise<ProgramWithCounts> {
+		return prisma.$transaction(async (tx) => {
+			// 1. Create the program
+			const program = await tx.programs.create({
+				data: {
+					name: data.name,
+					userId: data.userId,
+					goal: data.goal,
+					programType: data.programType,
+					startDate: data.startDate,
+					endDate: data.endDate,
+					status: data.shouldActivate ? "ACTIVE" : "PENDING",
+				},
+			});
+
+			// 2. If activating, set all other user programs to PENDING
+			if (data.shouldActivate) {
+				await tx.programs.updateMany({
+					where: {
+						userId: data.userId,
+						id: { not: program.id },
+					},
+					data: {
+						status: "PENDING",
+					},
+				});
+			}
+
+			// 3. Create workouts and their exercises
+			for (let i = 0; i < data.workouts.length; i++) {
+				const workoutData = data.workouts[i];
+				
+				// Create the workout
+				const workout = await tx.workouts.create({
+					data: {
+						name: workoutData.name,
+						program_id: program.id,
+					},
+				});
+
+				// 4. Create exercises for this workout (if provided)
+				if (workoutData.exercises && workoutData.exercises.length > 0) {
+					const exerciseData = workoutData.exercises.map((ex, index) => ({
+						workout_id: workout.id,
+						exercise_id: ex.exerciseId,
+						sets: ex.sets,
+						reps: ex.reps,
+						weight: ex.weight,
+						order: ex.order ?? index + 1, // Use provided order or default to index + 1
+					}));
+
+					await tx.workout_exercises.createMany({
+						data: exerciseData,
+					});
+				}
+			}
+
+			// 5. Create baselines if provided (for AUTOMATED programs)
+			if (data.baselines && data.baselines.length > 0) {
+				const baselineData = data.baselines.map(b => ({
+					exercise_id: b.exerciseId,
+					user_id: data.userId,
+					program_id: program.id,
+					sets: b.sets,
+					reps: b.reps,
+					weight: b.weight,
+				}));
+
+				await tx.exercise_baselines.createMany({
+					data: baselineData,
+				});
+			}
+
+			// 6. Return the created program
 			return {
 				id: program.id,
 				name: program.name,

@@ -89,6 +89,52 @@ export const programValidators = {
 			.trim()
 			.isLength({ min: 1, max: 255 })
 			.withMessage("Each workout must have a non-empty name (max 255 characters)"),
+		// Optional nested exercises in workouts
+		body("workouts.*.exercises")
+			.optional()
+			.isArray()
+			.withMessage("Exercises must be an array if provided"),
+		body("workouts.*.exercises.*.exerciseId")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Exercise ID must be a positive integer"),
+		body("workouts.*.exercises.*.sets")
+			.optional()
+			.isInt({ min: 1, max: 20 })
+			.withMessage("Sets must be between 1 and 20"),
+		body("workouts.*.exercises.*.reps")
+			.optional()
+			.isInt({ min: 1, max: 100 })
+			.withMessage("Reps must be between 1 and 100"),
+		body("workouts.*.exercises.*.weight")
+			.optional()
+			.isFloat({ min: 0 })
+			.withMessage("Weight must be non-negative"),
+		body("workouts.*.exercises.*.order")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Order must be a positive integer"),
+		// Optional baselines
+		body("baselines")
+			.optional()
+			.isArray()
+			.withMessage("Baselines must be an array if provided"),
+		body("baselines.*.exerciseId")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Baseline exercise ID must be a positive integer"),
+		body("baselines.*.sets")
+			.optional()
+			.isInt({ min: 1, max: 20 })
+			.withMessage("Baseline sets must be between 1 and 20"),
+		body("baselines.*.reps")
+			.optional()
+			.isInt({ min: 1, max: 100 })
+			.withMessage("Baseline reps must be between 1 and 100"),
+		body("baselines.*.weight")
+			.optional()
+			.isFloat({ min: 0 })
+			.withMessage("Baseline weight must be non-negative"),
 		body("shouldActivate")
 			.optional()
 			.isBoolean()
