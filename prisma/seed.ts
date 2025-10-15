@@ -24,6 +24,19 @@ async function seedExercises() {
     { name: 'Dumbbell Row', equipment: Equipment.DUMBBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.0 },
     { name: 'Romanian Deadlift', equipment: Equipment.BARBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.5 },
     { name: 'Bulgarian Split Squat', equipment: Equipment.DUMBBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.0 },
+    
+    // Beginner program specific exercises
+    { name: 'Barbell High Bar Squat', equipment: Equipment.BARBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.5 },
+    { name: 'Lat Pulldown (neutral grip)', equipment: Equipment.CABLE, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.5 },
+    { name: 'Trap Bar Deadlift', equipment: Equipment.BARBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.5 },
+    { name: 'Dumbbell Bench Press', equipment: Equipment.DUMBBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.0 },
+    { name: 'Single Arm Dumbbell Row', equipment: Equipment.DUMBBELL, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 2.0 },
+    { name: 'Leg Press', equipment: Equipment.MACHINE, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 5.0 },
+    { name: 'Incline Push-up', equipment: Equipment.BODYWEIGHT, category: ExerciseCategory.COMPOUND, defaultIncrementKg: 0 },
+    { name: 'Leg Extension', equipment: Equipment.MACHINE, category: ExerciseCategory.ISOLATION, defaultIncrementKg: 2.5 },
+    { name: 'Cable Tricep Pushdown', equipment: Equipment.CABLE, category: ExerciseCategory.ISOLATION, defaultIncrementKg: 2.5 },
+    { name: 'Machine Hamstring Curl', equipment: Equipment.MACHINE, category: ExerciseCategory.ISOLATION, defaultIncrementKg: 2.5 },
+    { name: 'Dumbbell Lateral Raise', equipment: Equipment.DUMBBELL, category: ExerciseCategory.ISOLATION, defaultIncrementKg: 1.0 },
   ];
 
   await prisma.exercises.createMany({
@@ -52,158 +65,17 @@ async function seedProgramTemplates() {
     return acc;
   }, {} as Record<string, number>);
 
-  // Create Beginner Full Body template
-  const beginnerTemplate = await prisma.program_templates.create({
+  // Create Beginner Full Body - 4 Exercises template
+  const beginnerTemplate4 = await prisma.program_templates.create({
     data: {
-      name: 'Beginner Full Body',
-      description: 'Perfect for those new to strength training. 3 full-body workouts per week focusing on compound movements.',
+      name: 'Beginner Full Body - 4 Exercises',
+      description: 'Perfect for beginners with limited time. 4 effective exercises per workout, 25-35 minutes.',
       difficulty_level: 'BEGINNER',
-      frequency_per_week: 3,
-      duration_weeks: 12,
+      frequency_per_week: 2,
       category: 'GENERAL',
       goal: 'HYPERTROPHY',
       program_type: 'AUTOMATED',
-      template_workouts: {
-        create: [
-          {
-            name: 'Full Body A',
-            order: 1,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 3, reps: 8, weight: 20.0, order: 1 },
-                { exercise_id: exerciseMap['Bench Press'], sets: 3, reps: 8, weight: 40.0, order: 2 },
-                { exercise_id: exerciseMap['Barbell Row'], sets: 3, reps: 8, weight: 30.0, order: 3 },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 3, reps: 8, weight: 20.0, order: 4 },
-                { exercise_id: exerciseMap['Romanian Deadlift'], sets: 3, reps: 10, weight: 30.0, order: 5 },
-              ]
-            }
-          },
-          {
-            name: 'Full Body B',
-            order: 2,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Deadlift'], sets: 3, reps: 5, weight: 40.0, order: 1 },
-                { exercise_id: exerciseMap['Incline Dumbbell Press'], sets: 3, reps: 8, weight: 12.5, order: 2 },
-                { exercise_id: exerciseMap['Pull-up'], sets: 3, reps: 5, weight: 0, order: 3, notes: 'Assisted if needed' },
-                { exercise_id: exerciseMap['Dumbbell Row'], sets: 3, reps: 10, weight: 15.0, order: 4 },
-                { exercise_id: exerciseMap['Bulgarian Split Squat'], sets: 3, reps: 8, weight: 10.0, order: 5 },
-              ]
-            }
-          },
-          {
-            name: 'Full Body C',
-            order: 3,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 3, reps: 10, weight: 17.5, order: 1 },
-                { exercise_id: exerciseMap['Dip'], sets: 3, reps: 6, weight: 0, order: 2, notes: 'Assisted if needed' },
-                { exercise_id: exerciseMap['Barbell Row'], sets: 3, reps: 10, weight: 27.5, order: 3 },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 3, reps: 10, weight: 17.5, order: 4 },
-                { exercise_id: exerciseMap['Romanian Deadlift'], sets: 3, reps: 12, weight: 27.5, order: 5 },
-              ]
-            }
-          }
-        ]
-      }
-    }
-  });
-
-  // Create Starting Strength template
-  const startingStrengthTemplate = await prisma.program_templates.create({
-    data: {
-      name: 'Starting Strength',
-      description: 'The classic novice strength program focusing on basic compound movements with linear progression.',
-      difficulty_level: 'BEGINNER',
-      frequency_per_week: 3,
-      duration_weeks: 16,
-      category: 'STRENGTH',
-      goal: 'STRENGTH',
-      program_type: 'AUTOMATED',
-      template_workouts: {
-        create: [
-          {
-            name: 'Workout A',
-            order: 1,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 3, reps: 5, weight: 20.0, order: 1 },
-                { exercise_id: exerciseMap['Bench Press'], sets: 3, reps: 5, weight: 45.0, order: 2 },
-                { exercise_id: exerciseMap['Deadlift'], sets: 1, reps: 5, weight: 60.0, order: 3 },
-              ]
-            }
-          },
-          {
-            name: 'Workout B',
-            order: 2,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 3, reps: 5, weight: 20.0, order: 1 },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 3, reps: 5, weight: 20.0, order: 2 },
-                { exercise_id: exerciseMap['Deadlift'], sets: 1, reps: 5, weight: 60.0, order: 3 },
-              ]
-            }
-          }
-        ]
-      }
-    }
-  });
-
-  // Create Upper/Lower Split template
-  const upperLowerTemplate = await prisma.program_templates.create({
-    data: {
-      name: 'Upper/Lower Split',
-      description: '4-day upper/lower split focusing on hypertrophy with moderate volume and intensity.',
-      difficulty_level: 'INTERMEDIATE',
-      frequency_per_week: 4,
-      duration_weeks: 8,
-      category: 'HYPERTROPHY',
-      goal: 'HYPERTROPHY',
-      program_type: 'AUTOMATED',
-      template_workouts: {
-        create: [
-          {
-            name: 'Upper Body',
-            order: 1,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Bench Press'], sets: 4, reps: 8, weight: 50.0, order: 1 },
-                { exercise_id: exerciseMap['Barbell Row'], sets: 4, reps: 8, weight: 40.0, order: 2 },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 3, reps: 10, weight: 25.0, order: 3 },
-                { exercise_id: exerciseMap['Pull-up'], sets: 3, reps: 8, weight: 0, order: 4 },
-                { exercise_id: exerciseMap['Incline Dumbbell Press'], sets: 3, reps: 10, weight: 17.5, order: 5 },
-                { exercise_id: exerciseMap['Dumbbell Row'], sets: 3, reps: 10, weight: 20.0, order: 6 },
-              ]
-            }
-          },
-          {
-            name: 'Lower Body',
-            order: 2,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 4, reps: 8, weight: 60.0, order: 1 },
-                { exercise_id: exerciseMap['Romanian Deadlift'], sets: 4, reps: 10, weight: 50.0, order: 2 },
-                { exercise_id: exerciseMap['Bulgarian Split Squat'], sets: 3, reps: 10, weight: 15.0, order: 3 },
-                { exercise_id: exerciseMap['Deadlift'], sets: 3, reps: 5, weight: 80.0, order: 4 },
-              ]
-            }
-          }
-        ]
-      }
-    }
-  });
-
-  // Create 5/3/1 for Beginners template
-  const fiveThreeOneTemplate = await prisma.program_templates.create({
-    data: {
-      name: '5/3/1 for Beginners',
-      description: 'Jim Wendler\'s 5/3/1 program adapted for beginners with supplemental work.',
-      difficulty_level: 'INTERMEDIATE',
-      frequency_per_week: 3,
-      duration_weeks: 12,
-      category: 'STRENGTH',
-      goal: 'STRENGTH',
-      program_type: 'MANUAL',
+      is_active: true,
       template_workouts: {
         create: [
           {
@@ -211,10 +83,10 @@ async function seedProgramTemplates() {
             order: 1,
             template_exercises: {
               create: [
-                { exercise_id: exerciseMap['Squat'], sets: 3, reps: 5, weight: 0, order: 1, notes: '5/3/1 sets based on training max' },
-                { exercise_id: exerciseMap['Bench Press'], sets: 3, reps: 5, weight: 0, order: 2, notes: '5/3/1 sets based on training max' },
-                { exercise_id: exerciseMap['Squat'], sets: 5, reps: 5, weight: 0, order: 3, notes: 'FSL sets at 65%' },
-                { exercise_id: exerciseMap['Bench Press'], sets: 5, reps: 5, weight: 0, order: 4, notes: 'FSL sets at 65%' },
+                { exercise_id: exerciseMap['Barbell High Bar Squat'], sets: 3, reps: 8, weight: null, order: 1 },
+                { exercise_id: exerciseMap['Lat Pulldown (neutral grip)'], sets: 3, reps: 8, weight: null, order: 2 },
+                { exercise_id: exerciseMap['Trap Bar Deadlift'], sets: 3, reps: 8, weight: null, order: 3 },
+                { exercise_id: exerciseMap['Dumbbell Bench Press'], sets: 3, reps: 8, weight: null, order: 4 },
               ]
             }
           },
@@ -223,10 +95,10 @@ async function seedProgramTemplates() {
             order: 2,
             template_exercises: {
               create: [
-                { exercise_id: exerciseMap['Deadlift'], sets: 3, reps: 5, weight: 0, order: 1, notes: '5/3/1 sets based on training max' },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 3, reps: 5, weight: 0, order: 2, notes: '5/3/1 sets based on training max' },
-                { exercise_id: exerciseMap['Deadlift'], sets: 5, reps: 5, weight: 0, order: 3, notes: 'FSL sets at 65%' },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 5, reps: 5, weight: 0, order: 4, notes: 'FSL sets at 65%' },
+                { exercise_id: exerciseMap['Barbell High Bar Squat'], sets: 3, reps: 8, weight: null, order: 1 },
+                { exercise_id: exerciseMap['Single Arm Dumbbell Row'], sets: 3, reps: 8, weight: null, order: 2 },
+                { exercise_id: exerciseMap['Leg Press'], sets: 3, reps: 8, weight: null, order: 3 },
+                { exercise_id: exerciseMap['Incline Push-up'], sets: 3, reps: 8, weight: null, order: 4 },
               ]
             }
           }
@@ -235,52 +107,44 @@ async function seedProgramTemplates() {
     }
   });
 
-  // Create Push/Pull/Legs template
-  const pplTemplate = await prisma.program_templates.create({
+  // Create Beginner Full Body - 6 Exercises template
+  const beginnerTemplate6 = await prisma.program_templates.create({
     data: {
-      name: 'Push/Pull/Legs',
-      description: 'High volume 6-day split for experienced lifters focusing on muscle hypertrophy.',
-      difficulty_level: 'ADVANCED',
-      frequency_per_week: 6,
-      duration_weeks: 6,
-      category: 'HYPERTROPHY',
+      name: 'Beginner Full Body - 6 Exercises',
+      description: 'Comprehensive beginner program with more exercises per workout, 40-50 minutes.',
+      difficulty_level: 'BEGINNER',
+      frequency_per_week: 2,
+      category: 'GENERAL',
       goal: 'HYPERTROPHY',
-      program_type: 'MANUAL',
+      program_type: 'AUTOMATED',
+      is_active: true,
       template_workouts: {
         create: [
           {
-            name: 'Push',
+            name: 'Day 1',
             order: 1,
             template_exercises: {
               create: [
-                { exercise_id: exerciseMap['Bench Press'], sets: 4, reps: 6, weight: 70.0, order: 1 },
-                { exercise_id: exerciseMap['Incline Dumbbell Press'], sets: 4, reps: 8, weight: 25.0, order: 2 },
-                { exercise_id: exerciseMap['Overhead Press'], sets: 4, reps: 8, weight: 35.0, order: 3 },
-                { exercise_id: exerciseMap['Dip'], sets: 3, reps: 12, weight: 10.0, order: 4 },
-                { exercise_id: exerciseMap['Push-up'], sets: 3, reps: 15, weight: 0, order: 5 },
+                { exercise_id: exerciseMap['Barbell High Bar Squat'], sets: 3, reps: 8, weight: null, order: 1 },
+                { exercise_id: exerciseMap['Lat Pulldown (neutral grip)'], sets: 3, reps: 8, weight: null, order: 2 },
+                { exercise_id: exerciseMap['Trap Bar Deadlift'], sets: 3, reps: 8, weight: null, order: 3 },
+                { exercise_id: exerciseMap['Dumbbell Bench Press'], sets: 3, reps: 8, weight: null, order: 4 },
+                { exercise_id: exerciseMap['Leg Extension'], sets: 3, reps: 8, weight: null, order: 5 },
+                { exercise_id: exerciseMap['Cable Tricep Pushdown'], sets: 3, reps: 8, weight: null, order: 6 },
               ]
             }
           },
           {
-            name: 'Pull',
+            name: 'Day 2',
             order: 2,
             template_exercises: {
               create: [
-                { exercise_id: exerciseMap['Deadlift'], sets: 4, reps: 6, weight: 100.0, order: 1 },
-                { exercise_id: exerciseMap['Pull-up'], sets: 4, reps: 8, weight: 10.0, order: 2 },
-                { exercise_id: exerciseMap['Barbell Row'], sets: 4, reps: 8, weight: 60.0, order: 3 },
-                { exercise_id: exerciseMap['Dumbbell Row'], sets: 4, reps: 10, weight: 30.0, order: 4 },
-              ]
-            }
-          },
-          {
-            name: 'Legs',
-            order: 3,
-            template_exercises: {
-              create: [
-                { exercise_id: exerciseMap['Squat'], sets: 4, reps: 8, weight: 80.0, order: 1 },
-                { exercise_id: exerciseMap['Romanian Deadlift'], sets: 4, reps: 10, weight: 70.0, order: 2 },
-                { exercise_id: exerciseMap['Bulgarian Split Squat'], sets: 3, reps: 12, weight: 20.0, order: 3 },
+                { exercise_id: exerciseMap['Barbell High Bar Squat'], sets: 3, reps: 8, weight: null, order: 1 },
+                { exercise_id: exerciseMap['Single Arm Dumbbell Row'], sets: 3, reps: 8, weight: null, order: 2 },
+                { exercise_id: exerciseMap['Leg Press'], sets: 3, reps: 8, weight: null, order: 3 },
+                { exercise_id: exerciseMap['Incline Push-up'], sets: 3, reps: 8, weight: null, order: 4 },
+                { exercise_id: exerciseMap['Machine Hamstring Curl'], sets: 3, reps: 8, weight: null, order: 5 },
+                { exercise_id: exerciseMap['Dumbbell Lateral Raise'], sets: 3, reps: 8, weight: null, order: 6 },
               ]
             }
           }
@@ -289,13 +153,10 @@ async function seedProgramTemplates() {
     }
   });
 
-  console.log('Program templates seeded successfully');
+  console.log('Beginner program templates seeded successfully');
   console.log('Created templates:', [
-    beginnerTemplate.name,
-    startingStrengthTemplate.name,
-    upperLowerTemplate.name,
-    fiveThreeOneTemplate.name,
-    pplTemplate.name
+    beginnerTemplate4.name,
+    beginnerTemplate6.name
   ].join(', '));
 }
 

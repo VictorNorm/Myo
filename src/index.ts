@@ -15,6 +15,7 @@ import userSettingsV2 from "./routes/userSettingsV2";
 import statsV2 from "./routes/statsV2";
 import programTemplatesV2 from "./routes/programTemplatesV2";
 import programGenerationV2 from "./routes/programGenerationV2";
+import beginnerProgramV2 from "./routes/beginnerProgramV2";
 import { errorHandler } from "./utils/errorHandler";
 import { exerciseMappingService } from './services/exerciseMappingService';
 import logger from "./services/logger";
@@ -97,6 +98,7 @@ app.use(statsV2);
 app.use(exercisesV2);
 app.use(programTemplatesV2);
 app.use(programGenerationV2);
+app.use(beginnerProgramV2);
 
 app.get("/", (req, res) => {
 	res.json({ message: "Hello World" });

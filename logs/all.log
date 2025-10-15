@@ -4106,3 +4106,220 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-13 10:27:36 debug: Successfully fetched and transformed users
 2025-10-13 10:54:01 info: SIGINT received, closing database connection...
 2025-10-13 10:54:01 info: Database connection closed successfully.
+2025-10-14 11:37:11 info: Application starting...
+2025-10-14 11:37:11 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-14 11:37:11 info: Server is running on http://0.0.0.0:3000
+2025-10-14 11:37:11 info: Initializing services...
+2025-10-14 11:37:11 info: Successfully connected to the database
+2025-10-14 11:37:11 info: Exercise cache initialized
+2025-10-14 11:37:11 info: All services initialized successfully
+2025-10-14 11:38:27 info: Token expired
+2025-10-14 12:23:06 debug: Fetching all users
+2025-10-14 12:23:06 debug: Successfully fetched and transformed users
+2025-10-14 12:23:06 debug: Fetching all users
+2025-10-14 12:23:06 debug: Successfully fetched and transformed users
+2025-10-14 12:23:10 debug: Fetching all users
+2025-10-14 12:23:10 debug: Successfully fetched and transformed users
+2025-10-14 12:23:13 debug: Fetching all users
+2025-10-14 12:23:13 debug: Successfully fetched and transformed users
+2025-10-14 12:23:24 debug: Fetched programs for user
+2025-10-14 12:23:24 debug: Retrieved next workout
+2025-10-14 12:23:26 info: Retrieved all program templates
+2025-10-14 12:23:26 debug: Fetched programs for user
+2025-10-14 12:23:26 debug: Fetched programs for user
+2025-10-14 12:23:26 debug: Fetched programs for user
+2025-10-14 12:23:29 info: Updated program status
+2025-10-14 12:23:29 debug: Fetched programs for user
+2025-10-14 12:23:31 info: Updated program status
+2025-10-14 12:23:31 debug: Fetched programs for user
+2025-10-14 12:23:34 info: Deleted program with cascade
+2025-10-14 12:23:34 debug: Fetched programs for user
+2025-10-14 12:23:37 info: Deleted program with cascade
+2025-10-14 12:23:37 debug: Fetched programs for user
+2025-10-14 12:24:54 info: Created program with workouts, exercises, and baselines
+2025-10-14 12:25:00 debug: Fetched programs for user
+2025-10-14 12:25:00 debug: Retrieved next workout
+2025-10-14 12:25:01 debug: Fetched programs for user
+2025-10-14 12:25:02 debug: Fetched programs for user
+2025-10-14 12:25:02 debug: Retrieved next workout
+2025-10-14 12:25:04 debug: Fetched workouts for program
+2025-10-14 12:25:04 debug: Retrieved next workout
+2025-10-14 12:25:05 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-14 12:25:05 warn: 🔍 Backend - Total exercises found:
+2025-10-14 12:25:05 warn: 🔍 Backend - First exercise raw:
+2025-10-14 12:25:05 debug: Processing workout template
+2025-10-14 12:25:05 debug: Retrieved exercise baselines for automated program
+2025-10-14 12:25:05 debug: Successfully built workout template
+2025-10-14 12:25:10 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-14 12:25:10 warn: 🔍 Backend - Total exercises found:
+2025-10-14 12:25:10 warn: 🔍 Backend - First exercise raw:
+2025-10-14 12:25:10 debug: Processing workout template
+2025-10-14 12:25:10 debug: Retrieved exercise baselines for automated program
+2025-10-14 12:25:10 debug: Successfully built workout template
+2025-10-14 12:25:13 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-14 12:25:13 warn: 🔍 Backend - Total exercises found:
+2025-10-14 12:25:13 warn: 🔍 Backend - First exercise raw:
+2025-10-14 12:25:13 debug: Processing workout template
+2025-10-14 12:25:13 debug: Retrieved exercise baselines for automated program
+2025-10-14 12:25:13 debug: Successfully built workout template
+2025-10-14 12:27:30 debug: Fetching all users
+2025-10-14 12:27:30 debug: Successfully fetched and transformed users
+2025-10-14 12:27:30 debug: Fetching all users
+2025-10-14 12:27:30 debug: Successfully fetched and transformed users
+2025-10-14 12:36:18 debug: Fetching all users
+2025-10-14 12:36:18 debug: Successfully fetched and transformed users
+2025-10-14 12:36:18 debug: Fetching all users
+2025-10-14 12:36:18 debug: Successfully fetched and transformed users
+2025-10-14 12:36:55 debug: Fetching all users
+2025-10-14 12:36:55 debug: Successfully fetched and transformed users
+2025-10-14 12:36:59 debug: Fetching all users
+2025-10-14 12:36:59 debug: Successfully fetched and transformed users
+2025-10-14 12:36:59 debug: Fetching all users
+2025-10-14 12:36:59 debug: Successfully fetched and transformed users
+2025-10-14 14:33:15 debug: Fetched programs for user
+2025-10-14 14:33:15 debug: Retrieved next workout
+2025-10-14 14:43:24 debug: Fetched programs for user
+2025-10-14 14:43:28 debug: Fetched programs for user
+2025-10-15 09:36:54 info: Application starting...
+2025-10-15 09:36:54 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 09:36:54 info: Server is running on http://0.0.0.0:3000
+2025-10-15 09:36:54 info: Initializing services...
+2025-10-15 09:36:54 info: Successfully connected to the database
+2025-10-15 09:36:54 info: Exercise cache initialized
+2025-10-15 09:36:54 info: All services initialized successfully
+2025-10-15 09:39:20 info: Token expired
+2025-10-15 09:58:52 info: SIGINT received, closing database connection...
+2025-10-15 09:58:52 info: Database connection closed successfully.
+2025-10-15 10:23:17 info: Application starting...
+2025-10-15 10:23:17 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 10:23:17 info: Server is running on http://0.0.0.0:3000
+2025-10-15 10:23:17 info: Initializing services...
+2025-10-15 10:23:17 info: Successfully connected to the database
+2025-10-15 10:23:17 info: Exercise cache initialized
+2025-10-15 10:23:17 info: All services initialized successfully
+2025-10-15 10:44:35 info: Token expired
+2025-10-15 10:45:00 debug: Fetched programs for user
+2025-10-15 10:45:00 debug: Retrieved next workout
+2025-10-15 10:45:02 info: Retrieved all program templates
+2025-10-15 10:45:02 debug: Fetched programs for user
+2025-10-15 10:45:02 debug: Fetched programs for user
+2025-10-15 10:45:02 debug: Fetched programs for user
+2025-10-15 10:45:19 debug: Fetched programs for user
+2025-10-15 10:45:24 debug: Fetched programs for user
+2025-10-15 10:47:48 info: Generating quick setup program
+2025-10-15 10:47:48 info: Generating quick setup program
+2025-10-15 10:47:48 info: Generating program from preferences
+2025-10-15 10:47:48 info: Created program with workouts, exercises, and baselines
+2025-10-15 10:47:48 info: Exercise cache initialized
+2025-10-15 10:47:48 info: Added exercises to workout
+2025-10-15 10:47:48 info: Successfully added all exercises to program
+2025-10-15 10:47:48 info: Successfully generated and created program with exercises
+2025-10-15 10:47:49 debug: Fetched programs for user
+2025-10-15 10:47:49 debug: Fetched programs for user
+2025-10-15 10:47:49 debug: Fetched programs for user
+2025-10-15 10:47:51 debug: Fetched programs for user
+2025-10-15 10:47:51 debug: Retrieved next workout
+2025-10-15 10:47:52 debug: Fetched workouts for program
+2025-10-15 10:47:52 debug: Retrieved next workout
+2025-10-15 10:47:53 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-15 10:47:53 warn: 🔍 Backend - Total exercises found:
+2025-10-15 10:47:53 warn: 🔍 Backend - First exercise raw:
+2025-10-15 10:47:53 debug: Processing workout template
+2025-10-15 10:47:53 debug: Retrieved exercise baselines for automated program
+2025-10-15 10:47:53 debug: Successfully built workout template
+2025-10-15 10:47:59 debug: Fetched programs for user
+2025-10-15 10:47:59 debug: Retrieved next workout
+2025-10-15 10:48:13 debug: Fetched programs for user
+2025-10-15 10:48:36 info: Generating program from preferences
+2025-10-15 10:48:36 info: Created program with workouts, exercises, and baselines
+2025-10-15 10:48:36 info: Exercise cache initialized
+2025-10-15 10:48:36 info: Added exercises to workout
+2025-10-15 10:48:36 info: Successfully added all exercises to program
+2025-10-15 10:48:36 info: Successfully generated and created program with exercises
+2025-10-15 10:48:36 debug: Fetched programs for user
+2025-10-15 10:48:36 debug: Fetched programs for user
+2025-10-15 10:48:36 debug: Fetched programs for user
+2025-10-15 10:48:40 debug: Fetched programs for user
+2025-10-15 10:48:40 debug: Retrieved next workout
+2025-10-15 10:48:41 debug: Fetched workouts for program
+2025-10-15 10:48:41 debug: Retrieved next workout
+2025-10-15 10:48:42 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-15 10:48:42 warn: 🔍 Backend - Total exercises found:
+2025-10-15 10:48:42 warn: 🔍 Backend - First exercise raw:
+2025-10-15 10:48:42 debug: Processing workout template
+2025-10-15 10:48:42 debug: Retrieved exercise baselines for automated program
+2025-10-15 10:48:42 debug: Successfully built workout template
+2025-10-15 10:48:49 debug: Fetched programs for user
+2025-10-15 10:48:49 debug: Retrieved next workout
+2025-10-15 10:48:54 debug: Fetched programs for user
+2025-10-15 10:48:57 info: Updated program status
+2025-10-15 10:48:57 debug: Fetched programs for user
+2025-10-15 10:49:00 info: Updated program status
+2025-10-15 10:49:00 debug: Fetched programs for user
+2025-10-15 10:49:03 info: Updated program status
+2025-10-15 10:49:03 debug: Fetched programs for user
+2025-10-15 10:49:06 info: Deleted program with cascade
+2025-10-15 10:49:06 debug: Fetched programs for user
+2025-10-15 10:49:08 info: Deleted program with cascade
+2025-10-15 10:49:08 debug: Fetched programs for user
+2025-10-15 10:49:12 info: Deleted program with cascade
+2025-10-15 10:49:12 debug: Fetched programs for user
+2025-10-15 10:50:20 debug: Fetched programs for user
+2025-10-15 10:50:28 debug: Fetched programs for user
+2025-10-15 10:50:30 debug: Fetched programs for user
+2025-10-15 10:50:34 debug: Fetched programs for user
+2025-10-15 10:50:37 debug: Fetched programs for user
+2025-10-15 10:51:02 debug: Fetched programs for user
+2025-10-15 10:51:08 info: Generating quick setup program
+2025-10-15 10:51:08 info: Generating quick setup program
+2025-10-15 10:51:08 info: Generating program from preferences
+2025-10-15 10:51:08 info: Created program with workouts, exercises, and baselines
+2025-10-15 10:51:08 info: Exercise cache initialized
+2025-10-15 10:51:08 info: Added exercises to workout
+2025-10-15 10:51:08 info: Successfully added all exercises to program
+2025-10-15 10:51:08 info: Successfully generated and created program with exercises
+2025-10-15 10:51:08 debug: Fetched programs for user
+2025-10-15 10:51:08 debug: Fetched programs for user
+2025-10-15 10:51:08 debug: Fetched programs for user
+2025-10-15 10:51:11 debug: Fetched programs for user
+2025-10-15 10:51:11 debug: Retrieved next workout
+2025-10-15 10:51:12 debug: Fetched workouts for program
+2025-10-15 10:51:12 debug: Retrieved next workout
+2025-10-15 10:51:13 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-15 10:51:13 warn: 🔍 Backend - Total exercises found:
+2025-10-15 10:51:13 warn: 🔍 Backend - First exercise raw:
+2025-10-15 10:51:13 debug: Processing workout template
+2025-10-15 10:51:13 debug: Retrieved exercise baselines for automated program
+2025-10-15 10:51:13 debug: Successfully built workout template
+2025-10-15 10:51:18 debug: Fetched programs for user
+2025-10-15 10:51:18 debug: Retrieved next workout
+2025-10-15 10:51:20 debug: Fetched programs for user
+2025-10-15 10:51:22 info: Updated program status
+2025-10-15 10:51:22 debug: Fetched programs for user
+2025-10-15 10:51:25 info: Deleted program with cascade
+2025-10-15 10:51:25 debug: Fetched programs for user
+2025-10-15 10:51:36 debug: Fetched programs for user
+2025-10-15 10:51:41 debug: Fetched programs for user
+2025-10-15 10:51:43 debug: Fetched programs for user
+2025-10-15 10:52:49 debug: Fetched programs for user
+2025-10-15 10:53:38 info: Retrieved all program templates
+2025-10-15 10:53:38 debug: Fetched programs for user
+2025-10-15 10:53:38 debug: Fetched programs for user
+2025-10-15 10:53:40 debug: Fetched programs for user
+2025-10-15 10:53:53 info: Retrieved all program templates
+2025-10-15 10:53:53 debug: Fetched programs for user
+2025-10-15 10:53:53 debug: Fetched programs for user
+2025-10-15 10:54:03 info: Retrieved all program templates
+2025-10-15 10:54:03 debug: Fetched programs for user
+2025-10-15 10:54:03 debug: Fetched programs for user
+2025-10-15 10:55:21 debug: Fetching user settings
+2025-10-15 10:55:21 debug: Fetched user settings successfully
+2025-10-15 10:55:24 info: Retrieved all program templates
+2025-10-15 10:55:24 debug: Fetched programs for user
+2025-10-15 10:55:24 debug: Fetched programs for user
+2025-10-15 10:55:24 debug: Fetched programs for user
+2025-10-15 10:56:03 info: Retrieved all program templates
+2025-10-15 10:56:03 debug: Fetched programs for user
+2025-10-15 10:56:03 debug: Fetched programs for user
+2025-10-15 10:56:57 info: SIGINT received, closing database connection...
+2025-10-15 10:56:57 info: Database connection closed successfully.
