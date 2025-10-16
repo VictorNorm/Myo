@@ -3,18 +3,19 @@ import { ExerciseWeight } from '../../types/beginnerProgram';
 
 const prisma = new PrismaClient();
 
+// Updated with EXACT production exercise names
 const baseWeights: Record<string, { male: number; female: number }> = {
-  'Barbell High Bar Squat': { male: 40, female: 25 },
-  'Lat Pulldown (neutral grip)': { male: 40, female: 20 },
-  'Trap Bar Deadlift': { male: 50, female: 30 },
-  'Dumbbell Bench Press': { male: 12, female: 8 },
-  'Single Arm Dumbbell Row': { male: 16, female: 8 },
-  'Leg Press': { male: 80, female: 50 },
-  'Incline Push-up': { male: 0, female: 0 }, // bodyweight
-  'Leg Extension': { male: 40, female: 20 },
-  'Cable Tricep Pushdown': { male: 20, female: 10 },
-  'Machine Hamstring Curl': { male: 30, female: 20 },
-  'Dumbbell Lateral Raise': { male: 6, female: 3 }
+  'Barbell high bar squat': { male: 40, female: 25 },
+  'Lat pulldown, neutral': { male: 40, female: 20 },
+  'Trap bar deadlift': { male: 50, female: 30 },
+  'Dumbbell bench press': { male: 12, female: 8 },
+  'Single arm dumbbell row': { male: 16, female: 8 },
+  'Leg press': { male: 80, female: 50 },
+  'Incline pushup': { male: 0, female: 0 }, // bodyweight
+  'Leg extension': { male: 40, female: 20 },
+  'Cable tricep pushdown, bar': { male: 20, female: 10 },
+  'Machine hamstring curl': { male: 30, female: 20 },
+  'Dumbbell lateral raise': { male: 6, female: 3 }
 };
 
 function getAgeMultiplier(age: number): number {
@@ -63,6 +64,7 @@ export async function calculateStartingWeights(
       const baseWeight = baseWeights[exercise.exerciseName];
       
       if (!baseWeight) {
+        console.warn(`No base weight found for exercise: ${exercise.exerciseName}`);
         // Default to 0 for unknown exercises (bodyweight)
         exerciseWeights.push({
           exerciseId: exercise.exerciseId,

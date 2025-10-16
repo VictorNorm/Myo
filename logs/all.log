@@ -4323,3 +4323,104 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-15 10:56:03 debug: Fetched programs for user
 2025-10-15 10:56:57 info: SIGINT received, closing database connection...
 2025-10-15 10:56:57 info: Database connection closed successfully.
+2025-10-15 11:43:45 info: Application starting...
+2025-10-15 11:43:45 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 11:43:45 info: Server is running on http://0.0.0.0:3000
+2025-10-15 11:43:45 info: Initializing services...
+2025-10-15 11:43:45 info: Successfully connected to the database
+2025-10-15 11:43:45 info: Exercise cache initialized
+2025-10-15 11:43:45 info: All services initialized successfully
+2025-10-15 11:44:09 debug: Fetching user settings
+2025-10-15 11:44:09 debug: Fetching user settings
+2025-10-15 11:44:09 debug: Fetched programs for user
+2025-10-15 11:44:09 debug: Fetched user settings successfully
+2025-10-15 11:44:09 debug: Fetched user settings successfully
+2025-10-15 11:44:16 debug: Fetched programs for user
+2025-10-15 11:44:17 info: Retrieved all program templates
+2025-10-15 11:44:17 debug: Fetched programs for user
+2025-10-15 11:44:17 debug: Fetched programs for user
+2025-10-15 11:44:17 debug: Fetched programs for user
+2025-10-15 11:55:37 info: SIGINT received, closing database connection...
+2025-10-15 11:55:37 info: Database connection closed successfully.
+2025-10-15 12:26:07 info: Application starting...
+2025-10-15 12:26:07 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 12:26:07 info: Server is running on http://0.0.0.0:3000
+2025-10-15 12:26:07 info: Initializing services...
+2025-10-15 12:26:07 info: Successfully connected to the database
+2025-10-15 12:26:07 info: Exercise cache initialized
+2025-10-15 12:26:07 info: All services initialized successfully
+2025-10-15 12:26:09 debug: Fetched programs for user
+2025-10-15 12:26:11 debug: Fetched programs for user
+2025-10-15 12:51:04 debug: Fetching user settings
+2025-10-15 12:51:04 debug: Fetched user settings successfully
+2025-10-15 12:51:10 debug: Fetched programs for user
+2025-10-15 12:51:12 info: Retrieved all program templates
+2025-10-15 12:51:12 debug: Fetched programs for user
+2025-10-15 12:51:12 debug: Fetched programs for user
+2025-10-15 12:51:12 debug: Fetched programs for user
+2025-10-15 12:51:37 info: Processed beginner questionnaire
+2025-10-15 12:52:12 info: Processed beginner questionnaire
+2025-10-15 12:52:38 info: Processed beginner questionnaire
+2025-10-15 12:52:39 info: Processed beginner questionnaire
+2025-10-15 12:54:18 info: Processed beginner questionnaire
+2025-10-15 12:54:37 info: Created beginner program successfully
+2025-10-15 12:54:38 debug: Fetched programs for user
+2025-10-15 12:54:41 debug: Fetched programs for user
+2025-10-15 12:54:41 debug: Retrieved next workout
+2025-10-15 12:54:42 debug: Fetched workouts for program
+2025-10-15 12:54:42 debug: Retrieved next workout
+2025-10-15 12:54:43 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-15 12:54:43 warn: 🔍 Backend - Total exercises found:
+2025-10-15 12:54:43 warn: 🔍 Backend - First exercise raw:
+2025-10-15 12:54:43 debug: Processing workout template
+2025-10-15 12:54:43 debug: Retrieved exercise baselines for automated program
+2025-10-15 12:54:43 debug: Successfully built workout template
+2025-10-15 13:01:03 info: SIGINT received, closing database connection...
+2025-10-15 13:01:03 info: Database connection closed successfully.
+2025-10-15 13:01:06 info: Application starting...
+2025-10-15 13:01:06 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 13:01:06 info: Server is running on http://0.0.0.0:3000
+2025-10-15 13:01:06 info: Initializing services...
+2025-10-15 13:01:06 info: Successfully connected to the database
+2025-10-15 13:01:06 info: Exercise cache initialized
+2025-10-15 13:01:06 info: All services initialized successfully
+2025-10-15 13:01:08 debug: Fetched programs for user
+2025-10-15 13:01:08 debug: Retrieved next workout
+2025-10-15 13:01:09 debug: Fetched programs for user
+2025-10-15 13:01:11 info: Updated program status
+2025-10-15 13:01:11 debug: Fetched programs for user
+2025-10-15 13:01:14 error: Error deleting program: 
+Invalid `tx.programs.delete()` invocation in
+C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\programRepository.ts:562:28
+
+  559 });
+  560 
+  561 // 9. Finally delete the program
+→ 562 await tx.programs.delete(
+Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
+2025-10-15 13:04:15 info: SIGINT received, closing database connection...
+2025-10-15 13:04:15 info: Database connection closed successfully.
+2025-10-15 13:04:17 info: Application starting...
+2025-10-15 13:04:17 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-15 13:04:17 info: Server is running on http://0.0.0.0:3000
+2025-10-15 13:04:17 info: Initializing services...
+2025-10-15 13:04:18 info: Successfully connected to the database
+2025-10-15 13:04:18 info: Exercise cache initialized
+2025-10-15 13:04:18 info: All services initialized successfully
+2025-10-15 13:04:21 info: Deleted program with cascade
+2025-10-15 13:04:21 debug: Fetched programs for user
+2025-10-15 13:04:41 info: Processed beginner questionnaire
+2025-10-15 13:04:47 info: Created beginner program successfully
+2025-10-15 13:04:47 debug: Fetched programs for user
+2025-10-15 13:04:49 debug: Fetched programs for user
+2025-10-15 13:04:49 debug: Retrieved next workout
+2025-10-15 13:04:51 debug: Fetched workouts for program
+2025-10-15 13:04:51 debug: Retrieved next workout
+2025-10-15 13:04:51 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-15 13:04:51 warn: 🔍 Backend - Total exercises found:
+2025-10-15 13:04:51 warn: 🔍 Backend - First exercise raw:
+2025-10-15 13:04:51 debug: Processing workout template
+2025-10-15 13:04:51 debug: Retrieved exercise baselines for automated program
+2025-10-15 13:04:51 debug: Successfully built workout template
+2025-10-15 13:11:49 info: SIGINT received, closing database connection...
+2025-10-15 13:11:49 info: Database connection closed successfully.

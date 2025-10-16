@@ -25,3 +25,12 @@ C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\pr
   446 // 9. Finally delete the program
 → 447 await tx.programs.delete(
 Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
+2025-10-15 13:01:14 error: Error deleting program: 
+Invalid `tx.programs.delete()` invocation in
+C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\programRepository.ts:562:28
+
+  559 });
+  560 
+  561 // 9. Finally delete the program
+→ 562 await tx.programs.delete(
+Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`

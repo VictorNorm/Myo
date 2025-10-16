@@ -558,7 +558,14 @@ export const programRepository = {
 				},
 			});
 
-			// 9. Finally delete the program
+			// 9. Delete program progression settings
+			await tx.program_progression_settings.deleteMany({
+				where: {
+					program_id: programId,
+				},
+				});
+
+			// 10. Finally delete the program
 			await tx.programs.delete({
 				where: {
 					id: programId,
