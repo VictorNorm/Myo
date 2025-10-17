@@ -4424,3 +4424,457 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-15 13:04:51 debug: Successfully built workout template
 2025-10-15 13:11:49 info: SIGINT received, closing database connection...
 2025-10-15 13:11:49 info: Database connection closed successfully.
+2025-10-16 09:46:29 info: Application starting...
+2025-10-16 09:46:29 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-16 09:46:29 info: Server is running on http://0.0.0.0:3000
+2025-10-16 09:46:29 info: Initializing services...
+2025-10-16 09:46:29 info: Successfully connected to the database
+2025-10-16 09:46:29 info: Exercise cache initialized
+2025-10-16 09:46:29 info: All services initialized successfully
+2025-10-16 09:48:06 info: Token expired
+2025-10-16 09:55:04 info: Token expired
+2025-10-16 09:56:43 debug: Fetched programs for user
+2025-10-16 09:56:43 debug: Retrieved next workout
+2025-10-16 09:56:45 info: Retrieved all program templates
+2025-10-16 09:56:45 debug: Fetched programs for user
+2025-10-16 09:56:45 debug: Fetched programs for user
+2025-10-16 09:56:45 debug: Fetched programs for user
+2025-10-16 09:56:57 info: Retrieved template details
+2025-10-16 09:57:11 debug: Fetched programs for user
+2025-10-16 09:57:18 debug: Fetched programs for user
+2025-10-16 09:58:48 debug: Fetching user settings
+2025-10-16 09:58:48 debug: Fetched user settings successfully
+2025-10-16 09:59:16 debug: Fetched programs for user
+2025-10-16 09:59:16 debug: Retrieved next workout
+2025-10-16 09:59:18 info: Retrieved all program templates
+2025-10-16 09:59:18 debug: Fetched programs for user
+2025-10-16 09:59:18 debug: Fetched programs for user
+2025-10-16 09:59:18 debug: Fetched programs for user
+2025-10-16 10:02:22 debug: Fetched programs for user
+2025-10-16 10:02:22 debug: Fetched programs for user
+2025-10-16 10:02:22 info: Retrieved all program templates
+2025-10-16 10:02:30 info: Retrieved all program templates
+2025-10-16 10:02:30 debug: Fetched programs for user
+2025-10-16 10:02:30 debug: Fetched programs for user
+2025-10-16 10:02:44 info: Retrieved all program templates
+2025-10-16 10:02:44 debug: Fetched programs for user
+2025-10-16 10:02:44 debug: Fetched programs for user
+2025-10-16 10:02:55 info: Retrieved all program templates
+2025-10-16 10:02:55 debug: Fetched programs for user
+2025-10-16 10:02:55 debug: Fetched programs for user
+2025-10-16 10:03:43 debug: Fetching user settings
+2025-10-16 10:03:43 debug: Fetched user settings successfully
+2025-10-16 10:04:14 debug: Fetching user settings
+2025-10-16 10:04:14 debug: Fetched user settings successfully
+2025-10-16 10:04:52 info: Retrieved all program templates
+2025-10-16 10:04:52 debug: Fetched programs for user
+2025-10-16 10:04:52 debug: Fetched programs for user
+2025-10-16 10:04:52 debug: Fetched programs for user
+2025-10-16 10:05:27 debug: Fetching user settings
+2025-10-16 10:05:27 debug: Fetched user settings successfully
+2025-10-16 10:05:30 debug: Fetched programs for user
+2025-10-16 10:05:30 debug: Retrieved next workout
+2025-10-16 10:05:32 info: Retrieved all program templates
+2025-10-16 10:05:32 debug: Fetched programs for user
+2025-10-16 10:05:32 debug: Fetched programs for user
+2025-10-16 10:05:32 debug: Fetched programs for user
+2025-10-16 10:08:05 info: Updated program status
+2025-10-16 10:08:06 debug: Fetched programs for user
+2025-10-16 10:08:07 info: Updated program status
+2025-10-16 10:08:08 debug: Fetched programs for user
+2025-10-16 10:08:15 info: Deleted program with cascade
+2025-10-16 10:08:15 debug: Fetched programs for user
+2025-10-16 10:08:18 info: Deleted program with cascade
+2025-10-16 10:08:18 debug: Fetched programs for user
+2025-10-16 10:08:39 debug: Fetching user settings
+2025-10-16 10:08:39 debug: Fetched user settings successfully
+2025-10-16 10:09:15 debug: Fetched programs for user
+2025-10-16 10:09:15 debug: Retrieved next workout
+2025-10-16 10:09:17 info: Retrieved all program templates
+2025-10-16 10:09:17 debug: Fetched programs for user
+2025-10-16 10:09:17 debug: Fetched programs for user
+2025-10-16 10:09:17 debug: Fetched programs for user
+2025-10-16 10:10:12 info: Retrieved all program templates
+2025-10-16 10:10:12 debug: Fetched programs for user
+2025-10-16 10:10:12 debug: Fetched programs for user
+2025-10-16 10:10:21 info: Retrieved all program templates
+2025-10-16 10:10:21 debug: Fetched programs for user
+2025-10-16 10:10:21 debug: Fetched programs for user
+2025-10-16 10:16:06 info: Retrieved all program templates
+2025-10-16 10:16:06 debug: Fetched programs for user
+2025-10-16 10:16:06 debug: Fetched programs for user
+2025-10-16 10:16:16 info: Retrieved all program templates
+2025-10-16 10:16:17 debug: Fetched programs for user
+2025-10-16 10:16:17 debug: Fetched programs for user
+2025-10-16 10:16:28 info: Retrieved all program templates
+2025-10-16 10:16:28 debug: Fetched programs for user
+2025-10-16 10:16:28 debug: Fetched programs for user
+2025-10-16 10:16:32 info: Retrieved all program templates
+2025-10-16 10:16:32 debug: Fetched programs for user
+2025-10-16 10:16:32 debug: Fetched programs for user
+2025-10-16 10:16:37 info: Retrieved all program templates
+2025-10-16 10:16:37 debug: Fetched programs for user
+2025-10-16 10:16:37 debug: Fetched programs for user
+2025-10-16 10:19:23 info: Retrieved all program templates
+2025-10-16 10:19:24 debug: Fetched programs for user
+2025-10-16 10:19:24 debug: Fetched programs for user
+2025-10-16 10:19:32 info: Retrieved all program templates
+2025-10-16 10:19:32 debug: Fetched programs for user
+2025-10-16 10:19:32 debug: Fetched programs for user
+2025-10-16 10:19:35 info: Retrieved all program templates
+2025-10-16 10:19:35 debug: Fetched programs for user
+2025-10-16 10:19:35 debug: Fetched programs for user
+2025-10-16 10:20:27 info: Retrieved all program templates
+2025-10-16 10:20:27 debug: Fetched programs for user
+2025-10-16 10:20:27 debug: Fetched programs for user
+2025-10-16 10:20:50 info: Retrieved all program templates
+2025-10-16 10:20:50 debug: Fetched programs for user
+2025-10-16 10:20:50 debug: Fetched programs for user
+2025-10-16 10:21:21 info: Retrieved all program templates
+2025-10-16 10:21:21 debug: Fetched programs for user
+2025-10-16 10:21:21 debug: Fetched programs for user
+2025-10-16 10:21:24 info: Retrieved all program templates
+2025-10-16 10:21:24 debug: Fetched programs for user
+2025-10-16 10:21:24 debug: Fetched programs for user
+2025-10-16 10:21:29 info: Retrieved all program templates
+2025-10-16 10:21:29 debug: Fetched programs for user
+2025-10-16 10:21:29 debug: Fetched programs for user
+2025-10-16 10:21:32 info: Retrieved all program templates
+2025-10-16 10:21:33 debug: Fetched programs for user
+2025-10-16 10:21:33 debug: Fetched programs for user
+2025-10-16 10:22:54 info: Retrieved all program templates
+2025-10-16 10:22:54 debug: Fetched programs for user
+2025-10-16 10:22:54 debug: Fetched programs for user
+2025-10-16 10:23:05 info: Retrieved all program templates
+2025-10-16 10:23:05 debug: Fetched programs for user
+2025-10-16 10:23:05 debug: Fetched programs for user
+2025-10-16 10:23:12 info: Retrieved all program templates
+2025-10-16 10:23:12 debug: Fetched programs for user
+2025-10-16 10:23:12 debug: Fetched programs for user
+2025-10-16 10:23:25 info: Retrieved all program templates
+2025-10-16 10:23:25 debug: Fetched programs for user
+2025-10-16 10:23:25 debug: Fetched programs for user
+2025-10-16 10:25:06 info: Retrieved all program templates
+2025-10-16 10:25:06 info: Retrieved all program templates
+2025-10-16 10:25:06 debug: Fetched programs for user
+2025-10-16 10:25:06 debug: Fetched programs for user
+2025-10-16 10:25:06 debug: Fetched programs for user
+2025-10-16 10:25:06 debug: Fetched programs for user
+2025-10-16 10:25:16 info: Retrieved all program templates
+2025-10-16 10:25:16 debug: Fetched programs for user
+2025-10-16 10:25:16 debug: Fetched programs for user
+2025-10-16 10:25:34 info: Retrieved all program templates
+2025-10-16 10:25:34 debug: Fetched programs for user
+2025-10-16 10:25:34 debug: Fetched programs for user
+2025-10-16 10:25:49 info: Retrieved all program templates
+2025-10-16 10:25:49 debug: Fetched programs for user
+2025-10-16 10:25:49 debug: Fetched programs for user
+2025-10-16 10:27:26 info: Retrieved all program templates
+2025-10-16 10:27:26 debug: Fetched programs for user
+2025-10-16 10:27:26 debug: Fetched programs for user
+2025-10-16 10:27:29 info: Retrieved all program templates
+2025-10-16 10:27:29 debug: Fetched programs for user
+2025-10-16 10:27:29 debug: Fetched programs for user
+2025-10-16 10:27:39 info: Retrieved all program templates
+2025-10-16 10:27:39 debug: Fetched programs for user
+2025-10-16 10:27:39 debug: Fetched programs for user
+2025-10-16 10:29:17 info: Retrieved all program templates
+2025-10-16 10:29:17 debug: Fetched programs for user
+2025-10-16 10:29:17 debug: Fetched programs for user
+2025-10-16 10:29:37 info: Retrieved all program templates
+2025-10-16 10:29:37 debug: Fetched programs for user
+2025-10-16 10:29:37 debug: Fetched programs for user
+2025-10-16 10:30:03 info: Retrieved all program templates
+2025-10-16 10:30:03 debug: Fetched programs for user
+2025-10-16 10:30:03 debug: Fetched programs for user
+2025-10-16 10:30:21 info: Retrieved all program templates
+2025-10-16 10:30:21 debug: Fetched programs for user
+2025-10-16 10:30:21 debug: Fetched programs for user
+2025-10-16 10:53:25 debug: Fetched programs for user
+2025-10-16 10:53:25 debug: Fetched programs for user
+2025-10-16 10:53:25 debug: Calculated volume data
+2025-10-16 10:53:25 debug: Calculated volume data
+2025-10-16 10:53:25 debug: Calculated workout frequency data
+2025-10-16 10:53:25 debug: Retrieved exercise progression data
+2025-10-16 10:53:25 debug: Calculated workout frequency data
+2025-10-16 10:53:25 debug: Retrieved exercise progression data
+2025-10-16 10:53:37 debug: Fetched programs for user
+2025-10-16 10:53:37 debug: Retrieved next workout
+2025-10-16 10:53:38 debug: Fetched workouts for program
+2025-10-16 10:53:39 debug: Retrieved next workout
+2025-10-16 10:53:40 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 10:53:40 warn: 🔍 Backend - Total exercises found:
+2025-10-16 10:53:40 warn: 🔍 Backend - First exercise raw:
+2025-10-16 10:53:40 debug: Processing workout template
+2025-10-16 10:53:40 debug: Retrieved exercise baselines for automated program
+2025-10-16 10:53:40 debug: Successfully built workout template
+2025-10-16 10:53:46 debug: Processing workout completion
+2025-10-16 10:53:46 info: Workout completed successfully
+2025-10-16 10:53:46 debug: Fetched workouts for program
+2025-10-16 10:53:47 debug: Retrieved next workout
+2025-10-16 10:53:48 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 10:53:48 warn: 🔍 Backend - Total exercises found:
+2025-10-16 10:53:48 warn: 🔍 Backend - First exercise raw:
+2025-10-16 10:53:48 debug: Processing workout template
+2025-10-16 10:53:48 debug: Retrieved exercise baselines for automated program
+2025-10-16 10:53:48 debug: Successfully built workout template
+2025-10-16 10:53:52 debug: Processing workout completion
+2025-10-16 10:53:52 debug: Fetched workouts for program
+2025-10-16 10:53:52 info: Workout completed successfully
+2025-10-16 10:53:52 debug: Retrieved next workout
+2025-10-16 10:53:53 debug: Fetched programs for user
+2025-10-16 10:53:53 debug: Retrieved next workout
+2025-10-16 10:53:54 debug: Fetched programs for user
+2025-10-16 10:53:54 debug: Retrieved exercise progression data
+2025-10-16 10:53:54 debug: Calculated volume data
+2025-10-16 10:53:54 debug: Calculated workout frequency data
+2025-10-16 10:53:57 debug: Fetched programs for user
+2025-10-16 10:53:57 debug: Retrieved exercise progression data
+2025-10-16 10:53:57 debug: Retrieved exercise progression data
+2025-10-16 10:53:57 debug: Calculated volume data
+2025-10-16 10:53:57 debug: Calculated workout frequency data
+2025-10-16 10:53:57 debug: Retrieved exercise progression data
+2025-10-16 10:53:57 debug: Calculated workout frequency data
+2025-10-16 10:53:57 debug: Calculated volume data
+2025-10-16 10:57:54 debug: Fetched programs for user
+2025-10-16 10:57:54 debug: Calculated workout frequency data
+2025-10-16 10:57:54 debug: Calculated volume data
+2025-10-16 10:57:54 debug: Retrieved exercise progression data
+2025-10-16 10:57:54 debug: Calculated volume data
+2025-10-16 10:57:54 debug: Retrieved exercise progression data
+2025-10-16 10:57:54 debug: Calculated workout frequency data
+2025-10-16 10:58:22 debug: Fetched programs for user
+2025-10-16 10:58:22 debug: Calculated workout frequency data
+2025-10-16 10:58:22 debug: Calculated volume data
+2025-10-16 10:58:22 debug: Retrieved exercise progression data
+2025-10-16 10:58:22 debug: Calculated volume data
+2025-10-16 10:58:22 debug: Calculated workout frequency data
+2025-10-16 10:58:22 debug: Retrieved exercise progression data
+2025-10-16 10:59:04 debug: Fetched programs for user
+2025-10-16 10:59:04 debug: Calculated workout frequency data
+2025-10-16 10:59:04 debug: Calculated volume data
+2025-10-16 10:59:04 debug: Calculated workout frequency data
+2025-10-16 10:59:04 debug: Calculated volume data
+2025-10-16 10:59:04 debug: Retrieved exercise progression data
+2025-10-16 10:59:04 warn: Slow ownership verification (158ms)
+2025-10-16 10:59:04 debug: Retrieved exercise progression data
+2025-10-16 11:09:10 debug: Fetched programs for user
+2025-10-16 11:09:10 debug: Calculated workout frequency data
+2025-10-16 11:09:10 debug: Calculated volume data
+2025-10-16 11:09:10 debug: Retrieved exercise progression data
+2025-10-16 11:09:10 debug: Calculated workout frequency data
+2025-10-16 11:09:10 debug: Calculated volume data
+2025-10-16 11:09:10 debug: Retrieved exercise progression data
+2025-10-16 11:10:28 debug: Fetching user settings
+2025-10-16 11:10:28 debug: Fetched user settings successfully
+2025-10-16 11:12:39 debug: Fetched programs for user
+2025-10-16 11:12:39 debug: Fetched programs for user
+2025-10-16 11:12:39 debug: Calculated workout frequency data
+2025-10-16 11:12:39 debug: Calculated volume data
+2025-10-16 11:12:40 debug: Retrieved exercise progression data
+2025-10-16 11:12:40 debug: Calculated volume data
+2025-10-16 11:12:40 debug: Retrieved exercise progression data
+2025-10-16 11:12:40 debug: Calculated workout frequency data
+2025-10-16 11:12:44 debug: Fetched programs for user
+2025-10-16 11:12:44 debug: Retrieved exercise progression data
+2025-10-16 11:12:44 debug: Calculated volume data
+2025-10-16 11:12:44 debug: Calculated workout frequency data
+2025-10-16 11:12:45 debug: Calculated workout frequency data
+2025-10-16 11:12:45 debug: Calculated volume data
+2025-10-16 11:12:45 debug: Retrieved exercise progression data
+2025-10-16 11:14:37 debug: Fetched programs for user
+2025-10-16 11:14:37 debug: Calculated volume data
+2025-10-16 11:14:37 debug: Calculated workout frequency data
+2025-10-16 11:14:38 debug: Calculated workout frequency data
+2025-10-16 11:14:38 debug: Calculated volume data
+2025-10-16 11:14:38 warn: Slow ownership verification (159ms)
+2025-10-16 11:14:38 debug: Retrieved exercise progression data
+2025-10-16 11:14:38 debug: Retrieved exercise progression data
+2025-10-16 11:14:53 debug: Fetched programs for user
+2025-10-16 11:14:53 debug: Calculated workout frequency data
+2025-10-16 11:14:53 debug: Calculated volume data
+2025-10-16 11:14:53 debug: Calculated volume data
+2025-10-16 11:14:53 debug: Retrieved exercise progression data
+2025-10-16 11:14:53 debug: Retrieved exercise progression data
+2025-10-16 11:14:53 debug: Calculated workout frequency data
+2025-10-16 11:14:53 debug: Calculated volume data
+2025-10-16 11:14:56 debug: Fetched programs for user
+2025-10-16 11:14:56 debug: Calculated volume data
+2025-10-16 11:14:56 debug: Calculated volume data
+2025-10-16 11:14:56 debug: Calculated workout frequency data
+2025-10-16 11:14:56 debug: Retrieved exercise progression data
+2025-10-16 11:14:56 debug: Retrieved exercise progression data
+2025-10-16 11:14:56 debug: Calculated volume data
+2025-10-16 11:14:56 debug: Calculated workout frequency data
+2025-10-16 11:14:58 debug: Fetched programs for user
+2025-10-16 11:14:58 debug: Calculated volume data
+2025-10-16 11:14:58 debug: Calculated volume data
+2025-10-16 11:14:58 debug: Retrieved exercise progression data
+2025-10-16 11:14:58 debug: Calculated workout frequency data
+2025-10-16 11:14:58 debug: Calculated volume data
+2025-10-16 11:14:58 debug: Calculated workout frequency data
+2025-10-16 11:14:58 debug: Retrieved exercise progression data
+2025-10-16 11:15:02 debug: Fetched programs for user
+2025-10-16 11:15:02 debug: Calculated workout frequency data
+2025-10-16 11:15:02 debug: Calculated workout frequency data
+2025-10-16 11:15:02 debug: Calculated volume data
+2025-10-16 11:15:02 debug: Retrieved exercise progression data
+2025-10-16 11:15:02 debug: Retrieved exercise progression data
+2025-10-16 11:15:02 debug: Calculated workout frequency data
+2025-10-16 11:15:02 debug: Calculated volume data
+2025-10-16 11:15:27 debug: Fetched programs for user
+2025-10-16 11:15:27 debug: Retrieved next workout
+2025-10-16 11:15:28 debug: Fetched workouts for program
+2025-10-16 11:15:28 debug: Retrieved next workout
+2025-10-16 11:15:29 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 11:15:29 warn: 🔍 Backend - Total exercises found:
+2025-10-16 11:15:29 warn: 🔍 Backend - First exercise raw:
+2025-10-16 11:15:29 debug: Processing workout template
+2025-10-16 11:15:29 debug: Retrieved exercise baselines for automated program
+2025-10-16 11:15:29 debug: Successfully built workout template
+2025-10-16 11:15:32 debug: Processing workout completion
+2025-10-16 11:15:32 debug: Fetched workouts for program
+2025-10-16 11:15:32 info: Workout completed successfully
+2025-10-16 11:15:32 debug: Retrieved next workout
+2025-10-16 11:15:34 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 11:15:34 warn: 🔍 Backend - Total exercises found:
+2025-10-16 11:15:34 warn: 🔍 Backend - First exercise raw:
+2025-10-16 11:15:34 debug: Processing workout template
+2025-10-16 11:15:34 debug: Retrieved exercise baselines for automated program
+2025-10-16 11:15:34 debug: Successfully built workout template
+2025-10-16 11:15:37 debug: Processing workout completion
+2025-10-16 11:15:37 info: Workout completed successfully
+2025-10-16 11:15:37 debug: Fetched workouts for program
+2025-10-16 11:15:38 debug: Retrieved next workout
+2025-10-16 11:15:39 debug: Fetched programs for user
+2025-10-16 11:15:39 debug: Retrieved next workout
+2025-10-16 11:15:40 debug: Fetched programs for user
+2025-10-16 11:15:40 debug: Retrieved exercise progression data
+2025-10-16 11:15:40 debug: Calculated volume data
+2025-10-16 11:15:40 debug: Calculated workout frequency data
+2025-10-16 11:15:51 debug: Fetched programs for user
+2025-10-16 11:15:51 debug: Retrieved exercise progression data
+2025-10-16 11:15:51 debug: Calculated workout frequency data
+2025-10-16 11:15:51 debug: Calculated volume data
+2025-10-16 11:15:51 debug: Retrieved exercise progression data
+2025-10-16 11:15:51 debug: Calculated volume data
+2025-10-16 11:15:51 debug: Calculated workout frequency data
+2025-10-16 11:15:51 debug: Retrieved exercise progression data
+2025-10-16 11:16:05 debug: Fetched programs for user
+2025-10-16 11:16:05 debug: Retrieved exercise progression data
+2025-10-16 11:16:05 debug: Calculated volume data
+2025-10-16 11:16:05 debug: Calculated workout frequency data
+2025-10-16 11:16:05 debug: Retrieved exercise progression data
+2025-10-16 11:16:05 debug: Calculated workout frequency data
+2025-10-16 11:16:05 debug: Retrieved exercise progression data
+2025-10-16 11:16:05 debug: Calculated volume data
+2025-10-16 11:16:07 debug: Calculated volume data
+2025-10-16 11:16:07 debug: Fetched programs for user
+2025-10-16 11:16:07 debug: Calculated workout frequency data
+2025-10-16 11:16:07 debug: Retrieved exercise progression data
+2025-10-16 11:16:07 debug: Calculated volume data
+2025-10-16 11:16:07 debug: Calculated volume data
+2025-10-16 11:16:07 debug: Retrieved exercise progression data
+2025-10-16 11:16:07 debug: Calculated workout frequency data
+2025-10-16 11:16:08 debug: Fetched programs for user
+2025-10-16 11:16:08 debug: Calculated volume data
+2025-10-16 11:16:08 debug: Calculated volume data
+2025-10-16 11:16:08 debug: Retrieved exercise progression data
+2025-10-16 11:16:08 debug: Calculated workout frequency data
+2025-10-16 11:16:08 debug: Calculated volume data
+2025-10-16 11:16:09 debug: Calculated workout frequency data
+2025-10-16 11:16:09 debug: Retrieved exercise progression data
+2025-10-16 11:16:09 debug: Fetched programs for user
+2025-10-16 11:16:09 debug: Retrieved exercise progression data
+2025-10-16 11:16:09 debug: Calculated volume data
+2025-10-16 11:16:09 debug: Calculated volume data
+2025-10-16 11:16:09 debug: Calculated workout frequency data
+2025-10-16 11:16:09 debug: Calculated workout frequency data
+2025-10-16 11:16:09 debug: Calculated volume data
+2025-10-16 11:16:09 debug: Retrieved exercise progression data
+2025-10-16 11:16:34 debug: Fetched programs for user
+2025-10-16 11:16:34 debug: Retrieved exercise progression data
+2025-10-16 11:16:34 debug: Calculated volume data
+2025-10-16 11:16:34 debug: Calculated workout frequency data
+2025-10-16 11:17:14 debug: Retrieved exercise progression data
+2025-10-16 11:17:14 debug: Fetched programs for user
+2025-10-16 11:17:14 debug: Retrieved exercise progression data
+2025-10-16 11:17:14 debug: Calculated volume data
+2025-10-16 11:17:14 debug: Calculated workout frequency data
+2025-10-16 11:17:14 debug: Calculated workout frequency data
+2025-10-16 11:17:14 debug: Calculated volume data
+2025-10-16 11:17:14 debug: Retrieved exercise progression data
+2025-10-16 11:17:19 debug: Fetched programs for user
+2025-10-16 11:17:19 debug: Calculated volume data
+2025-10-16 11:17:19 debug: Calculated workout frequency data
+2025-10-16 11:17:19 debug: Calculated volume data
+2025-10-16 11:17:19 debug: Retrieved exercise progression data
+2025-10-16 11:17:19 debug: Calculated workout frequency data
+2025-10-16 11:17:19 debug: Retrieved exercise progression data
+2025-10-16 11:17:19 debug: Calculated volume data
+2025-10-16 11:18:21 debug: Fetched programs for user
+2025-10-16 11:18:21 debug: Retrieved exercise progression data
+2025-10-16 11:18:21 debug: Calculated workout frequency data
+2025-10-16 11:18:21 debug: Calculated volume data
+2025-10-16 11:18:33 debug: Fetching user settings
+2025-10-16 11:18:33 debug: Fetched user settings successfully
+2025-10-16 11:18:37 debug: Fetched programs for user
+2025-10-16 11:18:38 debug: Fetched programs for user
+2025-10-16 11:18:38 debug: Calculated volume data
+2025-10-16 11:18:38 debug: Calculated workout frequency data
+2025-10-16 11:18:38 debug: Retrieved exercise progression data
+2025-10-16 11:18:38 debug: Calculated volume data
+2025-10-16 11:18:38 debug: Calculated workout frequency data
+2025-10-16 11:18:38 debug: Retrieved exercise progression data
+2025-10-16 11:18:40 debug: Fetched programs for user
+2025-10-16 11:18:40 debug: Retrieved exercise progression data
+2025-10-16 11:18:40 debug: Retrieved exercise progression data
+2025-10-16 11:18:40 debug: Calculated workout frequency data
+2025-10-16 11:18:40 debug: Calculated volume data
+2025-10-16 11:18:40 debug: Calculated workout frequency data
+2025-10-16 11:18:40 debug: Retrieved exercise progression data
+2025-10-16 11:18:40 debug: Calculated volume data
+2025-10-16 11:25:18 debug: Fetched programs for user
+2025-10-16 11:25:18 debug: Retrieved next workout
+2025-10-16 11:25:19 debug: Fetched workouts for program
+2025-10-16 11:25:20 debug: Retrieved next workout
+2025-10-16 11:25:21 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 11:25:21 warn: 🔍 Backend - Total exercises found:
+2025-10-16 11:25:21 warn: 🔍 Backend - First exercise raw:
+2025-10-16 11:25:21 debug: Processing workout template
+2025-10-16 11:25:21 debug: Retrieved exercise baselines for automated program
+2025-10-16 11:25:21 debug: Successfully built workout template
+2025-10-16 11:25:25 debug: Processing workout completion
+2025-10-16 11:25:25 debug: Fetched workouts for program
+2025-10-16 11:25:25 info: Workout completed successfully
+2025-10-16 11:25:25 debug: Retrieved next workout
+2025-10-16 11:25:32 warn: 🔍 Backend - Sample exercise with video URL:
+2025-10-16 11:25:32 warn: 🔍 Backend - Total exercises found:
+2025-10-16 11:25:32 warn: 🔍 Backend - First exercise raw:
+2025-10-16 11:25:32 debug: Processing workout template
+2025-10-16 11:25:32 debug: Retrieved exercise baselines for automated program
+2025-10-16 11:25:32 debug: Successfully built workout template
+2025-10-16 11:25:38 debug: Fetched workouts for program
+2025-10-16 11:25:38 debug: Processing workout completion
+2025-10-16 11:25:38 info: Workout completed successfully
+2025-10-16 11:25:38 debug: Retrieved next workout
+2025-10-16 12:47:13 info: SIGINT received, closing database connection...
+2025-10-16 12:47:13 info: Database connection closed successfully.
+2025-10-16 12:54:35 info: Application starting...
+2025-10-16 12:54:35 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-16 12:54:35 info: Server is running on http://0.0.0.0:3000
+2025-10-16 12:54:35 info: Initializing services...
+2025-10-16 12:54:35 info: Successfully connected to the database
+2025-10-16 12:54:35 info: Exercise cache initialized
+2025-10-16 12:54:35 info: All services initialized successfully
+2025-10-16 12:55:22 info: SIGINT received, closing database connection...
+2025-10-16 12:55:22 info: Database connection closed successfully.
+2025-10-16 13:02:15 info: Application starting...
+2025-10-16 13:02:15 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-16 13:02:15 info: Server is running on http://0.0.0.0:3000
+2025-10-16 13:02:15 info: Initializing services...
+2025-10-16 13:02:15 info: Successfully connected to the database
+2025-10-16 13:02:15 info: Exercise cache initialized
+2025-10-16 13:02:15 info: All services initialized successfully
+2025-10-16 13:20:10 info: SIGINT received, closing database connection...
+2025-10-16 13:20:10 info: Database connection closed successfully.

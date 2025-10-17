@@ -260,28 +260,30 @@ export const statsService = {
 				timeFrame
 			);
 
-			// Get workout progress data
-			const workoutProgress = await statsRepository.getWorkoutProgressData(
+			// Get workout completions (uses new workout_completions table)
+			const workoutCompletions = await statsRepository.getWorkoutCompletions(
 				programId,
 				userId,
 				dateFilter
 			);
 
 			// Calculate current streak
-			const currentStreak = this.calculateCurrentStreak(workoutProgress);
+			const currentStreak = this.calculateCurrentStreak(workoutCompletions);
 
 			// Calculate longest streak
-			const longestStreak = this.calculateLongestStreak(workoutProgress);
+			const longestStreak = this.calculateLongestStreak(workoutCompletions);
 
 			// Calculate weekly frequency
-			const weeklyFrequency = this.calculateWeeklyFrequency(workoutProgress);
+			const weeklyFrequency = this.calculateWeeklyFrequency(workoutCompletions);
+
+			// Calculate total workouts completed
+			const totalWorkouts = workoutCompletions.length;
 
 			// Calculate consistency percentage
-			const totalWorkouts = workoutProgress.length;
-			const totalProgramWorkouts = programInfo.totalWorkouts;
-			const consistency = totalProgramWorkouts > 0 
-				? Math.round((totalWorkouts / totalProgramWorkouts) * 100) 
-				: 0;
+			const consistency = this.calculateConsistency(
+				workoutCompletions,
+				programInfo.totalWorkouts
+			);
 
 			logger.debug("Calculated workout frequency data", {
 				programId,
@@ -419,10 +421,54 @@ export const statsService = {
 	},
 
 	// Helper methods for calculations
-	calculateCurrentStreak(workoutProgress: WorkoutProgressData[]): number {
-		if (workoutProgress.length === 0) return 0;
+	// Calculate consistency based on weekly completion rate
+	calculateConsistency(
+		completions: Array<{ workout_id: number; completed_at: Date }>,
+		totalWorkoutsInProgram: number
+	): number {
+		if (completions.length === 0 || totalWorkoutsInProgram === 0) {
+			return 0;
+		}
 
-		const sortedProgress = workoutProgress
+		// Group completions by week
+		const weeklyCompletions = new Map<string, Set<number>>();
+
+		for (const completion of completions) {
+			const weekNumber = getWeekNumber(completion.completed_at);
+			const year = completion.completed_at.getFullYear();
+			const weekKey = `${year}-W${weekNumber}`;
+
+			if (!weeklyCompletions.has(weekKey)) {
+				weeklyCompletions.set(weekKey, new Set());
+			}
+			// Add unique workout_id to this week (duplicates don't count)
+			weeklyCompletions.get(weekKey)!.add(completion.workout_id);
+		}
+
+		// Calculate score for each week
+		const weeklyScores: number[] = [];
+		for (const [weekKey, uniqueWorkouts] of weeklyCompletions.entries()) {
+			const weekScore = uniqueWorkouts.size / totalWorkoutsInProgram;
+			weeklyScores.push(weekScore);
+		}
+
+		// Average all weekly scores
+		if (weeklyScores.length === 0) {
+			return 0;
+		}
+
+		const averageScore = weeklyScores.reduce((sum, score) => sum + score, 0) / weeklyScores.length;
+		
+		// Convert to percentage (0-100)
+		return Math.round(averageScore * 100);
+	},
+
+	calculateCurrentStreak(
+		completions: Array<{ completed_at: Date }>
+	): number {
+		if (completions.length === 0) return 0;
+
+		const sortedCompletions = completions
 			.slice()
 			.sort((a, b) => b.completed_at.getTime() - a.completed_at.getTime());
 
@@ -430,17 +476,18 @@ export const statsService = {
 		let currentDate = new Date();
 		currentDate.setHours(0, 0, 0, 0);
 
-		for (const workout of sortedProgress) {
-			const workoutDate = new Date(workout.completed_at);
-			workoutDate.setHours(0, 0, 0, 0);
+		for (const completion of sortedCompletions) {
+			const completionDate = new Date(completion.completed_at);
+			completionDate.setHours(0, 0, 0, 0);
 
 			const daysDiff = Math.floor(
-				(currentDate.getTime() - workoutDate.getTime()) / (1000 * 60 * 60 * 24)
+				(currentDate.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24)
 			);
 
+			// Allow 1 day gap (today or yesterday counts)
 			if (daysDiff <= 1) {
 				streak++;
-				currentDate = workoutDate;
+				currentDate = completionDate;
 			} else {
 				break;
 			}
@@ -449,20 +496,22 @@ export const statsService = {
 		return streak;
 	},
 
-	calculateLongestStreak(workoutProgress: WorkoutProgressData[]): number {
-		if (workoutProgress.length === 0) return 0;
+	calculateLongestStreak(
+		completions: Array<{ completed_at: Date }>
+	): number {
+		if (completions.length === 0) return 0;
 
-		const sortedProgress = workoutProgress
+		const sortedCompletions = completions
 			.slice()
 			.sort((a, b) => a.completed_at.getTime() - b.completed_at.getTime());
 
 		let longestStreak = 0;
 		let currentStreak = 1;
-		let prevDate = new Date(sortedProgress[0].completed_at);
+		let prevDate = new Date(sortedCompletions[0].completed_at);
 		prevDate.setHours(0, 0, 0, 0);
 
-		for (let i = 1; i < sortedProgress.length; i++) {
-			const currentDate = new Date(sortedProgress[i].completed_at);
+		for (let i = 1; i < sortedCompletions.length; i++) {
+			const currentDate = new Date(sortedCompletions[i].completed_at);
 			currentDate.setHours(0, 0, 0, 0);
 
 			const daysDiff = Math.floor(
@@ -482,16 +531,18 @@ export const statsService = {
 		return Math.max(longestStreak, currentStreak);
 	},
 
-	calculateWeeklyFrequency(workoutProgress: WorkoutProgressData[]): Array<{
+	calculateWeeklyFrequency(
+		completions: Array<{ completed_at: Date }>
+	): Array<{
 		weekStart: string;
 		workoutCount: number;
 		weekNumber: number;
 	}> {
 		const weeklyMap = new Map<number, { count: number; weekStart: Date }>();
 
-		for (const workout of workoutProgress) {
-			const weekNumber = getWeekNumber(workout.completed_at);
-			const weekStart = new Date(workout.completed_at);
+		for (const completion of completions) {
+			const weekNumber = getWeekNumber(completion.completed_at);
+			const weekStart = new Date(completion.completed_at);
 			weekStart.setDate(weekStart.getDate() - weekStart.getDay());
 
 			if (!weeklyMap.has(weekNumber)) {

@@ -1,4 +1,5 @@
 import { workoutRepository, type CompletedExercise, type ExerciseBaselineCreate, type ProgressionHistoryCreate } from "./repositories/workoutRepository";
+import prisma from "./db";
 import logger from "./logger";
 import type { Decimal } from "@prisma/client/runtime/library";
 import {
@@ -258,6 +259,22 @@ export const workoutService = {
         workout_id: workoutId,
         completed_at: new Date(),
         next_scheduled_at: null,
+      });
+
+      // Insert into workout_completions for historical tracking and frequency stats
+      await prisma.workout_completions.create({
+        data: {
+          user_id: userId,
+          program_id: programId,
+          workout_id: workoutId,
+          completed_at: new Date(),
+        },
+      });
+
+      logger.debug("Recorded workout completion for frequency tracking", {
+        userId,
+        programId,
+        workoutId,
       });
 
       return {

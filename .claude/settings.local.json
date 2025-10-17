@@ -6,7 +6,8 @@
       "Bash(find:*)",
       "Bash(npm run build:*)",
       "Bash(npm install)",
-      "Bash(npx prisma migrate dev:*)"
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(sudo service:*)"
     ],
     "deny": [],
     "ask": []

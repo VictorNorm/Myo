@@ -59,6 +59,12 @@ export interface WorkoutProgressData {
 	workout_id: number;
 }
 
+export type WorkoutCompletion = {
+	id: number;
+	workout_id: number;
+	completed_at: Date;
+};
+
 export interface ProgramBasicInfo {
 	id: number;
 	name: string;
@@ -293,6 +299,35 @@ export const statsRepository = {
 
 		return prisma.workout_progress.findMany({
 			where: whereClause,
+			orderBy: { completed_at: "asc" },
+		});
+	},
+
+	// Get workout completions for frequency tracking
+	async getWorkoutCompletions(
+		programId: number,
+		userId: number,
+		dateFilter?: { startDate: Date; endDate: Date }
+	): Promise<WorkoutCompletion[]> {
+		const whereClause: Prisma.workout_completionsWhereInput = {
+			user_id: userId,
+			program_id: programId,
+		};
+
+		if (dateFilter) {
+			whereClause.completed_at = {
+				gte: dateFilter.startDate,
+				lte: dateFilter.endDate,
+			};
+		}
+
+		return prisma.workout_completions.findMany({
+			where: whereClause,
+			select: {
+				id: true,
+				workout_id: true,
+				completed_at: true,
+			},
 			orderBy: { completed_at: "asc" },
 		});
 	},
