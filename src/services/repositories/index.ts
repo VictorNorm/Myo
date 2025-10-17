@@ -1,4 +1,5 @@
 // Export all repositories
+export * from "./authRepository";
 export * from "./exerciseRepository";
 export * from "./workoutRepository";
 export * from "./muscleGroupRepository";

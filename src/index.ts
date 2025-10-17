@@ -5,6 +5,7 @@ import workoutsV2 from "./routes/workoutsV2";
 import exercisesV2 from "./routes/exercisesV2";
 import usersV2 from "./routes/usersV2";
 import passport from "passport";
+import { configurePassport } from "./config/passport";
 import cors from "cors";
 import helmet from "helmet";
 import passwordV2 from "./routes/passwordV2";
@@ -27,6 +28,9 @@ logger.info("Application starting...");
 const app = express();
 
 app.set("trust proxy", 1);
+
+// Configure passport strategies
+configurePassport();
 
 const safeParseNumber = (envName: string, defaultValue: number): number => {
 	const envValue = process.env[envName];

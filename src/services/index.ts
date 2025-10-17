@@ -29,6 +29,7 @@ export type {
 };
 
 // Export the new services
+export { authService } from "./authService";
 export { exerciseService } from "./exerciseService";
 export { workoutService } from "./workoutService";
 export { muscleGroupService } from "./muscleGroupService";

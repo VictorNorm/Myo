@@ -5,6 +5,7 @@ interface User {
 	username: string;
 	firstName: string;
 	lastName: string;
+	role: string;
 	// Add other user properties if needed
 }
 

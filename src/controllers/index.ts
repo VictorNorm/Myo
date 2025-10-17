@@ -1,4 +1,5 @@
 // Export all controllers
+export * from "./authController";
 export * from "./exerciseController";
 export * from "./workoutController";
 export * from "./muscleGroupController";
