@@ -31,15 +31,15 @@ export interface VolumeData {
 }
 
 export interface WorkoutFrequencyData {
-	currentStreak: number;
-	longestStreak: number;
-	weeklyFrequency: Array<{
+	weeklyStreak: number;        // NEW: Weeks with ≥75% completion
+	completedWorkouts: number;   // RENAMED from totalWorkouts
+	avgWorkoutsPerWeek: number;  // NEW: Average workouts per week
+	consistency: number;          // KEEP: Weekly adherence %
+	weeklyFrequency: Array<{     // KEEP: For chart
 		weekStart: string;
 		workoutCount: number;
 		weekNumber: number;
 	}>;
-	totalWorkouts: number;
-	consistency: number;
 }
 
 export interface ProgramStatistics {
@@ -267,17 +267,11 @@ export const statsService = {
 				dateFilter
 			);
 
-			// Calculate current streak
-			const currentStreak = this.calculateCurrentStreak(workoutCompletions);
-
-			// Calculate longest streak
-			const longestStreak = this.calculateLongestStreak(workoutCompletions);
-
-			// Calculate weekly frequency
+			// Calculate weekly frequency (keep existing)
 			const weeklyFrequency = this.calculateWeeklyFrequency(workoutCompletions);
 
-			// Calculate total workouts completed
-			const totalWorkouts = workoutCompletions.length;
+			// Calculate completed workouts count
+			const completedWorkouts = workoutCompletions.length;
 
 			// Calculate consistency percentage
 			const consistency = this.calculateConsistency(
@@ -285,22 +279,35 @@ export const statsService = {
 				programInfo.totalWorkouts
 			);
 
+			// Calculate weekly streak (≥75% completion)
+			const weeklyStreak = this.calculateWeeklyStreak(
+				workoutCompletions,
+				programInfo.totalWorkouts,
+				0.75  // 75% threshold
+			);
+
+			// Calculate average workouts per week
+			const avgWorkoutsPerWeek = this.calculateAvgWorkoutsPerWeek(
+				workoutCompletions,
+				programInfo.startDate
+			);
+
 			logger.debug("Calculated workout frequency data", {
 				programId,
 				userId,
 				timeFrame,
-				currentStreak,
-				longestStreak,
-				totalWorkouts,
+				completedWorkouts,
+				weeklyStreak,
+				avgWorkoutsPerWeek,
 				consistency,
 			});
 
 			return {
-				currentStreak,
-				longestStreak,
-				weeklyFrequency,
-				totalWorkouts,
+				weeklyStreak,
+				completedWorkouts,
+				avgWorkoutsPerWeek,
 				consistency,
+				weeklyFrequency,
 			};
 		} catch (error) {
 			logger.error(
@@ -448,7 +455,7 @@ export const statsService = {
 		// Calculate score for each week
 		const weeklyScores: number[] = [];
 		for (const [weekKey, uniqueWorkouts] of weeklyCompletions.entries()) {
-			const weekScore = uniqueWorkouts.size / totalWorkoutsInProgram;
+			const weekScore = Math.min(1, uniqueWorkouts.size / totalWorkoutsInProgram);
 			weeklyScores.push(weekScore);
 		}
 
@@ -463,32 +470,66 @@ export const statsService = {
 		return Math.round(averageScore * 100);
 	},
 
-	calculateCurrentStreak(
-		completions: Array<{ completed_at: Date }>
+	/**
+	 * Calculate weekly streak - counts consecutive weeks with ≥75% workout completion
+	 * Promotes consistency while allowing rest days and life flexibility
+	 * @param threshold - Minimum completion percentage (default 0.75 = 75%)
+	 */
+	calculateWeeklyStreak(
+		completions: Array<{ workout_id: number; completed_at: Date }>,
+		totalWorkoutsInProgram: number,
+		threshold: number = 0.75  // 75% completion threshold
 	): number {
-		if (completions.length === 0) return 0;
+		if (completions.length === 0 || totalWorkoutsInProgram === 0) {
+			return 0;
+		}
 
-		const sortedCompletions = completions
-			.slice()
-			.sort((a, b) => b.completed_at.getTime() - a.completed_at.getTime());
+		// Group completions by week
+		const weeklyCompletions = new Map<string, { 
+			count: number; 
+			weekStart: Date;
+			weekNumber: number;
+		}>();
 
-		let streak = 0;
-		let currentDate = new Date();
-		currentDate.setHours(0, 0, 0, 0);
-
-		for (const completion of sortedCompletions) {
+		for (const completion of completions) {
 			const completionDate = new Date(completion.completed_at);
-			completionDate.setHours(0, 0, 0, 0);
+			const weekNumber = getWeekNumber(completionDate);
+			const year = completionDate.getFullYear();
+			const weekKey = `${year}-W${weekNumber}`;
 
-			const daysDiff = Math.floor(
-				(currentDate.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24)
-			);
+			if (!weeklyCompletions.has(weekKey)) {
+				// Calculate week start (Monday)
+				const weekStart = new Date(completionDate);
+				const day = weekStart.getDay();
+				const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1);
+				weekStart.setDate(diff);
+				weekStart.setHours(0, 0, 0, 0);
 
-			// Allow 1 day gap (today or yesterday counts)
-			if (daysDiff <= 1) {
+				weeklyCompletions.set(weekKey, {
+					count: 0,
+					weekStart,
+					weekNumber
+				});
+			}
+
+			const week = weeklyCompletions.get(weekKey)!;
+			week.count++;
+		}
+
+		// Sort weeks by date
+		const sortedWeeks = Array.from(weeklyCompletions.values())
+			.sort((a, b) => b.weekStart.getTime() - a.weekStart.getTime());
+
+		// Count streak from most recent week backwards
+		let streak = 0;
+		const requiredWorkouts = Math.ceil(totalWorkoutsInProgram * threshold);
+
+		for (const week of sortedWeeks) {
+			// Check if this week meets the threshold
+			if (week.count >= requiredWorkouts) {
 				streak++;
-				currentDate = completionDate;
 			} else {
+				// Streak broken
 				break;
 			}
 		}
@@ -496,40 +537,28 @@ export const statsService = {
 		return streak;
 	},
 
-	calculateLongestStreak(
-		completions: Array<{ completed_at: Date }>
+	calculateAvgWorkoutsPerWeek(
+		completions: Array<{ completed_at: Date }>,
+		programStartDate: Date
 	): number {
-		if (completions.length === 0) return 0;
-
-		const sortedCompletions = completions
-			.slice()
-			.sort((a, b) => a.completed_at.getTime() - b.completed_at.getTime());
-
-		let longestStreak = 0;
-		let currentStreak = 1;
-		let prevDate = new Date(sortedCompletions[0].completed_at);
-		prevDate.setHours(0, 0, 0, 0);
-
-		for (let i = 1; i < sortedCompletions.length; i++) {
-			const currentDate = new Date(sortedCompletions[i].completed_at);
-			currentDate.setHours(0, 0, 0, 0);
-
-			const daysDiff = Math.floor(
-				(currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
-			);
-
-			if (daysDiff === 1) {
-				currentStreak++;
-			} else {
-				longestStreak = Math.max(longestStreak, currentStreak);
-				currentStreak = 1;
-			}
-
-			prevDate = currentDate;
+		if (completions.length === 0) {
+			return 0;
 		}
 
-		return Math.max(longestStreak, currentStreak);
+		const now = new Date();
+		const startDate = new Date(programStartDate);
+		
+		// Calculate weeks since program start
+		const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000;
+		const weeksSinceStart = Math.max(1, (now.getTime() - startDate.getTime()) / millisecondsPerWeek);
+		
+		// Calculate average
+		const average = completions.length / weeksSinceStart;
+		
+		// Round to 1 decimal place
+		return Math.round(average * 10) / 10;
 	},
+
 
 	calculateWeeklyFrequency(
 		completions: Array<{ completed_at: Date }>
