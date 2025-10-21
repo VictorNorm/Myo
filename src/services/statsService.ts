@@ -31,11 +31,12 @@ export interface VolumeData {
 }
 
 export interface WorkoutFrequencyData {
-	weeklyStreak: number;        // NEW: Weeks with ≥75% completion
-	completedWorkouts: number;   // RENAMED from totalWorkouts
-	avgWorkoutsPerWeek: number;  // NEW: Average workouts per week
-	consistency: number;          // KEEP: Weekly adherence %
-	weeklyFrequency: Array<{     // KEEP: For chart
+	currentStreak: number;       // CHANGED from weeklyStreak
+	longestStreak: number;       // ADD this
+	totalWorkouts: number;       // CHANGED from completedWorkouts
+	avgWorkoutsPerWeek: number;  
+	consistency: number;          
+	weeklyFrequency: Array<{
 		weekStart: string;
 		workoutCount: number;
 		weekNumber: number;
@@ -65,6 +66,12 @@ export interface ProgramStatistics {
 		percentGain: number;
 	}>;
 }
+
+const calculateAvgWorkoutsPerWeek = (weeklyFrequency: Array<{workoutCount: number}>): number => {
+  if (weeklyFrequency.length === 0) return 0;
+  const total = weeklyFrequency.reduce((sum, week) => sum + week.workoutCount, 0);
+  return Math.round((total / weeklyFrequency.length) * 10) / 10; // Round to 1 decimal
+};
 
 export type TimeFrameType = "week" | "month" | "program" | "all";
 
@@ -271,7 +278,7 @@ export const statsService = {
 			const weeklyFrequency = this.calculateWeeklyFrequency(workoutCompletions);
 
 			// Calculate completed workouts count
-			const completedWorkouts = workoutCompletions.length;
+			const totalWorkouts = workoutCompletions.length;
 
 			// Calculate consistency percentage
 			const consistency = this.calculateConsistency(
@@ -280,11 +287,13 @@ export const statsService = {
 			);
 
 			// Calculate weekly streak (≥75% completion)
-			const weeklyStreak = this.calculateWeeklyStreak(
+			const currentStreak = this.calculateWeeklyStreak(
 				workoutCompletions,
 				programInfo.totalWorkouts,
 				0.75  // 75% threshold
 			);
+
+			const longestStreak = this.calculateLongestStreak(workoutCompletions);
 
 			// Calculate average workouts per week
 			const avgWorkoutsPerWeek = this.calculateAvgWorkoutsPerWeek(
@@ -296,15 +305,15 @@ export const statsService = {
 				programId,
 				userId,
 				timeFrame,
-				completedWorkouts,
-				weeklyStreak,
+				totalWorkouts,
+				currentStreak,
 				avgWorkoutsPerWeek,
 				consistency,
 			});
-
 			return {
-				weeklyStreak,
-				completedWorkouts,
+				currentStreak,
+				longestStreak,
+				totalWorkouts,
 				avgWorkoutsPerWeek,
 				consistency,
 				weeklyFrequency,
@@ -535,6 +544,46 @@ export const statsService = {
 		}
 
 		return streak;
+	},
+
+	calculateLongestStreak(
+		completions: Array<{ completed_at: Date }>
+	): number {
+		if (completions.length === 0) {
+			return 0;
+		}
+
+		// Sort completions by date
+		const sortedCompletions = [...completions].sort(
+			(a, b) => new Date(a.completed_at).getTime() - new Date(b.completed_at).getTime()
+		);
+
+		let longestStreak = 0;
+		let currentStreak = 1;
+
+		for (let i = 1; i < sortedCompletions.length; i++) {
+			const prevDate = new Date(sortedCompletions[i - 1].completed_at);
+			const currDate = new Date(sortedCompletions[i].completed_at);
+			
+			// Calculate days between workouts
+			const daysDiff = Math.floor(
+				(currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
+			);
+
+			// If within 3 days, continue streak (allows for rest days)
+			if (daysDiff <= 3) {
+				currentStreak++;
+			} else {
+				// Streak broken, update longest if current was longer
+				longestStreak = Math.max(longestStreak, currentStreak);
+				currentStreak = 1;
+			}
+		}
+
+		// Check final streak
+		longestStreak = Math.max(longestStreak, currentStreak);
+
+		return longestStreak;
 	},
 
 	calculateAvgWorkoutsPerWeek(

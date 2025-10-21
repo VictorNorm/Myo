@@ -5180,3 +5180,244 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-20 12:14:51 debug: Calculated volume data
 2025-10-20 12:18:23 info: SIGINT received, closing database connection...
 2025-10-20 12:18:23 info: Database connection closed successfully.
+2025-10-20 12:18:39 info: Application starting...
+2025-10-20 12:18:39 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-20 12:18:39 info: Server is running on http://0.0.0.0:3000
+2025-10-20 12:18:39 info: Initializing services...
+2025-10-20 12:18:39 info: Successfully connected to the database
+2025-10-20 12:18:39 info: Exercise cache initialized
+2025-10-20 12:18:39 info: All services initialized successfully
+2025-10-20 14:39:00 info: SIGINT received, closing database connection...
+2025-10-20 14:39:00 info: Database connection closed successfully.
+2025-10-20 14:39:04 info: Application starting...
+2025-10-20 14:39:04 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-20 14:39:04 info: Server is running on http://0.0.0.0:3000
+2025-10-20 14:39:04 info: Initializing services...
+2025-10-20 14:39:04 info: Successfully connected to the database
+2025-10-20 14:39:04 info: Exercise cache initialized
+2025-10-20 14:39:04 info: All services initialized successfully
+2025-10-20 14:40:21 info: Token expired
+2025-10-20 14:41:05 debug: Authenticating user
+2025-10-20 14:41:05 debug: User not found during authentication
+2025-10-20 14:41:19 debug: Authenticating user
+2025-10-20 14:41:19 debug: User authenticated successfully
+2025-10-20 14:41:19 debug: Generating auth token
+2025-10-20 14:41:19 debug: Auth token generated successfully
+2025-10-20 14:41:21 debug: Fetched programs for user
+2025-10-20 14:41:21 debug: Calculated volume data
+2025-10-20 14:41:21 debug: Fetched programs for user
+2025-10-20 14:41:21 debug: Calculated workout frequency data
+2025-10-20 14:41:21 debug: Calculated workout frequency data
+2025-10-20 14:41:21 debug: Retrieved exercise progression data
+2025-10-20 14:41:21 debug: Calculated volume data
+2025-10-20 14:41:21 debug: Retrieved exercise progression data
+2025-10-20 14:41:24 debug: Fetched programs for user
+2025-10-20 14:41:24 debug: Calculated workout frequency data
+2025-10-20 14:41:24 debug: Calculated volume data
+2025-10-20 14:41:24 debug: Retrieved exercise progression data
+2025-10-20 14:41:24 debug: Calculated volume data
+2025-10-20 14:41:24 debug: Calculated workout frequency data
+2025-10-20 14:41:24 debug: Retrieved exercise progression data
+2025-10-20 14:41:25 debug: Fetched programs for user
+2025-10-20 14:41:25 debug: Retrieved exercise progression data
+2025-10-20 14:41:25 debug: Retrieved exercise progression data
+2025-10-20 14:41:25 debug: Calculated workout frequency data
+2025-10-20 14:41:25 debug: Calculated volume data
+2025-10-20 14:41:25 debug: Calculated workout frequency data
+2025-10-20 14:41:25 debug: Calculated volume data
+2025-10-20 14:41:25 debug: Retrieved exercise progression data
+2025-10-20 14:41:46 info: SIGINT received, closing database connection...
+2025-10-20 14:41:46 info: Database connection closed successfully.
+2025-10-20 14:41:47 info: Application starting...
+2025-10-20 14:41:47 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-20 14:41:48 info: Server is running on http://0.0.0.0:3000
+2025-10-20 14:41:48 info: Initializing services...
+2025-10-20 14:41:48 info: Successfully connected to the database
+2025-10-20 14:41:48 info: Exercise cache initialized
+2025-10-20 14:41:48 info: All services initialized successfully
+2025-10-20 14:41:51 info: Retrieved all program templates
+2025-10-20 14:41:51 debug: Fetched programs for user
+2025-10-20 14:41:51 debug: Fetched programs for user
+2025-10-20 14:41:51 debug: Fetched programs for user
+2025-10-20 14:41:52 debug: Fetched programs for user
+2025-10-20 14:41:52 debug: Calculated volume data
+2025-10-20 14:41:52 debug: Calculated workout frequency data
+2025-10-20 14:41:52 debug: Retrieved exercise progression data
+2025-10-20 14:41:54 debug: Fetched programs for user
+2025-10-20 14:41:54 debug: Retrieved exercise progression data
+2025-10-20 14:41:54 debug: Calculated volume data
+2025-10-20 14:41:54 debug: Calculated workout frequency data
+2025-10-20 14:41:54 debug: Calculated workout frequency data
+2025-10-20 14:41:54 debug: Calculated volume data
+2025-10-20 14:41:54 debug: Retrieved exercise progression data
+2025-10-20 14:42:00 debug: Fetched programs for user
+2025-10-20 14:42:00 debug: Calculated volume data
+2025-10-20 14:42:00 debug: Calculated workout frequency data
+2025-10-20 14:42:00 debug: Retrieved exercise progression data
+2025-10-20 14:42:00 debug: Calculated workout frequency data
+2025-10-20 14:42:00 debug: Retrieved exercise progression data
+2025-10-20 14:42:00 debug: Calculated volume data
+2025-10-20 14:42:08 debug: Calculated workout frequency data
+2025-10-20 14:42:08 debug: Fetched programs for user
+2025-10-20 14:42:08 debug: Retrieved exercise progression data
+2025-10-20 14:42:08 debug: Calculated workout frequency data
+2025-10-20 14:42:08 debug: Calculated volume data
+2025-10-20 14:42:08 debug: Calculated workout frequency data
+2025-10-20 14:42:08 debug: Retrieved exercise progression data
+2025-10-20 14:42:08 debug: Calculated volume data
+2025-10-20 14:42:10 debug: Fetched programs for user
+2025-10-20 14:42:10 debug: Calculated workout frequency data
+2025-10-20 14:42:10 debug: Retrieved exercise progression data
+2025-10-20 14:42:10 debug: Calculated volume data
+2025-10-20 14:42:10 debug: Calculated workout frequency data
+2025-10-20 14:42:10 debug: Calculated workout frequency data
+2025-10-20 14:42:10 debug: Retrieved exercise progression data
+2025-10-20 14:42:10 debug: Calculated volume data
+2025-10-20 14:57:09 info: SIGINT received, closing database connection...
+2025-10-20 14:57:09 info: Database connection closed successfully.
+2025-10-20 14:57:11 info: Application starting...
+2025-10-20 14:57:11 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-20 14:57:11 info: Server is running on http://0.0.0.0:3000
+2025-10-20 14:57:11 info: Initializing services...
+2025-10-20 14:57:11 info: Successfully connected to the database
+2025-10-20 14:57:11 info: Exercise cache initialized
+2025-10-20 14:57:11 info: All services initialized successfully
+2025-10-20 14:57:56 debug: Fetched programs for user
+2025-10-20 14:57:56 debug: Calculated workout frequency data
+2025-10-20 14:57:56 debug: Retrieved exercise progression data
+2025-10-20 14:57:56 debug: Calculated volume data
+2025-10-20 14:57:56 debug: Calculated workout frequency data
+2025-10-20 14:57:56 debug: Retrieved exercise progression data
+2025-10-20 14:57:56 debug: Calculated volume data
+2025-10-20 14:58:37 debug: Fetched programs for user
+2025-10-20 14:58:37 debug: Calculated workout frequency data
+2025-10-20 14:58:37 debug: Calculated volume data
+2025-10-20 14:58:37 debug: Retrieved exercise progression data
+2025-10-20 14:58:37 debug: Calculated workout frequency data
+2025-10-20 14:58:37 debug: Retrieved exercise progression data
+2025-10-20 14:58:37 debug: Calculated volume data
+2025-10-20 14:58:40 debug: Fetched programs for user
+2025-10-20 14:58:40 debug: Calculated workout frequency data
+2025-10-20 14:58:40 debug: Calculated volume data
+2025-10-20 14:58:40 debug: Retrieved exercise progression data
+2025-10-20 14:58:40 debug: Calculated workout frequency data
+2025-10-20 14:58:40 debug: Retrieved exercise progression data
+2025-10-20 14:58:40 debug: Calculated volume data
+2025-10-20 14:59:25 debug: Fetched programs for user
+2025-10-20 14:59:25 debug: Calculated workout frequency data
+2025-10-20 14:59:25 debug: Calculated volume data
+2025-10-20 14:59:25 debug: Retrieved exercise progression data
+2025-10-20 14:59:25 debug: Calculated workout frequency data
+2025-10-20 14:59:25 debug: Calculated volume data
+2025-10-20 14:59:25 debug: Retrieved exercise progression data
+2025-10-20 15:00:06 debug: Fetched programs for user
+2025-10-20 15:00:06 debug: Calculated workout frequency data
+2025-10-20 15:00:06 debug: Calculated volume data
+2025-10-20 15:00:06 debug: Retrieved exercise progression data
+2025-10-20 15:00:06 debug: Retrieved exercise progression data
+2025-10-20 15:00:06 debug: Calculated workout frequency data
+2025-10-20 15:00:06 debug: Calculated volume data
+2025-10-20 15:00:28 debug: Fetched programs for user
+2025-10-20 15:00:28 debug: Calculated workout frequency data
+2025-10-20 15:00:28 debug: Calculated volume data
+2025-10-20 15:00:28 debug: Retrieved exercise progression data
+2025-10-20 15:00:28 debug: Calculated workout frequency data
+2025-10-20 15:00:28 debug: Retrieved exercise progression data
+2025-10-20 15:00:28 debug: Calculated volume data
+2025-10-20 15:00:43 debug: Fetched programs for user
+2025-10-20 15:00:43 debug: Calculated workout frequency data
+2025-10-20 15:00:43 debug: Retrieved exercise progression data
+2025-10-20 15:00:43 debug: Calculated volume data
+2025-10-20 15:00:43 debug: Calculated workout frequency data
+2025-10-20 15:00:43 debug: Retrieved exercise progression data
+2025-10-20 15:00:43 debug: Calculated volume data
+2025-10-20 15:04:19 debug: Fetched programs for user
+2025-10-20 15:04:19 debug: Calculated workout frequency data
+2025-10-20 15:04:19 debug: Retrieved exercise progression data
+2025-10-20 15:04:19 debug: Calculated volume data
+2025-10-20 15:04:19 debug: Calculated volume data
+2025-10-20 15:04:19 debug: Retrieved exercise progression data
+2025-10-20 15:04:19 debug: Calculated workout frequency data
+2025-10-20 15:04:26 debug: Fetched programs for user
+2025-10-20 15:04:26 debug: Calculated workout frequency data
+2025-10-20 15:04:26 debug: Calculated workout frequency data
+2025-10-20 15:04:26 debug: Retrieved exercise progression data
+2025-10-20 15:04:26 debug: Calculated volume data
+2025-10-20 15:04:26 debug: Calculated workout frequency data
+2025-10-20 15:04:26 debug: Retrieved exercise progression data
+2025-10-20 15:04:26 debug: Calculated volume data
+2025-10-20 15:04:27 debug: Fetched programs for user
+2025-10-20 15:04:27 debug: Calculated workout frequency data
+2025-10-20 15:04:27 debug: Calculated workout frequency data
+2025-10-20 15:04:27 debug: Calculated volume data
+2025-10-20 15:04:27 debug: Retrieved exercise progression data
+2025-10-20 15:04:27 debug: Calculated workout frequency data
+2025-10-20 15:04:27 debug: Retrieved exercise progression data
+2025-10-20 15:04:27 debug: Calculated volume data
+2025-10-20 15:04:28 debug: Fetched programs for user
+2025-10-20 15:04:28 debug: Calculated workout frequency data
+2025-10-20 15:04:28 debug: Calculated volume data
+2025-10-20 15:04:28 debug: Retrieved exercise progression data
+2025-10-20 15:04:28 debug: Calculated workout frequency data
+2025-10-20 15:04:28 debug: Calculated volume data
+2025-10-20 15:04:28 debug: Retrieved exercise progression data
+2025-10-20 15:04:33 debug: Fetched programs for user
+2025-10-20 15:04:33 debug: Retrieved exercise progression data
+2025-10-20 15:04:33 debug: Calculated workout frequency data
+2025-10-20 15:04:33 debug: Calculated volume data
+2025-10-20 15:04:33 debug: Calculated workout frequency data
+2025-10-20 15:04:33 debug: Retrieved exercise progression data
+2025-10-20 15:04:33 debug: Calculated volume data
+2025-10-20 15:05:14 debug: Fetched programs for user
+2025-10-20 15:05:14 debug: Retrieved exercise progression data
+2025-10-20 15:05:14 debug: Calculated workout frequency data
+2025-10-20 15:05:14 debug: Calculated volume data
+2025-10-20 15:05:14 debug: Calculated workout frequency data
+2025-10-20 15:05:14 debug: Calculated volume data
+2025-10-20 15:05:14 debug: Retrieved exercise progression data
+2025-10-21 13:32:47 info: Application starting...
+2025-10-21 13:32:47 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 13:32:47 info: Server is running on http://0.0.0.0:3000
+2025-10-21 13:32:47 info: Initializing services...
+2025-10-21 13:32:47 info: Successfully connected to the database
+2025-10-21 13:32:47 info: Exercise cache initialized
+2025-10-21 13:32:47 info: All services initialized successfully
+2025-10-21 13:34:27 info: Token expired
+2025-10-21 13:49:17 info: SIGINT received, closing database connection...
+2025-10-21 13:49:17 info: Database connection closed successfully.
+2025-10-21 13:49:21 info: Application starting...
+2025-10-21 13:49:21 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 13:49:21 info: Server is running on http://0.0.0.0:3000
+2025-10-21 13:49:21 info: Initializing services...
+2025-10-21 13:49:21 info: Successfully connected to the database
+2025-10-21 13:49:21 info: Exercise cache initialized
+2025-10-21 13:49:21 info: All services initialized successfully
+2025-10-21 13:50:24 debug: Authenticating user
+2025-10-21 13:50:24 debug: User authenticated successfully
+2025-10-21 13:50:24 debug: Generating auth token
+2025-10-21 13:50:24 debug: Auth token generated successfully
+2025-10-21 13:50:26 debug: Fetched programs for user
+2025-10-21 13:50:26 debug: Fetched programs for user
+2025-10-21 13:50:26 debug: Calculated volume data
+2025-10-21 13:50:26 debug: Calculated workout frequency data
+2025-10-21 13:50:26 debug: Calculated volume data
+2025-10-21 13:50:26 debug: Retrieved exercise progression data
+2025-10-21 13:50:26 debug: Calculated workout frequency data
+2025-10-21 13:50:26 debug: Retrieved exercise progression data
+2025-10-21 13:50:28 debug: Fetched programs for user
+2025-10-21 13:50:28 debug: Calculated workout frequency data
+2025-10-21 13:50:28 debug: Calculated volume data
+2025-10-21 13:50:28 debug: Retrieved exercise progression data
+2025-10-21 13:50:28 debug: Calculated workout frequency data
+2025-10-21 13:50:28 debug: Calculated volume data
+2025-10-21 13:50:28 debug: Retrieved exercise progression data
+2025-10-21 13:50:30 debug: Fetched programs for user
+2025-10-21 13:50:30 debug: Calculated workout frequency data
+2025-10-21 13:50:30 debug: Retrieved exercise progression data
+2025-10-21 13:50:30 debug: Calculated workout frequency data
+2025-10-21 13:50:30 debug: Calculated volume data
+2025-10-21 13:50:30 debug: Retrieved exercise progression data
+2025-10-21 13:50:30 debug: Calculated workout frequency data
+2025-10-21 13:50:30 debug: Calculated volume data
+2025-10-21 13:50:48 info: SIGINT received, closing database connection...
+2025-10-21 13:50:48 info: Database connection closed successfully.

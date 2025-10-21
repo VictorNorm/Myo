@@ -290,6 +290,7 @@ async function seedActiveProgram(testUser: any) {
       goal: Goal.HYPERTROPHY,
       programType: ProgramType.AUTOMATED,
       startDate: subWeeks(new Date(), WEEKS_OF_DATA),
+      totalWorkouts: 2, // 2 workouts in the program (A and B)
     }
   });
 
