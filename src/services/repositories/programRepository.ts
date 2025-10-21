@@ -43,6 +43,7 @@ export interface CreateProgramInput {
 	programType: "MANUAL" | "AUTOMATED";
 	startDate: Date;
 	endDate?: Date | null;
+	weeklyFrequency: number;
 }
 
 export interface CreateProgramWithWorkoutsInput extends CreateProgramInput {
@@ -59,6 +60,7 @@ export interface CreateProgramWithWorkoutsAndExercisesInput {
 	programType: "MANUAL" | "AUTOMATED";
 	startDate: Date;
 	endDate: Date | null;
+	weeklyFrequency: number;
 	workouts: Array<{
 		name: string;
 		exercises?: Array<{
@@ -211,6 +213,7 @@ export const programRepository = {
 				programType: data.programType,
 				startDate: data.startDate,
 				endDate: data.endDate,
+				weeklyFrequency: data.weeklyFrequency,
 			},
 		});
 
@@ -237,6 +240,7 @@ export const programRepository = {
 					programType: data.programType,
 					startDate: data.startDate,
 					endDate: data.endDate,
+					weeklyFrequency: data.weeklyFrequency,
 					status: data.shouldActivate ? "ACTIVE" : "PENDING",
 				},
 			});
@@ -290,6 +294,7 @@ export const programRepository = {
 					programType: data.programType,
 					startDate: data.startDate,
 					endDate: data.endDate,
+					weeklyFrequency: data.weeklyFrequency,
 					status: data.shouldActivate ? "ACTIVE" : "PENDING",
 				},
 			});

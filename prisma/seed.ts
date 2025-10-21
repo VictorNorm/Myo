@@ -466,6 +466,7 @@ async function seedInactiveProgram(testUser: any) {
       programType: ProgramType.AUTOMATED,
       startDate: programStartDate,
       endDate: programEndDate,
+      weeklyFrequency: 4,
     }
   });
 

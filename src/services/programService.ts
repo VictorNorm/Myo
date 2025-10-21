@@ -27,6 +27,7 @@ export interface CreateProgramRequest {
 	programType: "MANUAL" | "AUTOMATED";
 	startDate: string;
 	endDate?: string | null;
+	weeklyFrequency: number;
 }
 
 export interface CreateProgramWithWorkoutsRequest extends CreateProgramRequest {
@@ -202,6 +203,7 @@ export const programService = {
 			programType: data.programType,
 			startDate: new Date(data.startDate),
 			endDate: data.endDate ? new Date(data.endDate) : null,
+			weeklyFrequency: data.weeklyFrequency,
 		};
 
 		const program = await programRepository.create(createData);
@@ -270,6 +272,7 @@ export const programService = {
 			programType: data.programType,
 			startDate: new Date(data.startDate),
 			endDate: data.endDate ? new Date(data.endDate) : null,
+			weeklyFrequency: data.weeklyFrequency,
 			workouts: data.workouts,
 			baselines: data.baselines,
 			shouldActivate: data.shouldActivate || false,

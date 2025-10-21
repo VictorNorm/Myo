@@ -152,7 +152,8 @@ export const beginnerProgramService = {
           goal: template.goal,
           programType: 'AUTOMATED',
           status: 'PENDING',
-          startDate: new Date()
+          startDate: new Date(),
+          weeklyFrequency: template.frequency_per_week
         }
       });
 

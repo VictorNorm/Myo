@@ -112,6 +112,7 @@ export const userSettingsRepository = {
 				userId: userId,
 				goal: "HYPERTROPHY",
 				programType: "AUTOMATED",
+				weeklyFrequency: 3,
 			},
 		});
 	},

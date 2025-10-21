@@ -246,6 +246,7 @@ async function convertToCreateProgramRequest(
     programType: 'AUTOMATED', // Generated programs are automated
     startDate,
     endDate: endDate.toISOString().split('T')[0],
+    weeklyFrequency: generatedProgram.frequency,
     workouts: generatedProgram.workouts.map((workout: any) => ({
       name: workout.name
     })),

@@ -106,6 +106,7 @@ export const programTemplateService = {
         goal: template.goal,
         programType: template.program_type as "MANUAL" | "AUTOMATED",
         startDate: programData.start_date || new Date(),
+        weeklyFrequency: template.frequency_per_week,
         workouts: template.template_workouts.map(workout => ({
           name: workout.name
         })),

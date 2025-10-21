@@ -5486,3 +5486,24 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-21 14:17:24 debug: Calculated workout frequency data
 2025-10-21 14:31:22 info: SIGINT received, closing database connection...
 2025-10-21 14:31:22 info: Database connection closed successfully.
+2025-10-21 14:47:48 info: Application starting...
+2025-10-21 14:47:48 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 14:47:48 info: Server is running on http://0.0.0.0:3000
+2025-10-21 14:47:48 info: Initializing services...
+2025-10-21 14:47:48 info: Successfully connected to the database
+2025-10-21 14:47:48 info: Exercise cache initialized
+2025-10-21 14:47:48 info: All services initialized successfully
+2025-10-21 14:47:52 debug: Authenticating user
+2025-10-21 14:47:52 debug: User authenticated successfully
+2025-10-21 14:47:52 debug: Generating auth token
+2025-10-21 14:47:52 debug: Auth token generated successfully
+2025-10-21 14:47:53 debug: Fetching all users
+2025-10-21 14:47:53 debug: Successfully fetched and transformed users
+2025-10-21 14:47:53 debug: Fetching all users
+2025-10-21 14:47:53 debug: Successfully fetched and transformed users
+2025-10-21 15:05:43 info: Retrieved all program templates
+2025-10-21 15:05:43 debug: Fetched programs for user
+2025-10-21 15:05:43 debug: Fetched programs for user
+2025-10-21 15:05:43 debug: Fetched programs for user
+2025-10-21 15:07:24 info: SIGINT received, closing database connection...
+2025-10-21 15:07:24 info: Database connection closed successfully.

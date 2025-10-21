@@ -417,7 +417,7 @@ export const programController = {
 			}
 
 			const userId = req.user.id;
-			const { name, goal, programType, startDate, endDate } = req.body;
+			const { name, goal, programType, startDate, endDate, weeklyFrequency } = req.body;
 
 			const program = await programService.createProgram({
 				name,
@@ -426,6 +426,7 @@ export const programController = {
 				programType,
 				startDate,
 				endDate,
+				weeklyFrequency,
 			});
 
 			return res.status(201).json({
