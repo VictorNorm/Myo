@@ -34,3 +34,4 @@ C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\pr
   561 // 9. Finally delete the program
 → 562 await tx.programs.delete(
 Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
+2025-10-21 14:16:27 error: Error updating program status: Invalid status transition from COMPLETED to ACTIVE

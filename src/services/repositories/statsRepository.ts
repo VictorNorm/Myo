@@ -70,6 +70,7 @@ export interface ProgramBasicInfo {
 	name: string;
 	startDate: Date;
 	totalWorkouts: number;
+	weeklyFrequency: number;
 	status: string;
 }
 
@@ -101,6 +102,7 @@ export const statsRepository = {
 				startDate: true,
 				totalWorkouts: true,
 				status: true,
+				weeklyFrequency: true,
 			},
 		});
 	},

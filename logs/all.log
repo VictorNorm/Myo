@@ -5421,3 +5421,68 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-21 13:50:30 debug: Calculated volume data
 2025-10-21 13:50:48 info: SIGINT received, closing database connection...
 2025-10-21 13:50:48 info: Database connection closed successfully.
+2025-10-21 13:50:53 info: Application starting...
+2025-10-21 13:50:53 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 13:50:53 info: Server is running on http://0.0.0.0:3000
+2025-10-21 13:50:53 info: Initializing services...
+2025-10-21 13:50:53 info: Successfully connected to the database
+2025-10-21 13:50:53 info: Exercise cache initialized
+2025-10-21 13:50:53 info: All services initialized successfully
+2025-10-21 14:02:59 info: SIGINT received, closing database connection...
+2025-10-21 14:02:59 info: Database connection closed successfully.
+2025-10-21 14:11:41 info: Application starting...
+2025-10-21 14:11:41 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 14:11:41 info: Server is running on http://0.0.0.0:3000
+2025-10-21 14:11:41 info: Initializing services...
+2025-10-21 14:11:41 info: Successfully connected to the database
+2025-10-21 14:11:41 info: Exercise cache initialized
+2025-10-21 14:11:41 info: All services initialized successfully
+2025-10-21 14:15:32 info: SIGINT received, closing database connection...
+2025-10-21 14:15:32 info: Database connection closed successfully.
+2025-10-21 14:16:01 info: Application starting...
+2025-10-21 14:16:01 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-10-21 14:16:01 info: Server is running on http://0.0.0.0:3000
+2025-10-21 14:16:01 info: Initializing services...
+2025-10-21 14:16:01 info: Successfully connected to the database
+2025-10-21 14:16:01 info: Exercise cache initialized
+2025-10-21 14:16:01 info: All services initialized successfully
+2025-10-21 14:16:17 debug: Fetched programs for user
+2025-10-21 14:16:17 warn: Authorization failed
+2025-10-21 14:16:17 warn: Authorization failed
+2025-10-21 14:16:17 warn: Authorization failed
+2025-10-21 14:16:23 info: Retrieved all program templates
+2025-10-21 14:16:23 debug: Fetched programs for user
+2025-10-21 14:16:23 debug: Fetched programs for user
+2025-10-21 14:16:23 debug: Fetched programs for user
+2025-10-21 14:16:27 error: Error updating program status: Invalid status transition from COMPLETED to ACTIVE
+2025-10-21 14:16:59 debug: Fetched programs for user
+2025-10-21 14:16:59 debug: Retrieved next workout
+2025-10-21 14:17:00 debug: Fetched programs for user
+2025-10-21 14:17:00 warn: Authorization failed
+2025-10-21 14:17:00 warn: Authorization failed
+2025-10-21 14:17:00 warn: Authorization failed
+2025-10-21 14:17:16 debug: Fetching user settings
+2025-10-21 14:17:16 info: Creating default settings for user
+2025-10-21 14:17:16 debug: Fetched user settings successfully
+2025-10-21 14:17:18 debug: Authenticating user
+2025-10-21 14:17:18 debug: User authenticated successfully
+2025-10-21 14:17:18 debug: Generating auth token
+2025-10-21 14:17:18 debug: Auth token generated successfully
+2025-10-21 14:17:21 debug: Fetched programs for user
+2025-10-21 14:17:21 debug: Fetched programs for user
+2025-10-21 14:17:21 debug: Calculated volume data
+2025-10-21 14:17:21 debug: Calculated workout frequency data
+2025-10-21 14:17:21 debug: Calculated volume data
+2025-10-21 14:17:21 debug: Retrieved exercise progression data
+2025-10-21 14:17:21 debug: Retrieved exercise progression data
+2025-10-21 14:17:21 debug: Calculated workout frequency data
+2025-10-21 14:17:24 debug: Fetched programs for user
+2025-10-21 14:17:24 debug: Calculated workout frequency data
+2025-10-21 14:17:24 debug: Calculated workout frequency data
+2025-10-21 14:17:24 debug: Calculated volume data
+2025-10-21 14:17:24 debug: Retrieved exercise progression data
+2025-10-21 14:17:24 debug: Calculated volume data
+2025-10-21 14:17:24 debug: Retrieved exercise progression data
+2025-10-21 14:17:24 debug: Calculated workout frequency data
+2025-10-21 14:31:22 info: SIGINT received, closing database connection...
+2025-10-21 14:31:22 info: Database connection closed successfully.

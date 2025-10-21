@@ -291,6 +291,7 @@ async function seedActiveProgram(testUser: any) {
       programType: ProgramType.AUTOMATED,
       startDate: subWeeks(new Date(), WEEKS_OF_DATA),
       totalWorkouts: 2, // 2 workouts in the program (A and B)
+      weeklyFrequency: 3,
     }
   });
 

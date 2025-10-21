@@ -283,13 +283,13 @@ export const statsService = {
 			// Calculate consistency percentage
 			const consistency = this.calculateConsistency(
 				workoutCompletions,
-				programInfo.totalWorkouts
+				programInfo.weeklyFrequency
 			);
 
 			// Calculate weekly streak (≥75% completion)
 			const currentStreak = this.calculateWeeklyStreak(
 				workoutCompletions,
-				programInfo.totalWorkouts,
+				programInfo.weeklyFrequency,
 				0.75  // 75% threshold
 			);
 
@@ -440,42 +440,33 @@ export const statsService = {
 	// Calculate consistency based on weekly completion rate
 	calculateConsistency(
 		completions: Array<{ workout_id: number; completed_at: Date }>,
-		totalWorkoutsInProgram: number
-	): number {
-		if (completions.length === 0 || totalWorkoutsInProgram === 0) {
+		expectedWorkoutsPerWeek: number  // RENAMED parameter
+		): number {
+		if (completions.length === 0 || expectedWorkoutsPerWeek === 0) {
 			return 0;
 		}
 
 		// Group completions by week
-		const weeklyCompletions = new Map<string, Set<number>>();
+		const weeklyCompletions = new Map<string, number>();
 
 		for (const completion of completions) {
 			const weekNumber = getWeekNumber(completion.completed_at);
 			const year = completion.completed_at.getFullYear();
 			const weekKey = `${year}-W${weekNumber}`;
-
-			if (!weeklyCompletions.has(weekKey)) {
-				weeklyCompletions.set(weekKey, new Set());
-			}
-			// Add unique workout_id to this week (duplicates don't count)
-			weeklyCompletions.get(weekKey)!.add(completion.workout_id);
+			weeklyCompletions.set(weekKey, (weeklyCompletions.get(weekKey) || 0) + 1);
 		}
 
 		// Calculate score for each week
 		const weeklyScores: number[] = [];
-		for (const [weekKey, uniqueWorkouts] of weeklyCompletions.entries()) {
-			const weekScore = Math.min(1, uniqueWorkouts.size / totalWorkoutsInProgram);
+		for (const [weekKey, workoutCount] of weeklyCompletions.entries()) {
+			// Cap at 100% - doing more than expected doesn't increase score
+			const weekScore = Math.min(1, workoutCount / expectedWorkoutsPerWeek);
 			weeklyScores.push(weekScore);
 		}
 
 		// Average all weekly scores
-		if (weeklyScores.length === 0) {
-			return 0;
-		}
-
 		const averageScore = weeklyScores.reduce((sum, score) => sum + score, 0) / weeklyScores.length;
 		
-		// Convert to percentage (0-100)
 		return Math.round(averageScore * 100);
 	},
 
@@ -486,10 +477,10 @@ export const statsService = {
 	 */
 	calculateWeeklyStreak(
 		completions: Array<{ workout_id: number; completed_at: Date }>,
-		totalWorkoutsInProgram: number,
+		expectedWorkoutsPerWeek: number,
 		threshold: number = 0.75  // 75% completion threshold
 	): number {
-		if (completions.length === 0 || totalWorkoutsInProgram === 0) {
+		if (completions.length === 0 || expectedWorkoutsPerWeek === 0) {
 			return 0;
 		}
 
@@ -531,7 +522,7 @@ export const statsService = {
 
 		// Count streak from most recent week backwards
 		let streak = 0;
-		const requiredWorkouts = Math.ceil(totalWorkoutsInProgram * threshold);
+		const requiredWorkouts = Math.ceil(expectedWorkoutsPerWeek * threshold);
 
 		for (const week of sortedWeeks) {
 			// Check if this week meets the threshold

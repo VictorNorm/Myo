@@ -110,6 +110,7 @@ model programs {
   status      ProgramStatus @default(PENDING)  // Add status field
   users       users?      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   totalWorkouts        Int      @default(0)
+  weeklyFrequency      Int
 
   workout_progress     workout_progress[]
   workout_completions  workout_completions[]

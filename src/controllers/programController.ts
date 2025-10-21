@@ -60,6 +60,9 @@ export const programValidators = {
 			.optional()
 			.isISO8601()
 			.withMessage("End date must be a valid ISO 8601 date"),
+		body("weeklyFrequency")
+			.isInt({ min: 1, max: 7 })
+			.withMessage("Weekly frequency is required and must be between 1 and 7"),
 	],
 
 	createProgramWithWorkouts: [
@@ -89,6 +92,9 @@ export const programValidators = {
 			.trim()
 			.isLength({ min: 1, max: 255 })
 			.withMessage("Each workout must have a non-empty name (max 255 characters)"),
+		body("weeklyFrequency")
+			.isInt({ min: 1, max: 7 })
+			.withMessage("Weekly frequency is required and must be between 1 and 7"),
 		// Optional nested exercises in workouts
 		body("workouts.*.exercises")
 			.optional()
