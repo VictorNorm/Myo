@@ -6010,3 +6010,42 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-10-23 12:54:10 debug: Calculated volume data
 2025-10-23 13:35:53 debug: Fetching user settings
 2025-10-23 13:35:53 debug: Fetched user settings successfully
+2025-11-05 08:32:50 info: Application starting...
+2025-11-05 08:32:50 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-05 08:32:50 info: Server is running on http://0.0.0.0:3000
+2025-11-05 08:32:50 info: Initializing services...
+2025-11-05 08:32:50 info: Successfully connected to the database
+2025-11-05 08:32:50 info: Exercise cache initialized
+2025-11-05 08:32:50 info: All services initialized successfully
+2025-11-05 08:50:22 debug: Authenticating user
+2025-11-05 08:50:22 debug: User authenticated successfully
+2025-11-05 08:50:22 debug: Generating auth token
+2025-11-05 08:50:22 debug: Auth token generated successfully
+2025-11-05 08:50:24 debug: Fetched programs for user
+2025-11-05 08:50:24 debug: Retrieved next workout
+2025-11-05 08:50:26 debug: Fetched programs for user
+2025-11-05 08:50:26 debug: Calculated workout frequency data
+2025-11-05 08:50:26 debug: Fetched programs for user
+2025-11-05 08:50:26 debug: Calculated volume data
+2025-11-05 08:50:26 debug: Calculated volume data
+2025-11-05 08:50:26 debug: Calculated workout frequency data
+2025-11-05 08:50:26 debug: Retrieved exercise progression data
+2025-11-05 08:50:27 debug: Retrieved exercise progression data
+2025-11-05 08:50:29 debug: Fetched programs for user
+2025-11-05 08:50:29 debug: Retrieved exercise progression data
+2025-11-05 08:50:29 debug: Calculated volume data
+2025-11-05 08:50:29 debug: Retrieved exercise progression data
+2025-11-05 08:50:29 debug: Calculated workout frequency data
+2025-11-05 08:50:29 debug: Calculated volume data
+2025-11-05 08:50:29 debug: Calculated workout frequency data
+2025-11-05 08:50:29 debug: Retrieved exercise progression data
+2025-11-05 08:50:57 info: Retrieved all program templates
+2025-11-05 08:50:57 debug: Fetched programs for user
+2025-11-05 08:50:57 debug: Fetched programs for user
+2025-11-05 08:50:57 debug: Fetched programs for user
+2025-11-05 08:51:01 debug: Fetched programs for user
+2025-11-05 08:51:01 debug: Calculated workout frequency data
+2025-11-05 08:51:01 debug: Retrieved exercise progression data
+2025-11-05 08:51:01 debug: Calculated volume data
+2025-11-05 08:51:56 info: SIGINT received, closing database connection...
+2025-11-05 08:51:56 info: Database connection closed successfully.

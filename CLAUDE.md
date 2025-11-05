@@ -678,4 +678,4 @@ export const userService = new UserService();
 
 ---
 
-**Remember**: The goal is maintainable, scalable, and consistent code. When in doubt, follow existing patterns in similar files (especially StatsScreen.jsx for mobile components).
+**Remember**: The goal is maintainable, scalable, and consistent code.
