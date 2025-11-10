@@ -440,4 +440,170 @@ export const statsRepository = {
 				return undefined;
 		}
 	},
+
+	// Get completed exercises with filters
+	async findCompletedExercisesWithFilters(
+		programId: number,
+		userId: number,
+		filters: {
+			exerciseId?: number;
+			muscleGroupId?: number;
+			startDate?: Date;
+			endDate?: Date;
+			excludeBadDays?: boolean;
+		}
+	): Promise<CompletedExerciseWithDetails[]> {
+		const whereClause: any = {
+			user_id: userId,
+			workout: {
+				program_id: programId,
+			},
+		};
+
+		// Apply exercise filter
+		if (filters.exerciseId) {
+			whereClause.exercise_id = filters.exerciseId;
+		}
+
+		// Apply muscle group filter
+		if (filters.muscleGroupId) {
+			whereClause.exercise = {
+				muscle_groups: {
+					some: {
+						muscle_group_id: filters.muscleGroupId,
+					},
+				},
+			};
+		}
+
+		// Apply date range filters
+		if (filters.startDate || filters.endDate) {
+			whereClause.completedAt = {};
+			if (filters.startDate) {
+				whereClause.completedAt.gte = filters.startDate;
+			}
+			if (filters.endDate) {
+				whereClause.completedAt.lte = filters.endDate;
+			}
+		}
+
+		// Apply bad day filter by joining with workout_completions
+		if (filters.excludeBadDays) {
+			// We need to ensure the completed exercise is not from a bad day workout
+			whereClause.workout = {
+				...whereClause.workout,
+				workout_completions: {
+					some: {
+						user_id: userId,
+						is_bad_day: false,
+					},
+				},
+			};
+		}
+
+		return prisma.completed_exercises.findMany({
+			where: whereClause,
+			include: {
+				exercise: {
+					select: {
+						id: true,
+						name: true,
+						muscle_groups: {
+							select: {
+								muscle_groups: {
+									select: {
+										id: true,
+										name: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			orderBy: {
+				completedAt: "desc",
+			},
+		});
+	},
+
+	// Get workout completions with filters
+	async findWorkoutCompletionsWithFilters(
+		programId: number,
+		userId: number,
+		filters: {
+			startDate?: Date;
+			endDate?: Date;
+			excludeBadDays?: boolean;
+		}
+	): Promise<Array<{
+		id: number;
+		completed_at: Date;
+		workout_id: number;
+		is_bad_day: boolean;
+		workout: {
+			id: number;
+			name: string;
+		};
+	}>> {
+		const whereClause: any = {
+			user_id: userId,
+			program_id: programId,
+		};
+
+		// Apply date range
+		if (filters.startDate || filters.endDate) {
+			whereClause.completed_at = {};
+			if (filters.startDate) {
+				whereClause.completed_at.gte = filters.startDate;
+			}
+			if (filters.endDate) {
+				whereClause.completed_at.lte = filters.endDate;
+			}
+		}
+
+		// Apply bad day filter
+		if (filters.excludeBadDays) {
+			whereClause.is_bad_day = false;
+		}
+
+		return prisma.workout_completions.findMany({
+			where: whereClause,
+			include: {
+				workout: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+			},
+			orderBy: {
+				completed_at: "desc",
+			},
+		});
+	},
+
+	// Get bad day count for metadata
+	async getBadDayCount(
+		programId: number,
+		userId: number,
+		startDate?: Date,
+		endDate?: Date
+	): Promise<number> {
+		const whereClause: any = {
+			user_id: userId,
+			program_id: programId,
+			is_bad_day: true,
+		};
+
+		if (startDate || endDate) {
+			whereClause.completed_at = {};
+			if (startDate) whereClause.completed_at.gte = startDate;
+			if (endDate) whereClause.completed_at.lte = endDate;
+		}
+
+		return prisma.workout_completions.count({
+			where: whereClause,
+		});
+	},
 };

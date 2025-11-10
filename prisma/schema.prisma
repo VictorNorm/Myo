@@ -202,7 +202,9 @@ model workout_completions {
   completed_at      DateTime  @db.Timestamptz(0)
   duration_minutes  Int?
   notes             String?   @db.Text
+  is_bad_day        Boolean   @default(false)
   created_at        DateTime  @default(now()) @db.Timestamptz(0)
+  updated_at        DateTime  @default(now()) @updatedAt @db.Timestamptz(0)
 
   // Relations
   user              users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -212,6 +214,7 @@ model workout_completions {
   // Indexes
   @@index([user_id, program_id, completed_at(sort: Desc)], name: "workout_completions_user_program_date_idx")
   @@index([workout_id], name: "workout_completions_workout_id_idx")
+  @@index([is_bad_day], name: "workout_completions_is_bad_day_idx")
 }
 
 model workout_progress {

@@ -138,7 +138,10 @@ export const workoutService = {
   },
 
   // Complete a full workout with progression calculations
-  completeWorkout: async (exerciseDataArray: ExerciseCompletionData[]): Promise<WorkoutCompletionResult> => {
+  completeWorkout: async (
+    exerciseDataArray: ExerciseCompletionData[],
+    isBadDay: boolean = false
+  ): Promise<WorkoutCompletionResult> => {
     if (!Array.isArray(exerciseDataArray) || exerciseDataArray.length === 0) {
       throw new Error("Invalid exercise data format");
     }
@@ -162,6 +165,7 @@ export const workoutService = {
       programId,
       programType: workout.programs?.programType,
       exerciseCount: exerciseDataArray.length,
+      isBadDay,
       isAutomated,
     });
 
@@ -189,63 +193,83 @@ export const workoutService = {
             completedAt: new Date(),
           });
 
-          // Calculate progression
-          const progressionResult = await workoutService.calculateExerciseProgression(
-            data,
-            exercise,
-            programGoal
-          );
+          // Skip progression calculation on bad days
+          if (!isBadDay) {
+            // Calculate progression
+            const progressionResult = await workoutService.calculateExerciseProgression(
+              data,
+              exercise,
+              programGoal
+            );
 
-          progressionResults.push({
-            exerciseId: data.exerciseId,
-            oldWeight: data.weight,
-            newWeight: progressionResult.newWeight,
-            oldReps: data.reps,
-            newReps: progressionResult.newReps,
-            exerciseName: exercise.name,
-          });
-
-          // Handle progression based on program type
-          if (isAutomated) {
-            // Record progression history
-            await workoutRepository.createProgressionHistory({
-              exercise_id: data.exerciseId,
-              user_id: data.userId,
-              program_id: programId,
+            progressionResults.push({
+              exerciseId: data.exerciseId,
               oldWeight: data.weight,
               newWeight: progressionResult.newWeight,
               oldReps: data.reps,
               newReps: progressionResult.newReps,
-              reason: `Rating-based progression (${data.rating}/5)`,
+              exerciseName: exercise.name,
             });
 
-            // Update exercise baseline
-            await workoutRepository.upsertExerciseBaseline({
-              exercise_id: data.exerciseId,
-              user_id: data.userId,
-              program_id: programId,
-              weight: progressionResult.newWeight,
-              reps: progressionResult.newReps,
-              sets: data.sets,
-            });
-          } else {
-            // For manual programs, only create baselines if they don't exist
-            const existingBaseline = await workoutRepository.findExerciseBaseline(
-              data.exerciseId,
-              data.userId,
-              programId
-            );
-
-            if (!existingBaseline) {
-              await workoutRepository.createExerciseBaseline({
+            // Handle progression based on program type
+            if (isAutomated) {
+              // Record progression history
+              await workoutRepository.createProgressionHistory({
                 exercise_id: data.exerciseId,
                 user_id: data.userId,
                 program_id: programId,
-                sets: data.sets,
-                reps: data.reps,
-                weight: data.weight,
+                oldWeight: data.weight,
+                newWeight: progressionResult.newWeight,
+                oldReps: data.reps,
+                newReps: progressionResult.newReps,
+                reason: `Rating-based progression (${data.rating}/5)`,
               });
+
+              // Update exercise baseline
+              await workoutRepository.upsertExerciseBaseline({
+                exercise_id: data.exerciseId,
+                user_id: data.userId,
+                program_id: programId,
+                weight: progressionResult.newWeight,
+                reps: progressionResult.newReps,
+                sets: data.sets,
+              });
+            } else {
+              // For manual programs, only create baselines if they don't exist
+              const existingBaseline = await workoutRepository.findExerciseBaseline(
+                data.exerciseId,
+                data.userId,
+                programId
+              );
+
+              if (!existingBaseline) {
+                await workoutRepository.createExerciseBaseline({
+                  exercise_id: data.exerciseId,
+                  user_id: data.userId,
+                  program_id: programId,
+                  sets: data.sets,
+                  reps: data.reps,
+                  weight: data.weight,
+                });
+              }
             }
+          } else {
+            logger.debug("Skipping progression calculation for bad day", {
+              exerciseId: data.exerciseId,
+              userId: data.userId,
+              isBadDay: true,
+            });
+
+            // Still record the exercise completion but no progression
+            progressionResults.push({
+              exerciseId: data.exerciseId,
+              oldWeight: data.weight,
+              newWeight: data.weight, // No change
+              oldReps: data.reps,
+              newReps: data.reps, // No change
+              exerciseName: exercise.name,
+              message: "Bad day - no progression calculated",
+            });
           }
 
           return completed;
@@ -268,6 +292,7 @@ export const workoutService = {
           program_id: programId,
           workout_id: workoutId,
           completed_at: new Date(),
+          is_bad_day: isBadDay,
         },
       });
 
@@ -281,6 +306,7 @@ export const workoutService = {
         completedExercises,
         progressionResults,
         programType: workout.programs?.programType || "MANUAL",
+        isBadDay,
       };
     });
   },

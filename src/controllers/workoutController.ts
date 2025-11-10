@@ -10,7 +10,17 @@ interface AuthenticatedRequest extends Request {
 }
 
 interface ExerciseCompletionRequest extends AuthenticatedRequest {
-  body: ExerciseCompletionData[];
+  body: {
+    workoutId: number;
+    exercises: Array<{
+      exerciseId: number;
+      sets: number;
+      reps: number;
+      weight: number;
+      rating: number;
+    }>;
+    isBadDay?: boolean;
+  };
 }
 
 interface ExerciseRatingRequest extends AuthenticatedRequest {
@@ -38,38 +48,31 @@ export const workoutValidators = {
   ],
 
   completeWorkout: [
-    body()
-      .isArray({ min: 1 })
-      .withMessage("Request body must be a non-empty array"),
-    body("*.userId")
-      .isInt({ min: 1 })
-      .withMessage("User ID must be a positive integer"),
-    body("*.workoutId")
+    body("workoutId")
       .isInt({ min: 1 })
       .withMessage("Workout ID must be a positive integer"),
-    body("*.exerciseId")
+    body("exercises")
+      .isArray({ min: 1 })
+      .withMessage("Exercises must be a non-empty array"),
+    body("exercises.*.exerciseId")
       .isInt({ min: 1 })
       .withMessage("Exercise ID must be a positive integer"),
-    body("*.sets")
+    body("exercises.*.sets")
       .isInt({ min: 1, max: 20 })
       .withMessage("Sets must be between 1 and 20"),
-    body("*.reps")
+    body("exercises.*.reps")
       .isInt({ min: 1, max: 100 })
       .withMessage("Reps must be between 1 and 100"),
-    body("*.weight")
+    body("exercises.*.weight")
       .isFloat({ min: 0 })
       .withMessage("Weight must be a non-negative number"),
-    body("*.rating")
+    body("exercises.*.rating")
       .isInt({ min: 1, max: 5 })
       .withMessage("Rating must be between 1 and 5"),
-    body("*.useAdaptiveIncrements")
+    body("isBadDay")
       .optional()
       .isBoolean()
-      .withMessage("useAdaptiveIncrements must be boolean"),
-    body("*.programGoal")
-      .optional()
-      .isIn(["STRENGTH", "HYPERTROPHY"])
-      .withMessage("Program goal must be STRENGTH or HYPERTROPHY"),
+      .withMessage("isBadDay must be true or false"),
   ],
 
   rateExercise: [
@@ -214,53 +217,61 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ 
+          message: "Validation failed",
+          errors: errors.array() 
+        });
       }
 
       if (!req.user) {
         logger.warn("Attempted to complete workout without authentication");
-        return res.status(401).json({ error: "User not authenticated" });
+        return res.status(401).json({ message: "User not authenticated" });
       }
 
-      const exerciseData = req.body;
+      const { workoutId, exercises, isBadDay } = req.body;
+      const userId = req.user.id;
 
-      // Verify all exercises belong to the authenticated user
-      const invalidData = exerciseData.find(data => data.userId !== req.user!.id);
-      if (invalidData) {
-        logger.warn("User attempted to complete workout for different user", {
-          authenticatedUserId: req.user.id,
-          requestedUserId: invalidData.userId,
-        });
-        return res.status(403).json({ error: "Cannot complete workout for another user" });
-      }
+      // Transform exercises to match service interface
+      const exerciseData: ExerciseCompletionData[] = exercises.map(exercise => ({
+        userId,
+        workoutId,
+        exerciseId: exercise.exerciseId,
+        sets: exercise.sets,
+        reps: exercise.reps,
+        weight: exercise.weight,
+        rating: exercise.rating,
+      }));
 
-      const result = await workoutService.completeWorkout(exerciseData);
+      const result = await workoutService.completeWorkout(
+        exerciseData,
+        isBadDay || false // Default to false
+      );
 
       logger.info("Workout completed successfully", {
-        workoutId: exerciseData[0].workoutId,
-        userId: req.user.id,
-        exerciseCount: exerciseData.length,
-        programType: result.programType,
+        workoutId,
+        userId,
+        exerciseCount: exercises.length,
+        isBadDay: isBadDay || false,
       });
 
-      res.status(201).json(result);
+      res.status(200).json({
+        data: result,
+        message: "Workout completed successfully"
+      });
     } catch (error) {
       logger.error(
         `Error completing workout: ${error instanceof Error ? error.message : "Unknown error"}`,
         {
           stack: error instanceof Error ? error.stack : undefined,
           userId: req.user?.id,
-          workoutId: req.body?.[0]?.workoutId,
-          exerciseCount: req.body?.length,
+          workoutId: req.body?.workoutId,
+          exerciseCount: req.body?.exercises?.length,
         }
       );
 
       res.status(500).json({
-        error: "An error occurred while saving the exercise data.",
-        message: error instanceof Error ? error.message : "Unknown error",
-        stack: process.env.NODE_ENV === "development" && error instanceof Error
-          ? error.stack
-          : undefined,
+        message: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error"
       });
     }
   },

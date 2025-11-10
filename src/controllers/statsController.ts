@@ -18,6 +18,26 @@ export const statsValidators = {
 			.optional()
 			.isIn(["week", "month", "program", "all"])
 			.withMessage("Time frame must be one of: week, month, program, all"),
+		query("exerciseId")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Exercise ID must be a positive integer"),
+		query("muscleGroupId")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Muscle group ID must be a positive integer"),
+		query("startDate")
+			.optional()
+			.isISO8601()
+			.withMessage("Start date must be valid ISO 8601 format"),
+		query("endDate")
+			.optional()
+			.isISO8601()
+			.withMessage("End date must be valid ISO 8601 format"),
+		query("excludeBadDays")
+			.optional()
+			.isBoolean()
+			.withMessage("excludeBadDays must be true or false"),
 	],
 
 	getWorkoutProgress: [
@@ -28,6 +48,18 @@ export const statsValidators = {
 			.optional()
 			.isIn(["week", "month", "program", "all"])
 			.withMessage("Time frame must be one of: week, month, program, all"),
+		query("startDate")
+			.optional()
+			.isISO8601()
+			.withMessage("Start date must be valid ISO 8601 format"),
+		query("endDate")
+			.optional()
+			.isISO8601()
+			.withMessage("End date must be valid ISO 8601 format"),
+		query("excludeBadDays")
+			.optional()
+			.isBoolean()
+			.withMessage("excludeBadDays must be true or false"),
 	],
 
 	getProgramStatistics: [
@@ -115,10 +147,19 @@ export const statsController = {
 			const userId = req.user.id;
 			const timeFrame = (req.query.timeFrame as TimeFrameType) || "all";
 
+			const filters = {
+				exerciseId: req.query.exerciseId ? Number(req.query.exerciseId) : undefined,
+				muscleGroupId: req.query.muscleGroupId ? Number(req.query.muscleGroupId) : undefined,
+				startDate: req.query.startDate as string | undefined,
+				endDate: req.query.endDate as string | undefined,
+				excludeBadDays: req.query.excludeBadDays === 'false' ? false : true // Default to true
+			};
+
 			const volumeData = await statsService.getVolumeData(
 				programId,
 				userId,
-				timeFrame
+				timeFrame,
+				filters
 			);
 
 			return res.status(200).json({
@@ -173,10 +214,17 @@ export const statsController = {
 			const userId = req.user.id;
 			const timeFrame = (req.query.timeFrame as TimeFrameType) || "all";
 
+			const filters = {
+				startDate: req.query.startDate as string | undefined,
+				endDate: req.query.endDate as string | undefined,
+				excludeBadDays: req.query.excludeBadDays === 'false' ? false : true // Default to true
+			};
+
 			const frequencyData = await statsService.getWorkoutFrequencyData(
 				programId,
 				userId,
-				timeFrame
+				timeFrame,
+				filters
 			);
 
 			return res.status(200).json({

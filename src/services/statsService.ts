@@ -116,30 +116,73 @@ export const statsService = {
 		}
 	},
 
-	// Calculate volume data and trends
+	// Calculate volume data and trends with filters
 	async getVolumeData(
 		programId: number,
 		userId: number,
-		timeFrame: TimeFrameType
-	): Promise<VolumeData> {
+		timeFrame: TimeFrameType,
+		filters: {
+			exerciseId?: number;
+			muscleGroupId?: number;
+			startDate?: string;
+			endDate?: string;
+			excludeBadDays?: boolean;
+		} = {}
+	): Promise<VolumeData & { badDayCount: number; totalWorkouts: number }> {
 		try {
+			logger.debug('Fetching volume data with filters', {
+				programId,
+				userId,
+				timeFrame,
+				filters
+			});
+
 			// Get program info for date filtering
 			const programInfo = await statsRepository.getProgramInfo(programId);
 			if (!programInfo) {
 				throw new Error("Program not found");
 			}
 
-			// Get date filter based on timeframe
-			const dateFilter = statsRepository.getDateFilterForTimeFrame(
-				programInfo.startDate,
-				timeFrame
-			);
+			// Parse dates if provided
+			const dateFilters: any = {};
+			if (filters.startDate) {
+				dateFilters.startDate = new Date(filters.startDate);
+			}
+			if (filters.endDate) {
+				dateFilters.endDate = new Date(filters.endDate);
+			}
 
-			// Get completed exercises with muscle group details
-			const completedExercises = await statsRepository.getCompletedExercisesWithDetails(
+			// If timeFrame is provided and no custom dates, calculate date range
+			if (!filters.startDate && !filters.endDate) {
+				const dateRange = statsRepository.getDateFilterForTimeFrame(
+					programInfo.startDate,
+					timeFrame
+				);
+				if (dateRange) {
+					dateFilters.startDate = dateRange.startDate;
+					dateFilters.endDate = dateRange.endDate;
+				}
+			}
+
+			// Get filtered completed exercises
+			const completedExercises = await statsRepository.findCompletedExercisesWithFilters(
 				programId,
 				userId,
-				dateFilter
+				{
+					exerciseId: filters.exerciseId ? Number(filters.exerciseId) : undefined,
+					muscleGroupId: filters.muscleGroupId ? Number(filters.muscleGroupId) : undefined,
+					startDate: dateFilters.startDate,
+					endDate: dateFilters.endDate,
+					excludeBadDays: filters.excludeBadDays ?? true // Default to excluding bad days
+				}
+			);
+
+			// Get bad day count for metadata
+			const badDayCount = await statsRepository.getBadDayCount(
+				programId,
+				userId,
+				dateFilters.startDate,
+				dateFilters.endDate
 			);
 
 			// Calculate volume for each completed exercise
@@ -225,6 +268,7 @@ export const statsService = {
 				timeFrame,
 				totalVolume,
 				exerciseCount: completedExercises.length,
+				badDayCount,
 			});
 
 			return {
@@ -233,6 +277,8 @@ export const statsService = {
 				volumeByExercise,
 				weeklyData,
 				totalVolume,
+				badDayCount,
+				totalWorkouts: completedExercises.length + badDayCount,
 			};
 		} catch (error) {
 			logger.error(
@@ -248,30 +294,69 @@ export const statsService = {
 		}
 	},
 
-	// Calculate workout frequency and streak data
+	// Calculate workout frequency and streak data with filters
 	async getWorkoutFrequencyData(
 		programId: number,
 		userId: number,
-		timeFrame: TimeFrameType
-	): Promise<WorkoutFrequencyData> {
+		timeFrame: TimeFrameType,
+		filters: {
+			startDate?: string;
+			endDate?: string;
+			excludeBadDays?: boolean;
+		} = {}
+	): Promise<WorkoutFrequencyData & { badDayCount: number; totalWorkouts: number }> {
 		try {
+			logger.debug('Fetching workout frequency data with filters', {
+				programId,
+				userId,
+				timeFrame,
+				filters
+			});
+
 			// Get program info
 			const programInfo = await statsRepository.getProgramInfo(programId);
 			if (!programInfo) {
 				throw new Error("Program not found");
 			}
 
-			// Get date filter
-			const dateFilter = statsRepository.getDateFilterForTimeFrame(
-				programInfo.startDate,
-				timeFrame
-			);
+			// Parse dates if provided
+			const dateFilters: any = {};
+			if (filters.startDate) {
+				dateFilters.startDate = new Date(filters.startDate);
+			}
+			if (filters.endDate) {
+				dateFilters.endDate = new Date(filters.endDate);
+			}
 
-			// Get workout completions (uses new workout_completions table)
-			const workoutCompletions = await statsRepository.getWorkoutCompletions(
+			// If timeFrame is provided and no custom dates, calculate date range
+			if (!filters.startDate && !filters.endDate) {
+				const dateRange = statsRepository.getDateFilterForTimeFrame(
+					programInfo.startDate,
+					timeFrame
+				);
+				if (dateRange) {
+					dateFilters.startDate = dateRange.startDate;
+					dateFilters.endDate = dateRange.endDate;
+				}
+			}
+
+			// Get workout completions with filters
+			const workoutCompletions = await statsRepository.findWorkoutCompletionsWithFilters(
 				programId,
 				userId,
-				dateFilter
+				{
+					startDate: dateFilters.startDate,
+					endDate: dateFilters.endDate,
+					excludeBadDays: filters.excludeBadDays ?? true
+				}
+			);
+
+			// Get bad day count
+			const badDayCount = await statsRepository.getBadDayCount(
+				programId,
+				userId,
+				dateFilters.startDate,
+				dateFilters.endDate
 			);
 
 			// Calculate weekly frequency (keep existing)
@@ -309,14 +394,17 @@ export const statsService = {
 				currentStreak,
 				avgWorkoutsPerWeek,
 				consistency,
+				badDayCount,
 			});
+			
 			return {
 				currentStreak,
 				longestStreak,
-				totalWorkouts,
+				totalWorkouts: workoutCompletions.length + badDayCount,
 				avgWorkoutsPerWeek,
 				consistency,
 				weeklyFrequency,
+				badDayCount,
 			};
 		} catch (error) {
 			logger.error(
