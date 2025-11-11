@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { exerciseService } from "../services/exerciseService";
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import logger from "../services/logger";
 
 export const exerciseValidators = {
@@ -64,6 +64,11 @@ export const exerciseValidators = {
 		body("supersets").optional().isArray().withMessage("Supersets must be an array"),
 		body("supersets.*.first_exercise_id").optional().isInt({ min: 1 }).withMessage("First exercise ID must be valid"),
 		body("supersets.*.second_exercise_id").optional().isInt({ min: 1 }).withMessage("Second exercise ID must be valid"),
+	],
+	getProgramExercises: [
+		param("programId")
+			.isInt({ min: 1 })
+			.withMessage("Program ID must be a positive integer"),
 	],
 };
 
@@ -162,6 +167,41 @@ export const exerciseController = {
 			res.status(500).json({
 				error: "Failed to delete exercise",
 				details: error instanceof Error ? error.message : "Unknown error",
+			});
+		}
+	},
+
+	getProgramExercises: async (req: Request, res: Response) => {
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				return res.status(400).json({
+					errors: errors.array(),
+					message: "Validation failed"
+				});
+			}
+
+			const programId = Number(req.params.programId);
+
+			const exercises = await exerciseService.getExercisesByProgramId(programId);
+
+			return res.status(200).json({
+				data: exercises,
+				message: "Program exercises fetched successfully"
+			});
+
+		} catch (error) {
+			logger.error(
+				`Error fetching exercises for program: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{
+					stack: error instanceof Error ? error.stack : undefined,
+					programId: req.params.programId,
+					userId: req.user?.id
+				}
+			);
+			return res.status(500).json({
+				error: "Internal server error",
+				message: error instanceof Error ? error.message : "Failed to fetch program exercises"
 			});
 		}
 	},

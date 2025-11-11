@@ -58,6 +58,33 @@ export const exerciseRepository = {
     });
   },
 
+  getExercisesByProgramId: async (programId: number) => {
+    const exercises = await prisma.exercises.findMany({
+      where: {
+        workout_exercises: {
+          some: {
+            workouts: {
+              program_id: programId
+            }
+          }
+        }
+      },
+      include: {
+        muscle_groups: {
+          include: {
+            muscle_groups: true
+          }
+        }
+      },
+      distinct: ['id'],
+      orderBy: {
+        name: 'asc'
+      }
+    });
+    
+    return exercises;
+  },
+
   upsertExercisesToWorkout: async (
     workoutId: number,
     exercises: UpsertExerciseInput[],

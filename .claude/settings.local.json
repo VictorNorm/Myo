@@ -8,7 +8,8 @@
       "Bash(npm install)",
       "Bash(npx prisma migrate dev:*)",
       "Bash(sudo service:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

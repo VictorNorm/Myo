@@ -118,6 +118,33 @@ export const exerciseService = {
 		return exerciseRepository.delete(id);
 	},
 
+	getExercisesByProgramId: async (programId: number) => {
+		try {
+			const exercises = await exerciseRepository.getExercisesByProgramId(programId);
+			
+			// Transform to consistent format
+			return exercises.map(exercise => ({
+				id: exercise.id,
+				name: exercise.name,
+				equipment: exercise.equipment,
+				category: exercise.category,
+				defaultIncrementKg: exercise.defaultIncrementKg ? Number(exercise.defaultIncrementKg) : null,
+				minWeight: exercise.minWeight ? Number(exercise.minWeight) : null,
+				maxWeight: exercise.maxWeight ? Number(exercise.maxWeight) : null,
+				notes: exercise.notes,
+				videoUrl: exercise.videoUrl,
+				createdAt: exercise.createdAt,
+				muscleGroups: exercise.muscle_groups.map(emg => ({
+					id: emg.muscle_groups.id,
+					name: emg.muscle_groups.name
+				}))
+			}));
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			throw new Error(`Failed to fetch program exercises: ${errorMessage}`);
+		}
+	},
+
 	upsertExercisesToWorkout: async (
 		workoutId: number,
 		exercises: UpsertExerciseInput[],

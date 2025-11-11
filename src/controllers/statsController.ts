@@ -16,8 +16,8 @@ export const statsValidators = {
 			.withMessage("Program ID must be a positive integer"),
 		query("timeFrame")
 			.optional()
-			.isIn(["week", "month", "program", "all"])
-			.withMessage("Time frame must be one of: week, month, program, all"),
+			.isIn(["week", "month", "program", "all", "custom"])
+			.withMessage("Time frame must be one of: week, month, program, all, custom"),
 		query("exerciseId")
 			.optional()
 			.isInt({ min: 1 })
@@ -46,8 +46,8 @@ export const statsValidators = {
 			.withMessage("Program ID must be a positive integer"),
 		query("timeFrame")
 			.optional()
-			.isIn(["week", "month", "program", "all"])
-			.withMessage("Time frame must be one of: week, month, program, all"),
+			.isIn(["week", "month", "program", "all", "custom"])
+			.withMessage("Time frame must be one of: week, month, program, all, custom"),
 		query("startDate")
 			.optional()
 			.isISO8601()

@@ -3,6 +3,7 @@ import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
 import { programController, programValidators } from "../controllers/programController";
 import { workoutController, workoutValidators } from "../controllers/workoutController";
+import { exerciseController, exerciseValidators } from "../controllers/exerciseController";
 
 const router = Router();
 
@@ -183,6 +184,18 @@ router.get(
 	authenticateToken,
 	workoutValidators.programWorkouts,
 	workoutController.getProgramWorkouts
+);
+
+/**
+ * V2 alias: GET /api/v2/programs/:programId/exercises
+ * Get all exercises used in a program's workouts
+ */
+router.get(
+	"/api/v2/programs/:programId/exercises",
+	authenticateToken,
+	authorizeMiddleware.programAccess,
+	exerciseValidators.getProgramExercises,
+	exerciseController.getProgramExercises
 );
 
 export default router;

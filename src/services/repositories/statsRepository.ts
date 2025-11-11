@@ -1,5 +1,6 @@
 import { type Prisma } from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
+import type { TimeFrameType } from "../statsService";
 import prisma from "../db";
 
 // Stats interfaces
@@ -408,7 +409,7 @@ export const statsRepository = {
 	// Utility function to get date ranges based on program start
 	getDateFilterForTimeFrame(
 		programStartDate: Date,
-		timeFrame: "week" | "month" | "program" | "all"
+		timeFrame: TimeFrameType
 	): { startDate: Date; endDate: Date } | undefined {
 		const now = new Date();
 		const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());

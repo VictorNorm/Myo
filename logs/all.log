@@ -6259,3 +6259,512 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-11-05 10:31:38 debug: Fetching workout frequency data with filters
 2025-11-05 10:31:38 debug: Calculated volume data
 2025-11-05 10:31:38 debug: Calculated workout frequency data
+2025-11-10 07:01:18 info: Application starting...
+2025-11-10 07:01:18 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-10 07:01:18 info: Server is running on http://0.0.0.0:3000
+2025-11-10 07:01:18 info: Initializing services...
+2025-11-10 07:01:18 info: Successfully connected to the database
+2025-11-10 07:01:18 info: Exercise cache initialized
+2025-11-10 07:01:18 info: All services initialized successfully
+2025-11-10 07:02:35 debug: Fetching user settings
+2025-11-10 07:02:35 debug: Fetched user settings successfully
+2025-11-10 07:02:40 debug: Authenticating user
+2025-11-10 07:02:40 debug: User authenticated successfully
+2025-11-10 07:02:40 debug: Generating auth token
+2025-11-10 07:02:40 debug: Auth token generated successfully
+2025-11-10 07:02:44 debug: Fetched programs for user
+2025-11-10 07:02:44 debug: Fetched programs for user
+2025-11-10 07:02:44 debug: Fetching volume data with filters
+2025-11-10 07:02:44 debug: Fetching workout frequency data with filters
+2025-11-10 07:02:44 debug: Calculated volume data
+2025-11-10 07:02:44 debug: Fetching all muscle groups
+2025-11-10 07:02:44 debug: Successfully fetched muscle groups
+2025-11-10 07:02:44 debug: Calculated workout frequency data
+2025-11-10 07:02:44 debug: Fetching workout frequency data with filters
+2025-11-10 07:02:44 debug: Retrieved exercise progression data
+2025-11-10 07:02:44 debug: Fetching volume data with filters
+2025-11-10 07:02:44 debug: Retrieved exercise progression data
+2025-11-10 07:02:44 debug: Calculated workout frequency data
+2025-11-10 07:02:44 debug: Calculated volume data
+2025-11-10 07:24:19 info: SIGINT received, closing database connection...
+2025-11-10 07:24:19 info: Database connection closed successfully.
+2025-11-10 07:24:22 info: Application starting...
+2025-11-10 07:24:22 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-10 07:24:22 info: Server is running on http://0.0.0.0:3000
+2025-11-10 07:24:22 info: Initializing services...
+2025-11-10 07:24:22 info: Successfully connected to the database
+2025-11-10 07:24:22 info: Exercise cache initialized
+2025-11-10 07:24:22 info: All services initialized successfully
+2025-11-10 07:25:18 info: Retrieved all program templates
+2025-11-10 07:25:18 debug: Fetched programs for user
+2025-11-10 07:25:18 debug: Fetched programs for user
+2025-11-10 07:25:18 debug: Fetched programs for user
+2025-11-10 07:25:21 debug: Fetched programs for user
+2025-11-10 07:25:21 debug: Fetching all muscle groups
+2025-11-10 07:25:21 debug: Successfully fetched muscle groups
+2025-11-10 07:25:21 debug: Fetching volume data with filters
+2025-11-10 07:25:21 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:21 debug: Fetched programs for user
+2025-11-10 07:25:21 debug: Calculated volume data
+2025-11-10 07:25:21 debug: Retrieved exercise progression data
+2025-11-10 07:25:21 debug: Calculated workout frequency data
+2025-11-10 07:25:21 debug: Fetching all muscle groups
+2025-11-10 07:25:21 debug: Successfully fetched muscle groups
+2025-11-10 07:25:21 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:21 debug: Fetching volume data with filters
+2025-11-10 07:25:21 debug: Retrieved exercise progression data
+2025-11-10 07:25:21 debug: Calculated workout frequency data
+2025-11-10 07:25:21 debug: Calculated volume data
+2025-11-10 07:25:21 debug: Fetched programs for user
+2025-11-10 07:25:21 debug: Fetching all muscle groups
+2025-11-10 07:25:21 debug: Successfully fetched muscle groups
+2025-11-10 07:25:22 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:22 debug: Fetching volume data with filters
+2025-11-10 07:25:22 debug: Calculated workout frequency data
+2025-11-10 07:25:22 debug: Retrieved exercise progression data
+2025-11-10 07:25:22 debug: Calculated volume data
+2025-11-10 07:25:22 debug: Fetched programs for user
+2025-11-10 07:25:22 debug: Fetching all muscle groups
+2025-11-10 07:25:22 debug: Successfully fetched muscle groups
+2025-11-10 07:25:23 debug: Fetching volume data with filters
+2025-11-10 07:25:23 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:23 debug: Retrieved exercise progression data
+2025-11-10 07:25:23 debug: Calculated workout frequency data
+2025-11-10 07:25:23 debug: Calculated volume data
+2025-11-10 07:25:23 debug: Fetched programs for user
+2025-11-10 07:25:23 debug: Fetching all muscle groups
+2025-11-10 07:25:23 debug: Successfully fetched muscle groups
+2025-11-10 07:25:23 debug: Fetching volume data with filters
+2025-11-10 07:25:23 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:23 debug: Calculated workout frequency data
+2025-11-10 07:25:23 debug: Calculated volume data
+2025-11-10 07:25:23 debug: Retrieved exercise progression data
+2025-11-10 07:25:23 debug: Fetched programs for user
+2025-11-10 07:25:24 debug: Fetching all muscle groups
+2025-11-10 07:25:24 debug: Successfully fetched muscle groups
+2025-11-10 07:25:24 debug: Fetching volume data with filters
+2025-11-10 07:25:24 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:24 debug: Calculated volume data
+2025-11-10 07:25:24 debug: Retrieved exercise progression data
+2025-11-10 07:25:24 debug: Calculated workout frequency data
+2025-11-10 07:25:24 debug: Fetched programs for user
+2025-11-10 07:25:25 debug: Fetching all muscle groups
+2025-11-10 07:25:25 debug: Successfully fetched muscle groups
+2025-11-10 07:25:25 debug: Fetching volume data with filters
+2025-11-10 07:25:25 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:25 debug: Retrieved exercise progression data
+2025-11-10 07:25:25 debug: Calculated volume data
+2025-11-10 07:25:25 debug: Calculated workout frequency data
+2025-11-10 07:25:25 debug: Fetched programs for user
+2025-11-10 07:25:25 debug: Fetching all muscle groups
+2025-11-10 07:25:25 debug: Successfully fetched muscle groups
+2025-11-10 07:25:25 debug: Fetching volume data with filters
+2025-11-10 07:25:25 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:25 debug: Retrieved exercise progression data
+2025-11-10 07:25:25 debug: Calculated workout frequency data
+2025-11-10 07:25:25 debug: Calculated volume data
+2025-11-10 07:25:25 debug: Fetched programs for user
+2025-11-10 07:25:26 debug: Fetching all muscle groups
+2025-11-10 07:25:26 debug: Successfully fetched muscle groups
+2025-11-10 07:25:26 debug: Retrieved exercise progression data
+2025-11-10 07:25:26 debug: Fetching volume data with filters
+2025-11-10 07:25:26 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:26 debug: Calculated workout frequency data
+2025-11-10 07:25:26 debug: Calculated volume data
+2025-11-10 07:25:26 debug: Fetched programs for user
+2025-11-10 07:25:27 debug: Fetching all muscle groups
+2025-11-10 07:25:27 debug: Successfully fetched muscle groups
+2025-11-10 07:25:27 debug: Fetching volume data with filters
+2025-11-10 07:25:27 debug: Retrieved exercise progression data
+2025-11-10 07:25:27 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:27 debug: Calculated workout frequency data
+2025-11-10 07:25:27 debug: Calculated volume data
+2025-11-10 07:25:27 debug: Fetched programs for user
+2025-11-10 07:25:27 debug: Fetching all muscle groups
+2025-11-10 07:25:27 debug: Successfully fetched muscle groups
+2025-11-10 07:25:27 debug: Fetching volume data with filters
+2025-11-10 07:25:27 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:27 debug: Retrieved exercise progression data
+2025-11-10 07:25:27 debug: Calculated volume data
+2025-11-10 07:25:27 debug: Calculated workout frequency data
+2025-11-10 07:25:27 debug: Fetched programs for user
+2025-11-10 07:25:28 debug: Fetching all muscle groups
+2025-11-10 07:25:28 debug: Successfully fetched muscle groups
+2025-11-10 07:25:28 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:28 debug: Fetching volume data with filters
+2025-11-10 07:25:28 debug: Retrieved exercise progression data
+2025-11-10 07:25:28 debug: Calculated workout frequency data
+2025-11-10 07:25:28 debug: Calculated volume data
+2025-11-10 07:25:28 debug: Fetched programs for user
+2025-11-10 07:25:29 debug: Fetching all muscle groups
+2025-11-10 07:25:29 debug: Successfully fetched muscle groups
+2025-11-10 07:25:29 debug: Fetching volume data with filters
+2025-11-10 07:25:29 debug: Retrieved exercise progression data
+2025-11-10 07:25:29 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:29 debug: Calculated volume data
+2025-11-10 07:25:29 debug: Calculated workout frequency data
+2025-11-10 07:25:29 debug: Fetched programs for user
+2025-11-10 07:25:29 debug: Fetching all muscle groups
+2025-11-10 07:25:29 debug: Successfully fetched muscle groups
+2025-11-10 07:25:30 debug: Fetching volume data with filters
+2025-11-10 07:25:30 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:30 debug: Calculated workout frequency data
+2025-11-10 07:25:30 debug: Calculated volume data
+2025-11-10 07:25:30 debug: Retrieved exercise progression data
+2025-11-10 07:25:30 debug: Fetched programs for user
+2025-11-10 07:25:30 debug: Fetched programs for user
+2025-11-10 07:25:30 debug: Fetching all muscle groups
+2025-11-10 07:25:30 debug: Successfully fetched muscle groups
+2025-11-10 07:25:30 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:30 debug: Fetching volume data with filters
+2025-11-10 07:25:30 debug: Retrieved exercise progression data
+2025-11-10 07:25:30 debug: Calculated workout frequency data
+2025-11-10 07:25:30 debug: Calculated volume data
+2025-11-10 07:25:56 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:56 debug: Calculated workout frequency data
+2025-11-10 07:25:56 debug: Fetching volume data with filters
+2025-11-10 07:25:56 debug: Retrieved exercise progression data
+2025-11-10 07:25:56 debug: Calculated volume data
+2025-11-10 07:25:59 debug: Fetching volume data with filters
+2025-11-10 07:25:59 debug: Fetching workout frequency data with filters
+2025-11-10 07:25:59 debug: Retrieved exercise progression data
+2025-11-10 07:25:59 debug: Calculated volume data
+2025-11-10 07:25:59 debug: Calculated workout frequency data
+2025-11-10 07:26:01 debug: Fetched programs for user
+2025-11-10 07:26:01 debug: Fetching all muscle groups
+2025-11-10 07:26:01 debug: Successfully fetched muscle groups
+2025-11-10 07:26:01 debug: Fetching volume data with filters
+2025-11-10 07:26:01 debug: Fetching workout frequency data with filters
+2025-11-10 07:26:01 debug: Retrieved exercise progression data
+2025-11-10 07:26:01 debug: Calculated workout frequency data
+2025-11-10 07:26:01 debug: Calculated volume data
+2025-11-10 07:31:07 debug: Fetching volume data with filters
+2025-11-10 07:31:07 debug: Fetched programs for user
+2025-11-10 07:31:07 debug: Fetching workout frequency data with filters
+2025-11-10 07:31:07 debug: Calculated volume data
+2025-11-10 07:31:07 debug: Calculated workout frequency data
+2025-11-10 07:31:08 debug: Retrieved exercise progression data
+2025-11-10 07:31:08 debug: Fetching all muscle groups
+2025-11-10 07:31:08 debug: Successfully fetched muscle groups
+2025-11-10 07:31:08 debug: Fetching workout frequency data with filters
+2025-11-10 07:31:08 debug: Fetching volume data with filters
+2025-11-10 07:31:08 debug: Calculated workout frequency data
+2025-11-10 07:31:08 debug: Calculated volume data
+2025-11-10 07:31:08 debug: Retrieved exercise progression data
+2025-11-10 07:31:16 debug: Fetched programs for user
+2025-11-10 07:31:16 debug: Fetching volume data with filters
+2025-11-10 07:31:16 debug: Calculated volume data
+2025-11-10 07:31:16 debug: Fetching workout frequency data with filters
+2025-11-10 07:31:16 debug: Retrieved exercise progression data
+2025-11-10 07:31:16 debug: Calculated workout frequency data
+2025-11-10 07:31:16 debug: Fetching all muscle groups
+2025-11-10 07:31:16 debug: Successfully fetched muscle groups
+2025-11-10 07:31:16 debug: Retrieved exercise progression data
+2025-11-10 07:31:16 debug: Fetching volume data with filters
+2025-11-10 07:31:16 debug: Fetching workout frequency data with filters
+2025-11-10 07:31:16 debug: Calculated workout frequency data
+2025-11-10 07:31:16 debug: Calculated volume data
+2025-11-10 07:32:46 debug: Fetching workout frequency data with filters
+2025-11-10 07:32:46 debug: Fetching volume data with filters
+2025-11-10 07:32:46 debug: Fetched programs for user
+2025-11-10 07:32:46 debug: Calculated workout frequency data
+2025-11-10 07:32:46 debug: Retrieved exercise progression data
+2025-11-10 07:32:46 debug: Calculated volume data
+2025-11-10 07:32:46 debug: Fetching all muscle groups
+2025-11-10 07:32:46 debug: Successfully fetched muscle groups
+2025-11-10 07:32:46 debug: Fetching volume data with filters
+2025-11-10 07:32:46 debug: Fetching workout frequency data with filters
+2025-11-10 07:32:46 debug: Calculated workout frequency data
+2025-11-10 07:32:46 debug: Calculated volume data
+2025-11-10 07:32:46 debug: Retrieved exercise progression data
+2025-11-10 07:32:52 debug: Fetching workout frequency data with filters
+2025-11-10 07:32:52 debug: Fetched programs for user
+2025-11-10 07:32:52 debug: Fetching volume data with filters
+2025-11-10 07:32:52 debug: Calculated workout frequency data
+2025-11-10 07:32:52 debug: Retrieved exercise progression data
+2025-11-10 07:32:52 debug: Calculated volume data
+2025-11-10 07:32:52 debug: Fetching all muscle groups
+2025-11-10 07:32:52 debug: Successfully fetched muscle groups
+2025-11-10 07:32:52 debug: Fetching volume data with filters
+2025-11-10 07:32:52 debug: Fetching workout frequency data with filters
+2025-11-10 07:32:52 debug: Calculated volume data
+2025-11-10 07:32:52 debug: Retrieved exercise progression data
+2025-11-10 07:32:52 debug: Calculated workout frequency data
+2025-11-10 08:21:50 debug: Fetching user settings
+2025-11-10 08:21:50 debug: Fetched user settings successfully
+2025-11-10 08:21:51 debug: Authenticating user
+2025-11-10 08:21:51 debug: User authenticated successfully
+2025-11-10 08:21:51 debug: Generating auth token
+2025-11-10 08:21:51 debug: Auth token generated successfully
+2025-11-10 08:21:54 debug: Fetched programs for user
+2025-11-10 08:21:54 debug: Fetched programs for user
+2025-11-10 08:21:54 debug: Fetching volume data with filters
+2025-11-10 08:21:54 debug: Fetching all muscle groups
+2025-11-10 08:21:54 debug: Retrieved exercise progression data
+2025-11-10 08:21:54 debug: Successfully fetched muscle groups
+2025-11-10 08:21:54 debug: Fetching workout frequency data with filters
+2025-11-10 08:21:54 debug: Calculated volume data
+2025-11-10 08:21:54 debug: Calculated workout frequency data
+2025-11-10 08:21:55 debug: Fetching volume data with filters
+2025-11-10 08:21:55 debug: Fetching workout frequency data with filters
+2025-11-10 08:21:55 debug: Retrieved exercise progression data
+2025-11-10 08:21:55 debug: Calculated workout frequency data
+2025-11-10 08:21:55 debug: Calculated volume data
+2025-11-10 08:21:58 debug: Fetched programs for user
+2025-11-10 08:21:58 debug: Fetching all muscle groups
+2025-11-10 08:21:58 debug: Successfully fetched muscle groups
+2025-11-10 08:21:58 debug: Fetching volume data with filters
+2025-11-10 08:21:58 debug: Fetching workout frequency data with filters
+2025-11-10 08:21:58 debug: Retrieved exercise progression data
+2025-11-10 08:21:58 debug: Calculated workout frequency data
+2025-11-10 08:21:58 debug: Calculated volume data
+2025-11-10 08:23:35 debug: Fetching workout frequency data with filters
+2025-11-10 08:23:35 debug: Fetched programs for user
+2025-11-10 08:23:35 debug: Fetching volume data with filters
+2025-11-10 08:23:35 debug: Fetching workout frequency data with filters
+2025-11-10 08:23:35 debug: Calculated workout frequency data
+2025-11-10 08:23:35 debug: Retrieved exercise progression data
+2025-11-10 08:23:35 debug: Calculated workout frequency data
+2025-11-10 08:23:35 debug: Calculated volume data
+2025-11-10 08:23:35 debug: Fetching all muscle groups
+2025-11-10 08:23:35 debug: Successfully fetched muscle groups
+2025-11-10 08:23:35 debug: Fetching volume data with filters
+2025-11-10 08:23:35 debug: Retrieved exercise progression data
+2025-11-10 08:23:35 debug: Fetching workout frequency data with filters
+2025-11-10 08:23:35 debug: Calculated volume data
+2025-11-10 08:23:35 debug: Calculated workout frequency data
+2025-11-10 08:23:45 debug: Fetching workout frequency data with filters
+2025-11-10 08:23:45 debug: Calculated workout frequency data
+2025-11-10 09:14:49 debug: Fetching workout frequency data with filters
+2025-11-10 09:14:49 debug: Fetched programs for user
+2025-11-10 09:14:49 debug: Calculated workout frequency data
+2025-11-10 09:14:49 debug: Retrieved exercise progression data
+2025-11-10 09:14:49 warn: Slow ownership verification (150ms)
+2025-11-10 09:14:49 debug: Fetching volume data with filters
+2025-11-10 09:14:49 debug: Calculated volume data
+2025-11-10 09:14:49 debug: Fetching all muscle groups
+2025-11-10 09:14:49 debug: Successfully fetched muscle groups
+2025-11-10 09:14:49 debug: Fetching workout frequency data with filters
+2025-11-10 09:14:49 debug: Fetching volume data with filters
+2025-11-10 09:14:49 debug: Calculated workout frequency data
+2025-11-10 09:14:49 debug: Retrieved exercise progression data
+2025-11-10 09:14:49 debug: Calculated volume data
+2025-11-10 09:15:26 debug: Fetching volume data with filters
+2025-11-10 09:15:26 debug: Fetched programs for user
+2025-11-10 09:15:26 debug: Fetching workout frequency data with filters
+2025-11-10 09:15:26 debug: Retrieved exercise progression data
+2025-11-10 09:15:26 debug: Calculated workout frequency data
+2025-11-10 09:15:26 debug: Calculated volume data
+2025-11-10 09:15:27 debug: Fetching all muscle groups
+2025-11-10 09:15:27 debug: Successfully fetched muscle groups
+2025-11-10 09:15:27 debug: Fetching volume data with filters
+2025-11-10 09:15:27 debug: Fetching workout frequency data with filters
+2025-11-10 09:15:27 debug: Retrieved exercise progression data
+2025-11-10 09:15:27 debug: Calculated workout frequency data
+2025-11-10 09:15:27 debug: Calculated volume data
+2025-11-10 09:15:31 debug: Fetching volume data with filters
+2025-11-10 09:15:31 debug: Fetched programs for user
+2025-11-10 09:15:31 debug: Fetching workout frequency data with filters
+2025-11-10 09:15:31 debug: Calculated workout frequency data
+2025-11-10 09:15:31 debug: Retrieved exercise progression data
+2025-11-10 09:15:31 debug: Calculated volume data
+2025-11-10 09:15:31 debug: Fetching all muscle groups
+2025-11-10 09:15:31 debug: Successfully fetched muscle groups
+2025-11-10 09:15:31 debug: Fetching volume data with filters
+2025-11-10 09:15:31 debug: Fetching workout frequency data with filters
+2025-11-10 09:15:31 debug: Retrieved exercise progression data
+2025-11-10 09:15:31 debug: Calculated workout frequency data
+2025-11-10 09:15:31 debug: Calculated volume data
+2025-11-10 09:22:32 debug: Fetching volume data with filters
+2025-11-10 09:22:32 debug: Fetched programs for user
+2025-11-10 09:22:32 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:32 debug: Calculated workout frequency data
+2025-11-10 09:22:32 debug: Calculated volume data
+2025-11-10 09:22:32 debug: Fetching all muscle groups
+2025-11-10 09:22:32 debug: Successfully fetched muscle groups
+2025-11-10 09:22:32 debug: Retrieved exercise progression data
+2025-11-10 09:22:32 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:32 debug: Fetching volume data with filters
+2025-11-10 09:22:32 debug: Calculated workout frequency data
+2025-11-10 09:22:32 debug: Retrieved exercise progression data
+2025-11-10 09:22:32 debug: Calculated volume data
+2025-11-10 09:22:37 debug: Fetched programs for user
+2025-11-10 09:22:37 debug: Fetching volume data with filters
+2025-11-10 09:22:37 debug: Calculated volume data
+2025-11-10 09:22:37 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:37 debug: Calculated workout frequency data
+2025-11-10 09:22:37 debug: Retrieved exercise progression data
+2025-11-10 09:22:37 debug: Fetching all muscle groups
+2025-11-10 09:22:37 debug: Successfully fetched muscle groups
+2025-11-10 09:22:37 debug: Fetching volume data with filters
+2025-11-10 09:22:37 debug: Retrieved exercise progression data
+2025-11-10 09:22:37 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:37 debug: Calculated volume data
+2025-11-10 09:22:37 debug: Calculated workout frequency data
+2025-11-10 09:22:39 debug: Fetched programs for user
+2025-11-10 09:22:39 debug: Retrieved exercise progression data
+2025-11-10 09:22:39 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:39 debug: Calculated workout frequency data
+2025-11-10 09:22:39 debug: Fetching volume data with filters
+2025-11-10 09:22:39 debug: Calculated volume data
+2025-11-10 09:22:39 debug: Fetching all muscle groups
+2025-11-10 09:22:39 debug: Successfully fetched muscle groups
+2025-11-10 09:22:39 debug: Fetching volume data with filters
+2025-11-10 09:22:39 debug: Fetching workout frequency data with filters
+2025-11-10 09:22:39 debug: Calculated volume data
+2025-11-10 09:22:39 debug: Retrieved exercise progression data
+2025-11-10 09:22:39 debug: Calculated workout frequency data
+2025-11-10 09:58:01 debug: Fetching user settings
+2025-11-10 09:58:01 debug: Fetched user settings successfully
+2025-11-10 09:58:03 debug: Authenticating user
+2025-11-10 09:58:03 debug: User authenticated successfully
+2025-11-10 09:58:03 debug: Generating auth token
+2025-11-10 09:58:03 debug: Auth token generated successfully
+2025-11-10 09:58:05 debug: Fetched programs for user
+2025-11-10 09:58:05 debug: Fetched programs for user
+2025-11-10 09:58:05 debug: Fetching workout frequency data with filters
+2025-11-10 09:58:05 debug: Fetching volume data with filters
+2025-11-10 09:58:05 debug: Calculated volume data
+2025-11-10 09:58:05 debug: Fetching all muscle groups
+2025-11-10 09:58:05 debug: Successfully fetched muscle groups
+2025-11-10 09:58:05 debug: Calculated workout frequency data
+2025-11-10 09:58:05 debug: Fetching volume data with filters
+2025-11-10 09:58:05 debug: Fetching workout frequency data with filters
+2025-11-10 09:58:05 debug: Retrieved exercise progression data
+2025-11-10 09:58:05 debug: Retrieved exercise progression data
+2025-11-10 09:58:05 debug: Calculated volume data
+2025-11-10 09:58:05 debug: Calculated workout frequency data
+2025-11-10 09:58:37 debug: Fetched programs for user
+2025-11-10 09:58:37 debug: Retrieved exercise progression data
+2025-11-10 09:58:37 debug: Retrieved exercise progression data
+2025-11-10 09:58:37 debug: Fetching all muscle groups
+2025-11-10 09:58:37 debug: Successfully fetched muscle groups
+2025-11-10 09:58:37 debug: Retrieved exercise progression data
+2025-11-10 10:04:25 debug: Fetched programs for user
+2025-11-10 10:04:25 debug: Retrieved exercise progression data
+2025-11-10 10:04:25 debug: Fetching all muscle groups
+2025-11-10 10:04:25 debug: Successfully fetched muscle groups
+2025-11-10 10:04:25 debug: Retrieved exercise progression data
+2025-11-10 10:04:39 debug: Fetched programs for user
+2025-11-10 10:04:39 debug: Fetching volume data with filters
+2025-11-10 10:04:39 debug: Fetching workout frequency data with filters
+2025-11-10 10:04:39 debug: Calculated workout frequency data
+2025-11-10 10:04:39 debug: Calculated volume data
+2025-11-10 10:04:39 debug: Retrieved exercise progression data
+2025-11-10 10:04:39 debug: Retrieved exercise progression data
+2025-11-10 10:04:39 debug: Fetching all muscle groups
+2025-11-10 10:04:39 debug: Successfully fetched muscle groups
+2025-11-10 10:04:39 debug: Fetching volume data with filters
+2025-11-10 10:04:39 debug: Fetching workout frequency data with filters
+2025-11-10 10:04:39 debug: Retrieved exercise progression data
+2025-11-10 10:04:39 debug: Calculated workout frequency data
+2025-11-10 10:04:39 debug: Calculated volume data
+2025-11-10 10:04:43 debug: Fetched programs for user
+2025-11-10 10:04:43 debug: Fetching volume data with filters
+2025-11-10 10:04:43 debug: Fetching workout frequency data with filters
+2025-11-10 10:04:43 debug: Retrieved exercise progression data
+2025-11-10 10:04:43 debug: Calculated workout frequency data
+2025-11-10 10:04:43 debug: Calculated volume data
+2025-11-10 10:04:43 debug: Fetching all muscle groups
+2025-11-10 10:04:43 debug: Successfully fetched muscle groups
+2025-11-10 10:04:43 debug: Fetching workout frequency data with filters
+2025-11-10 10:04:43 debug: Fetching volume data with filters
+2025-11-10 10:04:43 debug: Retrieved exercise progression data
+2025-11-10 10:04:43 debug: Calculated volume data
+2025-11-10 10:04:43 debug: Calculated workout frequency data
+2025-11-10 10:04:49 debug: Retrieved exercise progression data
+2025-11-10 10:33:05 info: SIGINT received, closing database connection...
+2025-11-10 10:33:05 info: Database connection closed successfully.
+2025-11-10 10:33:07 info: Application starting...
+2025-11-10 10:33:07 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-10 10:33:07 info: Server is running on http://0.0.0.0:3000
+2025-11-10 10:33:07 info: Initializing services...
+2025-11-10 10:33:07 info: Successfully connected to the database
+2025-11-10 10:33:07 info: Exercise cache initialized
+2025-11-10 10:33:07 info: All services initialized successfully
+2025-11-10 10:34:40 info: SIGINT received, closing database connection...
+2025-11-10 10:34:40 info: Database connection closed successfully.
+2025-11-10 12:30:56 info: Application starting...
+2025-11-10 12:30:56 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-10 12:30:56 info: Server is running on http://0.0.0.0:3000
+2025-11-10 12:30:56 info: Initializing services...
+2025-11-10 12:30:56 info: Successfully connected to the database
+2025-11-10 12:30:56 info: Exercise cache initialized
+2025-11-10 12:30:56 info: All services initialized successfully
+2025-11-10 12:30:57 debug: Authenticating user
+2025-11-10 12:30:58 debug: User authenticated successfully
+2025-11-10 12:30:58 debug: Generating auth token
+2025-11-10 12:30:58 debug: Auth token generated successfully
+2025-11-10 12:31:00 debug: Fetched programs for user
+2025-11-10 12:31:00 debug: Fetched programs for user
+2025-11-10 12:31:00 debug: Fetching volume data with filters
+2025-11-10 12:31:00 debug: Fetching workout frequency data with filters
+2025-11-10 12:31:00 debug: Calculated workout frequency data
+2025-11-10 12:31:00 debug: Retrieved exercise progression data
+2025-11-10 12:31:00 debug: Calculated volume data
+2025-11-10 12:31:00 debug: Fetching all muscle groups
+2025-11-10 12:31:00 debug: Successfully fetched muscle groups
+2025-11-10 12:31:00 debug: Fetching volume data with filters
+2025-11-10 12:31:00 debug: Fetching workout frequency data with filters
+2025-11-10 12:31:00 debug: Retrieved exercise progression data
+2025-11-10 12:31:00 debug: Calculated workout frequency data
+2025-11-10 12:31:00 debug: Calculated volume data
+2025-11-10 12:31:02 debug: Authenticating user
+2025-11-10 12:31:02 debug: User authenticated successfully
+2025-11-10 12:31:02 debug: Generating auth token
+2025-11-10 12:31:02 debug: Auth token generated successfully
+2025-11-10 12:31:04 debug: Fetched programs for user
+2025-11-10 12:31:04 debug: Fetching volume data with filters
+2025-11-10 12:31:04 debug: Fetched programs for user
+2025-11-10 12:31:04 debug: Fetching workout frequency data with filters
+2025-11-10 12:31:04 debug: Retrieved exercise progression data
+2025-11-10 12:31:04 debug: Calculated volume data
+2025-11-10 12:31:04 debug: Calculated workout frequency data
+2025-11-10 12:31:04 debug: Fetching all muscle groups
+2025-11-10 12:31:04 debug: Successfully fetched muscle groups
+2025-11-10 12:31:04 debug: Fetching workout frequency data with filters
+2025-11-10 12:31:04 debug: Retrieved exercise progression data
+2025-11-10 12:31:04 debug: Fetching volume data with filters
+2025-11-10 12:31:04 debug: Calculated volume data
+2025-11-10 12:31:04 debug: Calculated workout frequency data
+2025-11-10 12:31:09 debug: Fetching user settings
+2025-11-10 12:31:09 debug: Fetched user settings successfully
+2025-11-10 12:33:27 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:27 debug: Fetched programs for user
+2025-11-10 12:33:27 debug: Calculated workout frequency data
+2025-11-10 12:33:28 debug: Fetching volume data with filters
+2025-11-10 12:33:28 debug: Calculated volume data
+2025-11-10 12:33:28 debug: Retrieved exercise progression data
+2025-11-10 12:33:28 debug: Fetching all muscle groups
+2025-11-10 12:33:28 debug: Successfully fetched muscle groups
+2025-11-10 12:33:28 debug: Retrieved exercise progression data
+2025-11-10 12:33:28 debug: Fetching volume data with filters
+2025-11-10 12:33:28 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:28 debug: Calculated workout frequency data
+2025-11-10 12:33:28 debug: Calculated volume data
+2025-11-10 12:33:33 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:33 debug: Fetching volume data with filters
+2025-11-10 12:33:33 debug: Fetched programs for user
+2025-11-10 12:33:33 debug: Calculated workout frequency data
+2025-11-10 12:33:33 debug: Calculated volume data
+2025-11-10 12:33:33 debug: Retrieved exercise progression data
+2025-11-10 12:33:33 debug: Fetching all muscle groups
+2025-11-10 12:33:33 debug: Successfully fetched muscle groups
+2025-11-10 12:33:33 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:33 debug: Fetching volume data with filters
+2025-11-10 12:33:33 debug: Calculated workout frequency data
+2025-11-10 12:33:33 debug: Retrieved exercise progression data
+2025-11-10 12:33:33 debug: Calculated volume data
+2025-11-10 12:33:39 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:39 debug: Fetching volume data with filters
+2025-11-10 12:33:39 debug: Fetched programs for user
+2025-11-10 12:33:39 debug: Calculated workout frequency data
+2025-11-10 12:33:39 debug: Retrieved exercise progression data
+2025-11-10 12:33:39 debug: Calculated volume data
+2025-11-10 12:33:39 debug: Fetching all muscle groups
+2025-11-10 12:33:39 debug: Successfully fetched muscle groups
+2025-11-10 12:33:39 debug: Fetching volume data with filters
+2025-11-10 12:33:39 debug: Fetching workout frequency data with filters
+2025-11-10 12:33:39 debug: Calculated volume data
+2025-11-10 12:33:39 debug: Calculated workout frequency data
+2025-11-10 12:33:39 debug: Retrieved exercise progression data

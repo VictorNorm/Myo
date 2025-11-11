@@ -73,7 +73,7 @@ const calculateAvgWorkoutsPerWeek = (weeklyFrequency: Array<{workoutCount: numbe
   return Math.round((total / weeklyFrequency.length) * 10) / 10; // Round to 1 decimal
 };
 
-export type TimeFrameType = "week" | "month" | "program" | "all";
+export type TimeFrameType = "week" | "month" | "program" | "all" | "custom";
 
 // Utility functions
 export const getWeekNumber = (date: Date): number => {

@@ -55,6 +55,7 @@ export interface ProgressionResult {
   oldReps: number;
   newReps: number;
   exerciseName: string;
+  message?: string;
 }
 
 export interface WorkoutCompletionResult {
