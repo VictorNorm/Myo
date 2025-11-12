@@ -6768,3 +6768,69 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-11-10 12:33:39 debug: Calculated volume data
 2025-11-10 12:33:39 debug: Calculated workout frequency data
 2025-11-10 12:33:39 debug: Retrieved exercise progression data
+2025-11-11 12:50:30 info: Application starting...
+2025-11-11 12:50:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-11 12:50:30 info: Server is running on http://0.0.0.0:3000
+2025-11-11 12:50:30 info: Initializing services...
+2025-11-11 12:50:30 info: Successfully connected to the database
+2025-11-11 12:50:30 info: Exercise cache initialized
+2025-11-11 12:50:30 info: All services initialized successfully
+2025-11-11 12:51:51 debug: Fetching user settings
+2025-11-11 12:51:51 debug: Fetched user settings successfully
+2025-11-11 12:54:36 debug: Authenticating user
+2025-11-11 12:54:36 debug: User authenticated successfully
+2025-11-11 12:54:36 debug: Generating auth token
+2025-11-11 12:54:36 debug: Auth token generated successfully
+2025-11-11 12:54:39 info: Retrieved all program templates
+2025-11-11 12:54:39 debug: Fetched programs for user
+2025-11-11 12:54:39 debug: Fetched programs for user
+2025-11-11 12:54:39 debug: Fetched programs for user
+2025-11-11 12:54:41 debug: Fetched programs for user
+2025-11-11 12:54:41 debug: Fetching volume data with filters
+2025-11-11 12:54:41 debug: Fetched programs for user
+2025-11-11 12:54:41 debug: Fetching workout frequency data with filters
+2025-11-11 12:54:42 debug: Calculated volume data
+2025-11-11 12:54:42 debug: Calculated workout frequency data
+2025-11-11 12:54:42 debug: Fetching all muscle groups
+2025-11-11 12:54:42 debug: Retrieved exercise progression data
+2025-11-11 12:54:42 debug: Successfully fetched muscle groups
+2025-11-11 12:54:42 debug: Fetching volume data with filters
+2025-11-11 12:54:42 debug: Retrieved exercise progression data
+2025-11-11 12:54:42 debug: Fetching workout frequency data with filters
+2025-11-11 12:54:42 debug: Calculated volume data
+2025-11-11 12:54:42 debug: Calculated workout frequency data
+2025-11-11 12:55:07 debug: Fetching volume data with filters
+2025-11-11 12:55:07 debug: Fetched programs for user
+2025-11-11 12:55:07 debug: Fetching workout frequency data with filters
+2025-11-11 12:55:07 debug: Calculated volume data
+2025-11-11 12:55:07 debug: Calculated workout frequency data
+2025-11-11 12:55:07 debug: Retrieved exercise progression data
+2025-11-11 12:55:07 debug: Fetching all muscle groups
+2025-11-11 12:55:07 debug: Successfully fetched muscle groups
+2025-11-11 12:55:07 debug: Fetching volume data with filters
+2025-11-11 12:55:07 debug: Fetching workout frequency data with filters
+2025-11-11 12:55:07 debug: Calculated workout frequency data
+2025-11-11 12:55:07 debug: Calculated volume data
+2025-11-11 12:55:07 debug: Retrieved exercise progression data
+2025-11-11 12:55:11 debug: Fetched programs for user
+2025-11-11 12:55:11 debug: Fetching workout frequency data with filters
+2025-11-11 12:55:11 debug: Fetching volume data with filters
+2025-11-11 12:55:11 debug: Calculated workout frequency data
+2025-11-11 12:55:11 debug: Retrieved exercise progression data
+2025-11-11 12:55:11 debug: Calculated volume data
+2025-11-11 12:55:11 debug: Fetching all muscle groups
+2025-11-11 12:55:11 debug: Successfully fetched muscle groups
+2025-11-11 12:55:11 debug: Fetching workout frequency data with filters
+2025-11-11 12:55:11 debug: Fetching volume data with filters
+2025-11-11 12:55:11 debug: Retrieved exercise progression data
+2025-11-11 12:55:11 debug: Calculated workout frequency data
+2025-11-11 12:55:11 debug: Calculated volume data
+2025-11-11 14:24:36 info: SIGINT received, closing database connection...
+2025-11-11 14:24:36 info: Database connection closed successfully.
+2025-11-11 14:24:39 info: Application starting...
+2025-11-11 14:24:39 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-11 14:24:39 info: Server is running on http://0.0.0.0:3000
+2025-11-11 14:24:39 info: Initializing services...
+2025-11-11 14:24:39 info: Successfully connected to the database
+2025-11-11 14:24:39 info: Exercise cache initialized
+2025-11-11 14:24:39 info: All services initialized successfully

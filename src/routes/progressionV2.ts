@@ -6,7 +6,6 @@ const router = Router();
 
 // Apply authentication middleware to all progression routes
 router.use("/api/v2/progression", authenticateToken);
-router.use("/workouts", authenticateToken); // Backward compatibility
 
 // V2 Routes
 
@@ -37,21 +36,5 @@ router.get(
 	progressionController.getUserProgressionOverview
 );
 
-// Backward compatibility routes for existing frontend
-// TODO: Remove these once frontend is updated to use V2 paths
-
-// GET /workouts/:workoutId/exercises/:exerciseId/progression - Get progression for specific exercise (backward compatibility)
-router.get(
-	"/workouts/:workoutId/exercises/:exerciseId/progression",
-	progressionValidators.getExerciseProgression,
-	progressionController.getExerciseProgression
-);
-
-// GET /workouts/:workoutId/progression - Get progression for all exercises in workout (backward compatibility)
-router.get(
-	"/workouts/:workoutId/progression",
-	progressionValidators.getWorkoutProgression,
-	progressionController.getWorkoutProgression
-);
 
 export default router;

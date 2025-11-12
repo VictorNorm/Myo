@@ -9,7 +9,8 @@
       "Bash(npx prisma migrate dev:*)",
       "Bash(sudo service:*)",
       "Bash(grep:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []

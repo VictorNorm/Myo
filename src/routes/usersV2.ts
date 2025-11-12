@@ -6,9 +6,6 @@ const router = Router();
 
 // Apply authentication middleware to all user routes
 router.use("/api/v2/users", authenticateToken);
-router.use("/users", authenticateToken); // Backward compatibility
-router.use("/user", authenticateToken); // Backward compatibility
-router.use("/assign-user", authenticateToken); // Backward compatibility
 
 // V2 Routes
 
@@ -38,27 +35,5 @@ router.get(
 	userController.getUsersByTrainer
 );
 
-// Backward compatibility routes for existing frontend
-// TODO: Remove these once frontend is updated to use V2 paths
-
-// GET /users - Get all users (backward compatibility)
-router.get(
-	"/users",
-	userController.getAllUsers
-);
-
-// GET /user/:id - Get user by ID (backward compatibility)
-router.get(
-	"/user/:id",
-	userValidators.getUserById,
-	userController.getUserById
-);
-
-// POST /assign-user - Assign user to trainer (backward compatibility)
-router.post(
-	"/assign-user",
-	userValidators.assignUser,
-	userController.assignUserToTrainer
-);
 
 export default router;

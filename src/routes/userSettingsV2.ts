@@ -6,7 +6,6 @@ const router = Router();
 
 // Apply authentication middleware to all user settings routes
 router.use("/api/v2/user-settings", authenticateToken);
-router.use("/user-settings", authenticateToken); // Backward compatibility
 
 // V2 Routes
 
@@ -35,20 +34,5 @@ router.post(
 	userSettingsController.resetUserSettings
 );
 
-// Backward compatibility routes for existing frontend
-// TODO: Remove these once frontend is updated to use V2 paths
-
-// GET /user-settings - Get user settings (backward compatibility)
-router.get(
-	"/user-settings",
-	userSettingsController.getUserSettings
-);
-
-// PATCH /user-settings - Update user settings (backward compatibility)
-router.patch(
-	"/user-settings",
-	userSettingsValidators.updateSettings,
-	userSettingsController.updateUserSettings
-);
 
 export default router;
