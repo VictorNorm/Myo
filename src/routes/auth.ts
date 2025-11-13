@@ -5,14 +5,9 @@ import signupLimiter from "../middleware/signupLimiter";
 
 const router = Router();
 
-// Public routes
-router.post(
-	"/signup",
-	signupLimiter,
-	authValidators.signup,
-	authController.signup
-);
+// V2 Routes only
 
+// POST /api/v2/signup - Register new user
 router.post(
 	"/api/v2/signup",
 	signupLimiter,
@@ -20,20 +15,16 @@ router.post(
 	authController.signup
 );
 
-router.post(
-	"/login",
-	authValidators.login,
-	authController.login
-);
-
+// POST /api/v2/login - Authenticate user
 router.post(
 	"/api/v2/login",
 	authValidators.login,
 	authController.login
 );
 
+// GET /api/v2/verify-email - Verify email address
 router.get(
-	"/verify-email",
+	"/api/v2/verify-email",
 	authController.verifyEmail
 );
 

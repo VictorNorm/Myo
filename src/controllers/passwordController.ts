@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { passwordService } from "../services/passwordService";
 import logger from "../services/logger";
 
@@ -46,10 +47,7 @@ export const passwordController = {
 					userAgent: req.get("User-Agent"),
 				});
 				
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const { email } = req.body;
@@ -69,25 +67,24 @@ export const passwordController = {
 					ip: req.ip,
 				});
 				
-				return res.status(429).json({
-					error: "Too many requests",
-					message: "Please wait before requesting another password reset"
-				});
+				return res.status(429).json(
+					error('rate_limit_exceeded', "Please wait before requesting another password reset")
+				);
 			}
 
 			// Process the request
 			await passwordService.processForgotPasswordRequest({ email });
 
 			// Always return success for security (prevent email enumeration)
-			return res.status(200).json({
-				message: "If this email is registered with us, you will receive a password reset link shortly"
-			});
+			return res.status(200).json(
+				success(null, "If this email is registered with us, you will receive a password reset link shortly")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error in forgot password controller: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error in forgot password controller: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					email: req.body.email,
 					ip: req.ip,
 					userAgent: req.get("User-Agent"),
@@ -95,10 +92,13 @@ export const passwordController = {
 			);
 
 			// Don't reveal internal errors for security
-			return res.status(500).json({
-				error: "Internal server error",
-				message: "An error occurred while processing your request"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"An error occurred while processing your request"
+					// Don't include details for security
+				)
+			);
 		}
 	},
 
@@ -113,10 +113,7 @@ export const passwordController = {
 					userAgent: req.get("User-Agent"),
 				});
 				
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const { token, newPassword } = req.body;
@@ -133,53 +130,53 @@ export const passwordController = {
 			await passwordService.processPasswordReset({ token, newPassword });
 
 			// Success response
-			return res.status(200).json({
-				message: "Password has been successfully reset"
-			});
+			return res.status(200).json(
+				success(null, "Password has been successfully reset")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error in reset password controller: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error in reset password controller: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					ip: req.ip,
 					userAgent: req.get("User-Agent"),
 				}
 			);
 
 			// Handle specific error types for better user experience
-			if (error instanceof Error) {
+			if (err instanceof Error) {
 				// Token-related errors
-				if (error.message.includes("Invalid or expired reset token") ||
-					error.message.includes("Invalid reset token")) {
-					return res.status(400).json({
-						error: "Invalid token",
-						message: "The password reset link is invalid or has expired. Please request a new one."
-					});
+				if (err.message.includes("Invalid or expired reset token") ||
+					err.message.includes("Invalid reset token")) {
+					return res.status(400).json(
+						error("invalid_token", "The password reset link is invalid or has expired. Please request a new one.")
+					);
 				}
 
 				// Password validation errors
-				if (error.message.includes("Password must")) {
-					return res.status(400).json({
-						error: "Invalid password",
-						message: error.message
-					});
+				if (err.message.includes("Password must")) {
+					return res.status(400).json(
+						error(ErrorCodes.VALIDATION_FAILED, err.message)
+					);
 				}
 
 				// State errors
-				if (error.message.includes("Invalid reset token state")) {
-					return res.status(400).json({
-						error: "Invalid request",
-						message: "Password reset request is in an invalid state. Please start over."
-					});
+				if (err.message.includes("Invalid reset token state")) {
+					return res.status(400).json(
+						error("invalid_state", "Password reset request is in an invalid state. Please start over.")
+					);
 				}
 			}
 
 			// Generic error response
-			return res.status(500).json({
-				error: "Internal server error",
-				message: "An error occurred while resetting your password"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"An error occurred while resetting your password"
+					// Don't include details for security
+				)
+			);
 		}
 	},
 

@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { muscleGroupService } from "../services/muscleGroupService";
 import logger from "../services/logger";
 
@@ -43,20 +44,22 @@ export const muscleGroupController = {
 		try {
 			const muscleGroups = await muscleGroupService.getAllMuscleGroups();
 			
-			res.status(200).json({
-				data: muscleGroups,
-				message: "Muscle groups fetched successfully"
-			});
-		} catch (error) {
+			res.status(200).json(
+				success(muscleGroups, "Muscle groups fetched successfully")
+			);
+		} catch (err) {
 			logger.error("Error in getAllMuscleGroups controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				userId: req.user?.id
 			});
 			
-			res.status(500).json({
-				error: "Failed to fetch muscle groups",
-				details: error instanceof Error ? error.message : "Unknown error"
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to fetch muscle groups",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -64,37 +67,35 @@ export const muscleGroupController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ 
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const id = Number(req.params.id);
 			const muscleGroup = await muscleGroupService.getMuscleGroupById(id);
 
 			if (!muscleGroup) {
-				return res.status(404).json({
-					error: "Muscle group not found",
-					message: `Muscle group with ID ${id} does not exist`
-				});
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, `Muscle group with ID ${id} does not exist`)
+				);
 			}
 
-			res.status(200).json({
-				data: muscleGroup,
-				message: "Muscle group fetched successfully"
-			});
-		} catch (error) {
+			res.status(200).json(
+				success(muscleGroup, "Muscle group fetched successfully")
+			);
+		} catch (err) {
 			logger.error("Error in getMuscleGroupById controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				muscleGroupId: req.params.id,
 				userId: req.user?.id
 			});
 
-			res.status(500).json({
-				error: "Failed to fetch muscle group",
-				details: error instanceof Error ? error.message : "Unknown error"
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to fetch muscle group",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -102,29 +103,28 @@ export const muscleGroupController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ 
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const muscleGroup = await muscleGroupService.createMuscleGroup(req.body);
 
-			res.status(201).json({
-				data: muscleGroup,
-				message: "Muscle group created successfully"
-			});
-		} catch (error) {
+			res.status(201).json(
+				success(muscleGroup, "Muscle group created successfully")
+			);
+		} catch (err) {
 			logger.error("Error in createMuscleGroup controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				requestBody: req.body,
 				userId: req.user?.id
 			});
 
-			res.status(500).json({
-				error: "Failed to create muscle group",
-				details: error instanceof Error ? error.message : "Unknown error"
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to create muscle group",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -132,10 +132,7 @@ export const muscleGroupController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ 
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const id = Number(req.params.id);
@@ -145,18 +142,21 @@ export const muscleGroupController = {
 				data: muscleGroup,
 				message: "Muscle group updated successfully"
 			});
-		} catch (error) {
+		} catch (err) {
 			logger.error("Error in updateMuscleGroup controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				muscleGroupId: req.params.id,
 				requestBody: req.body,
 				userId: req.user?.id
 			});
 
-			res.status(500).json({
-				error: "Failed to update muscle group",
-				details: error instanceof Error ? error.message : "Unknown error"
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to update muscle group",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -164,27 +164,27 @@ export const muscleGroupController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ 
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const id = Number(req.params.id);
 			await muscleGroupService.deleteMuscleGroup(id);
 
 			res.status(204).send();
-		} catch (error) {
+		} catch (err) {
 			logger.error("Error in deleteMuscleGroup controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				muscleGroupId: req.params.id,
 				userId: req.user?.id
 			});
 
-			res.status(500).json({
-				error: "Failed to delete muscle group",
-				details: error instanceof Error ? error.message : "Unknown error"
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to delete muscle group",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	}
 };

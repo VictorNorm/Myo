@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { body, param, query, validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { programService } from "../services/programService";
 import logger from "../services/logger";
 
@@ -164,18 +165,14 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
 				logger.warn("Attempted to fetch programs with no user in request");
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const userId = req.user.id;
@@ -183,21 +180,26 @@ export const programController = {
 
 			const result = await programService.getUserPrograms(userId, status);
 
-			return res.status(200).json(result);
+			return res.status(200).json(
+				success(result, "Programs retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching programs: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching programs: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					userId: req.user?.id,
 					statusFilter: req.query.status,
 				}
 			);
-			return res.status(500).json({ 
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve programs",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -206,10 +208,7 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const userId = Number(req.params.userId);
@@ -217,29 +216,33 @@ export const programController = {
 
 			const programs = await programService.getUserProgramsSimple(userId, status);
 
-			return res.status(200).json({ programs });
+			return res.status(200).json(
+				success({ programs }, "Programs retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching programs for user: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching programs for user: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					userId: req.params.userId,
 					statusFilter: req.query.status,
 				}
 			);
 
-			if (error instanceof Error && error.message.includes("No programs")) {
-				return res.status(404).json({
-					error: "Not found",
-					message: error.message
-				});
+			if (err instanceof Error && err.message.includes("No programs")) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, err.message)
+				);
 			}
 
-			return res.status(500).json({ 
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve programs for user",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -248,17 +251,13 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -268,37 +267,43 @@ export const programController = {
 
 			// Return in old format - spread workout data at top level
 			if (!result.nextWorkout) {
-				return res.status(404).json({ error: "No workouts found for this program" });
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, "No workouts found for this program")
+				);
 			}
 
-			return res.status(200).json({
-				...result.nextWorkout,
-				workout_progress: result.workout_progress,
-				isNewCycle: result.isNewCycle,
-			});
+			return res.status(200).json(
+				success({
+					...result.nextWorkout,
+					workout_progress: result.workout_progress,
+					isNewCycle: result.isNewCycle,
+				}, "Next workout retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching next workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching next workout: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id,
 				}
 			);
 
-			if (error instanceof Error && 
-				(error.message.includes("not found") || error.message.includes("access denied"))) {
-				return res.status(404).json({
-					error: "Not found",
-					message: "Program not found or access denied"
-				});
+			if (err instanceof Error && 
+				(err.message.includes("not found") || err.message.includes("access denied"))) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, "Program not found or access denied")
+				);
 			}
 
-			return res.status(500).json({ 
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve next workout",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -307,17 +312,13 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -373,10 +374,9 @@ export const programController = {
 	getAllPrograms: async (req: Request, res: Response) => {
 		try {
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programs = await programService.getAllPrograms();
@@ -403,17 +403,13 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const userId = req.user.id;
@@ -455,17 +451,13 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const requestingUserId = req.user.id;
@@ -520,17 +512,13 @@ export const programController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);

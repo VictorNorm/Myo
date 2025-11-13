@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { workoutService, type ExerciseCompletionData, type ExerciseRatingData } from "../services/workoutService";
 import type { AuthenticatedUser } from "../../types/types";
 import logger from "../services/logger";
@@ -124,12 +125,14 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user) {
         logger.warn("Attempted to access workouts without authentication");
-        return res.status(401).json({ error: "User not authenticated" });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "Authentication required")
+        );
       }
 
       const programId = Number(req.params.programId);
@@ -147,27 +150,39 @@ export const workoutController = {
         workoutCount: workouts.length,
       });
 
-      res.status(200).json(workouts);
-    } catch (error) {
+      res.status(200).json(
+        success(workouts, "Workouts fetched successfully")
+      );
+    } catch (err) {
       logger.error(
-        `Error fetching program workouts: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error fetching program workouts: ${err instanceof Error ? err.message : "Unknown error"}`,
         {
-          stack: error instanceof Error ? error.stack : undefined,
+          stack: err instanceof Error ? err.stack : undefined,
           programId: req.params.programId,
           userId: req.user?.id,
         }
       );
 
-      if (error instanceof Error) {
-        if (error.message === "Program not found") {
-          return res.status(404).json({ error: error.message });
+      if (err instanceof Error) {
+        if (err.message === "Program not found") {
+          return res.status(404).json(
+            error(ErrorCodes.NOT_FOUND, err.message)
+          );
         }
-        if (error.message === "Not authorized to access this program's workouts") {
-          return res.status(403).json({ error: error.message });
+        if (err.message === "Not authorized to access this program's workouts") {
+          return res.status(403).json(
+            error(ErrorCodes.FORBIDDEN, err.message)
+          );
         }
       }
 
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          "Failed to fetch workouts",
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -176,12 +191,14 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user) {
         logger.warn("Attempted to access workout exercises without authentication");
-        return res.status(401).json({ error: "User not authenticated" });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "Authentication required")
+        );
       }
 
       const workoutId = Number(req.params.workoutId);
@@ -194,21 +211,26 @@ export const workoutController = {
         exerciseCount: exercises.length,
       });
 
-      res.status(200).json(exercises);
-    } catch (error) {
+      res.status(200).json(
+        success(exercises, "Workout exercises fetched successfully")
+      );
+    } catch (err) {
       logger.error(
-        `Error fetching workout exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error fetching workout exercises: ${err instanceof Error ? err.message : "Unknown error"}`,
         {
-          stack: error instanceof Error ? error.stack : undefined,
+          stack: err instanceof Error ? err.stack : undefined,
           workoutId: req.params.workoutId,
           userId: req.user?.id,
         }
       );
 
-      res.status(500).json({
-        error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
+      res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          "Failed to fetch workout exercises",
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -217,15 +239,14 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ 
-          message: "Validation failed",
-          errors: errors.array() 
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user) {
         logger.warn("Attempted to complete workout without authentication");
-        return res.status(401).json({ message: "User not authenticated" });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "Authentication required")
+        );
       }
 
       const { workoutId, exercises, isBadDay } = req.body;
@@ -254,25 +275,41 @@ export const workoutController = {
         isBadDay: isBadDay || false,
       });
 
-      res.status(200).json({
-        data: result,
-        message: "Workout completed successfully"
-      });
-    } catch (error) {
+      res.status(200).json(
+        success(result, "Workout completed successfully")
+      );
+    } catch (err) {
       logger.error(
-        `Error completing workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error completing workout: ${err instanceof Error ? err.message : "Unknown error"}`,
         {
-          stack: error instanceof Error ? error.stack : undefined,
+          stack: err instanceof Error ? err.stack : undefined,
           userId: req.user?.id,
           workoutId: req.body?.workoutId,
           exerciseCount: req.body?.exercises?.length,
         }
       );
 
-      res.status(500).json({
-        message: "Internal server error",
-        details: error instanceof Error ? error.message : "Unknown error"
-      });
+      // Handle specific business logic errors
+      if (err instanceof Error) {
+        if (err.message.includes("not found")) {
+          return res.status(404).json(
+            error(ErrorCodes.NOT_FOUND, err.message)
+          );
+        }
+        if (err.message.includes("already completed")) {
+          return res.status(400).json(
+            error("already_completed", err.message)
+          );
+        }
+      }
+
+      res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          "Failed to complete workout",
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -281,12 +318,14 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user) {
         logger.warn("Unauthorized attempt to rate exercise");
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "Authentication required")
+        );
       }
 
       const userId = typeof req.user.id === "string" 
@@ -308,31 +347,40 @@ export const workoutController = {
 
       const result = await workoutService.rateExercise(userId, exerciseData);
 
-      res.json(result);
-    } catch (error) {
+      res.status(200).json(
+        success(result, "Exercise rated successfully")
+      );
+    } catch (err) {
       logger.error(
-        `Error rating exercise: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error rating exercise: ${err instanceof Error ? err.message : "Unknown error"}`,
         {
-          stack: error instanceof Error ? error.stack : undefined,
+          stack: err instanceof Error ? err.stack : undefined,
           userId: req.user?.id,
           exerciseId: req.body?.exerciseId,
           workoutId: req.body?.workoutId,
         }
       );
 
-      if (error instanceof Error) {
-        if (error.message === "Exercise not found" || error.message === "Workout not found or not associated with a program") {
-          return res.status(404).json({ error: error.message });
+      if (err instanceof Error) {
+        if (err.message === "Exercise not found" || err.message === "Workout not found or not associated with a program") {
+          return res.status(404).json(
+            error(ErrorCodes.NOT_FOUND, err.message)
+          );
         }
-        if (error.message === "Failed to record exercise completion") {
-          return res.status(500).json({ error: error.message });
+        if (err.message === "Failed to record exercise completion") {
+          return res.status(500).json(
+            error(ErrorCodes.INTERNAL_ERROR, err.message)
+          );
         }
       }
 
-      res.status(500).json({
-        error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
+      res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          "Failed to rate exercise",
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -341,12 +389,14 @@ export const workoutController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user) {
         logger.warn("Unauthorized attempt to add workout");
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "Authentication required")
+        );
       }
 
       const { name, programId } = req.body;
@@ -358,31 +408,40 @@ export const workoutController = {
         req.user.role
       );
 
-      res.status(201).json(result);
-    } catch (error) {
+      res.status(201).json(
+        success(result, "Workout created successfully")
+      );
+    } catch (err) {
       logger.error(
-        `Error adding workout: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error adding workout: ${err instanceof Error ? err.message : "Unknown error"}`,
         {
-          stack: error instanceof Error ? error.stack : undefined,
+          stack: err instanceof Error ? err.stack : undefined,
           workoutName: req.body?.name,
           programId: req.body?.programId,
           userId: req.user?.id,
         }
       );
 
-      if (error instanceof Error) {
-        if (error.message === "Program does not exist") {
-          return res.status(404).json({ error: error.message });
+      if (err instanceof Error) {
+        if (err.message === "Program does not exist") {
+          return res.status(404).json(
+            error(ErrorCodes.NOT_FOUND, err.message)
+          );
         }
-        if (error.message === "Not authorized to add workouts to this program") {
-          return res.status(403).json({ error: error.message });
+        if (err.message === "Not authorized to add workouts to this program") {
+          return res.status(403).json(
+            error(ErrorCodes.FORBIDDEN, err.message)
+          );
         }
       }
 
-      res.status(500).json({ 
-        error: "An error occurred while adding the workout.",
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
+      res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          "Failed to create workout",
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 };

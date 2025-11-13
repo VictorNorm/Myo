@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { exerciseService } from "../services/exerciseService";
 import { body, param, validationResult } from "express-validator";
 import logger from "../services/logger";
@@ -76,13 +77,18 @@ export const exerciseController = {
 	getAllExercises: async (req: Request, res: Response) => {
 		try {
 			const exercises = await exerciseService.getAllExercises();
-			res.status(200).json(exercises);
-		} catch (error) {
-			logger.error("Error fetching exercises:", error);
-			res.status(500).json({
-				error: "Failed to fetch exercises",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+			res.status(200).json(
+				success(exercises, "Exercises fetched successfully")
+			);
+		} catch (err) {
+			logger.error("Error fetching exercises:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to fetch exercises",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -91,22 +97,31 @@ export const exerciseController = {
 			const id = Number(req.params.id);
 
 			if (isNaN(id)) {
-				return res.status(400).json({ error: "Invalid exercise ID" });
+				return res.status(400).json(
+					error("invalid_id", "Invalid exercise ID")
+				);
 			}
 
 			const exercise = await exerciseService.getExerciseById(id);
 
 			if (!exercise) {
-				return res.status(404).json({ error: "Exercise not found" });
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, "Exercise not found")
+				);
 			}
 
-			res.status(200).json(exercise);
-		} catch (error) {
-			logger.error("Error fetching exercise:", error);
-			res.status(500).json({
-				error: "Failed to fetch exercise",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+			res.status(200).json(
+				success(exercise, "Exercise fetched successfully")
+			);
+		} catch (err) {
+			logger.error("Error fetching exercise:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to fetch exercise",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -114,17 +129,22 @@ export const exerciseController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ errors: errors.array() });
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const exercise = await exerciseService.createExercise(req.body);
-			res.status(201).json(exercise);
-		} catch (error) {
-			logger.error("Error creating exercise:", error);
-			res.status(500).json({
-				error: "Failed to create exercise",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+			res.status(201).json(
+				success(exercise, "Exercise created successfully")
+			);
+		} catch (err) {
+			logger.error("Error creating exercise:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to create exercise",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -133,22 +153,29 @@ export const exerciseController = {
 			const id = Number(req.params.id);
 
 			if (Number.isNaN(id)) {
-				return res.status(400).json({ error: "Invalid exercise ID" });
+				return res.status(400).json(
+					error("invalid_id", "Invalid exercise ID")
+				);
 			}
 
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ errors: errors.array() });
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const exercise = await exerciseService.updateExercise(id, req.body);
-			res.status(200).json(exercise);
-		} catch (error) {
-			logger.error("Error updating exercise:", error);
-			res.status(500).json({
-				error: "Failed to update exercise",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+			res.status(200).json(
+				success(exercise, "Exercise updated successfully")
+			);
+		} catch (err) {
+			logger.error("Error updating exercise:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to update exercise",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -157,17 +184,22 @@ export const exerciseController = {
 			const id = Number(req.params.id);
 
 			if (isNaN(id)) {
-				return res.status(400).json({ error: "Invalid exercise ID" });
+				return res.status(400).json(
+					error("invalid_id", "Invalid exercise ID")
+				);
 			}
 
 			await exerciseService.deleteExercise(id);
 			res.status(204).send();
-		} catch (error) {
-			logger.error("Error deleting exercise:", error);
-			res.status(500).json({
-				error: "Failed to delete exercise",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+		} catch (err) {
+			logger.error("Error deleting exercise:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to delete exercise",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -175,34 +207,33 @@ export const exerciseController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const programId = Number(req.params.programId);
 
 			const exercises = await exerciseService.getExercisesByProgramId(programId);
 
-			return res.status(200).json({
-				data: exercises,
-				message: "Program exercises fetched successfully"
-			});
+			return res.status(200).json(
+				success(exercises, "Program exercises fetched successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching exercises for program: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching exercises for program: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id
 				}
 			);
-			return res.status(500).json({
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Failed to fetch program exercises"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to fetch program exercises",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -210,7 +241,7 @@ export const exerciseController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({ errors: errors.array() });
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			const { workoutId, exercises, supersets } = req.body;
@@ -221,17 +252,18 @@ export const exerciseController = {
 				supersets
 			);
 
-			res.status(200).json({
-				message: "Exercises and supersets upserted to workout successfully",
-				count: result.length,
-				data: result,
-			});
-		} catch (error) {
-			logger.error("Error upserting exercises to workout:", error);
-			res.status(500).json({
-				error: "Failed to upsert exercises to workout",
-				details: error instanceof Error ? error.message : "Unknown error",
-			});
+			res.status(200).json(
+				success(result, "Exercises updated successfully")
+			);
+		} catch (err) {
+			logger.error("Error upserting exercises to workout:", err);
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to update exercises",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 };

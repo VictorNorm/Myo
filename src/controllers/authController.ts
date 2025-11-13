@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import type { AuthenticatedUser } from "../../types/types";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { authService } from "../services/authService";
 import logger from "../services/logger";
 import passport from "../config/passport";
@@ -52,20 +53,12 @@ export const authController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					message: "Validation failed",
-					errors: errors.array().map(error => error.msg),
-				});
+				return res.status(400).json(
+					validationError(errors.array())
+				);
 			}
 
 			const { firstName, lastName, email, password } = req.body;
-
-			if (!firstName || !lastName || !email || !password) {
-				return res.status(400).json({
-					message: "Validation failed",
-					errors: ["All fields are required"],
-				});
-			}
 
 			const result = await authService.createUserAccount({
 				firstName,
@@ -75,27 +68,28 @@ export const authController = {
 			});
 
 			if (result.success) {
-				res.status(201).json({
-					data: { userId: result.userId },
-					message: result.message,
-				});
+				res.status(201).json(
+					success({ userId: result.userId }, result.message)
+				);
 			} else {
-				res.status(400).json({
-					message: "Registration failed",
-					errors: [result.message],
-				});
+				res.status(400).json(
+					error("registration_failed", result.message)
+				);
 			}
-		} catch (error) {
+		} catch (err) {
 			logger.error("Error in signup controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				email: req.body.email ? `${req.body.email.substring(0, 3)}***` : undefined,
-				stack: error instanceof Error ? error.stack : undefined,
+				stack: err instanceof Error ? err.stack : undefined,
 			});
 
-			res.status(500).json({
-				message: "Internal server error",
-				errors: ["An error occurred while creating the user."],
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"An error occurred while creating the account",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -103,10 +97,9 @@ export const authController = {
 	login: (req: Request, res: Response, next: NextFunction) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.status(400).json({
-				message: "Validation failed",
-				errors: errors.array().map(error => error.msg),
-			});
+			return res.status(400).json(
+				validationError(errors.array())
+			);
 		}
 
 		passport.authenticate("local", (err: Error | null, user: any, info: any) => {
@@ -115,17 +108,15 @@ export const authController = {
 					error: err.message,
 					username: req.body.username ? `${req.body.username.substring(0, 3)}***` : undefined,
 				});
-				return res.status(500).json({
-					message: "Internal server error",
-					errors: ["Authentication service error"],
-				});
+				return res.status(500).json(
+					error(ErrorCodes.INTERNAL_ERROR, "Authentication service error")
+				);
 			}
 
 			if (!user) {
-				return res.status(401).json({
-					message: "Authentication failed",
-					errors: ["Invalid email or password"],
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "Invalid email or password")
+				);
 			}
 
 			try {
@@ -137,25 +128,18 @@ export const authController = {
 					username: user.username,
 				});
 
-				// Check if this is a V2 API endpoint for response format
-				if (req.path.includes('/api/v2/')) {
-					res.status(200).json({
-						data: { token },
-						message: "Login successful",
-					});
-				} else {
-					// Legacy format for backward compatibility
-					res.json({ token });
-				}
+				// REMOVED: Legacy format check - always use standard format
+				res.status(200).json(
+					success({ token }, "Login successful")
+				);
 			} catch (tokenError) {
 				logger.error("Token generation error in login controller", {
 					error: tokenError instanceof Error ? tokenError.message : "Unknown error",
 					userId: user.id,
 				});
-				return res.status(500).json({
-					message: "Internal server error",
-					errors: ["Failed to generate authentication token"],
-				});
+				return res.status(500).json(
+					error(ErrorCodes.INTERNAL_ERROR, "Failed to generate authentication token")
+				);
 			}
 		})(req, res, next);
 	},
@@ -166,80 +150,86 @@ export const authController = {
 			const token = req.query.token;
 
 			if (typeof token !== "string") {
-				return res.status(400).json({
-					message: "Invalid request",
-					errors: ["Verification token is missing or invalid."],
-				});
+				return res.status(400).json(
+					error("invalid_request", "Verification token is missing or invalid")
+				);
 			}
 
 			const result = await authService.verifyEmail(token);
 
 			if (result.success) {
-				res.status(200).json({
-					data: { verified: true },
-					message: result.message,
-				});
+				res.status(200).json(
+					success({ verified: true }, result.message)
+				);
 			} else {
-				res.status(400).json({
-					message: "Verification failed",
-					errors: [result.message],
-				});
+				res.status(400).json(
+					error("verification_failed", result.message)
+				);
 			}
-		} catch (error) {
+		} catch (err) {
 			logger.error("Error in verifyEmail controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				tokenPresent: !!req.query.token,
-				stack: error instanceof Error ? error.stack : undefined,
+				stack: err instanceof Error ? err.stack : undefined,
 			});
 
-			res.status(500).json({
-				message: "Internal server error",
-				errors: ["Server error. Please try again later."],
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"An error occurred during email verification",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
 	// GET /protectedRoute - Test protected route
 	testProtectedRoute: async (req: AuthenticatedRequest, res: Response) => {
 		try {
-			res.status(200).json({
-				data: {
-					message: "You can access protected routes, because you are logged in, like a healthy adult.",
-				},
-				message: "Protected route accessed successfully",
-			});
-		} catch (error) {
+			res.status(200).json(
+				success(
+					{ message: "Access granted" },
+					"Protected route accessed successfully"
+				)
+			);
+		} catch (err) {
 			logger.error("Error in testProtectedRoute controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				userId: req.user?.id,
 			});
 
-			res.status(500).json({
-				message: "Internal server error",
-				errors: ["Failed to access protected route"],
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to access protected route",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
 	// GET /verificationSuccessful - Verification success page
 	verificationSuccessful: async (req: AuthenticatedRequest, res: Response) => {
 		try {
-			res.status(200).json({
-				data: {
-					message: "Your email has been successfully verified, please continue in the app.",
-				},
-				message: "Email verification status retrieved",
-			});
-		} catch (error) {
+			res.status(200).json(
+				success(
+					{ verified: true },
+					"Email verification successful"
+				)
+			);
+		} catch (err) {
 			logger.error("Error in verificationSuccessful controller", {
-				error: error instanceof Error ? error.message : "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 				userId: req.user?.id,
 			});
 
-			res.status(500).json({
-				message: "Internal server error",
-				errors: ["Failed to retrieve verification status"],
-			});
+			res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve verification status",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 };

@@ -3,42 +3,16 @@ import { passwordController, passwordValidators } from "../controllers/passwordC
 
 const router = Router();
 
-/**
- * POST /forgot-password
- * Initiate password reset process by sending reset email
- * - Generates secure reset token with expiration
- * - Sends professional email with reset link
- * - Always returns success to prevent email enumeration
- * - Includes rate limiting and security logging
- */
-router.post(
-	"/forgot-password",
-	passwordValidators.forgotPassword,
-	passwordController.forgotPassword
-);
+// V2 Routes
 
-// V2 alias for forgot-password
+// POST /api/v2/forgot-password - Initiate password reset process
 router.post(
 	"/api/v2/forgot-password",
 	passwordValidators.forgotPassword,
 	passwordController.forgotPassword
 );
 
-/**
- * POST /reset-password
- * Complete password reset using valid token
- * - Validates reset token against database
- * - Enforces strong password requirements
- * - Clears reset token after successful reset
- * - Comprehensive security logging and audit trail
- */
-router.post(
-	"/reset-password",
-	passwordValidators.resetPassword,
-	passwordController.resetPassword
-);
-
-// V2 alias for reset-password
+// POST /api/v2/reset-password - Complete password reset using valid token
 router.post(
 	"/api/v2/reset-password",
 	passwordValidators.resetPassword,

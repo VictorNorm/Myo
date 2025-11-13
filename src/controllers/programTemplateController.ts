@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { programTemplateService } from "../services/programTemplateService";
 import { programTemplateValidators } from "./programTemplateValidators";
 import logger from "../services/logger";
@@ -18,11 +19,7 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       const filters: TemplateFilters = {
@@ -44,22 +41,22 @@ export const programTemplateController = {
         ? await programTemplateService.getTemplatesByFilters(filters)
         : await programTemplateService.getAllTemplates();
 
-      return res.status(200).json({
-        success: true,
-        data: templates,
-        message: 'Templates retrieved successfully'
-      });
-    } catch (error) {
-      logger.error(`Error in getTemplates controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(200).json(
+        success(templates, 'Templates retrieved successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in getTemplates controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         query: req.query
       });
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to retrieve templates'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to retrieve templates',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -68,48 +65,40 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       const templateId = Number(req.params.id);
       const template = await programTemplateService.getTemplateDetails(templateId);
 
-      return res.status(200).json({
-        success: true,
-        data: template,
-        message: 'Template details retrieved successfully'
-      });
-    } catch (error) {
-      logger.error(`Error in getTemplateById controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(200).json(
+        success(template, 'Template details retrieved successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in getTemplateById controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         templateId: req.params.id
       });
 
-      if (error instanceof Error && error.message.includes('not found')) {
-        return res.status(404).json({
-          success: false,
-          error: 'Not found',
-          message: 'Template not found'
-        });
+      if (err instanceof Error && err.message.includes('not found')) {
+        return res.status(404).json(
+          error(ErrorCodes.NOT_FOUND, 'Template not found')
+        );
       }
 
-      if (error instanceof Error && error.message.includes('no longer available')) {
-        return res.status(410).json({
-          success: false,
-          error: 'Gone',
-          message: 'Template is no longer available'
-        });
+      if (err instanceof Error && err.message.includes('no longer available')) {
+        return res.status(410).json(
+          error('gone', 'Template is no longer available')
+        );
       }
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to retrieve template details'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to retrieve template details',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -118,19 +107,13 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user?.id) {
-        return res.status(401).json({
-          success: false,
-          error: "Authentication required",
-          message: "User not authenticated"
-        });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+        );
       }
 
       const templateId = Number(req.params.id);
@@ -146,36 +129,36 @@ export const programTemplateController = {
         programData
       );
 
-      return res.status(201).json(result);
-    } catch (error) {
-      logger.error(`Error in createProgramFromTemplate controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(201).json(
+        success(result, 'Program created from template successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in createProgramFromTemplate controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         templateId: req.params.id,
         userId: req.user?.id,
         programName: req.body.name
       });
 
-      if (error instanceof Error && error.message.includes('not found')) {
-        return res.status(404).json({
-          success: false,
-          error: 'Not found',
-          message: 'Template not found'
-        });
+      if (err instanceof Error && err.message.includes('not found')) {
+        return res.status(404).json(
+          error(ErrorCodes.NOT_FOUND, 'Template not found')
+        );
       }
 
-      if (error instanceof Error && error.message.includes('no longer available')) {
-        return res.status(410).json({
-          success: false,
-          error: 'Gone',
-          message: 'Template is no longer available'
-        });
+      if (err instanceof Error && err.message.includes('no longer available')) {
+        return res.status(410).json(
+          error('gone', 'Template is no longer available')
+        );
       }
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to create program from template'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to create program from template',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -184,28 +167,20 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user?.id) {
-        return res.status(401).json({
-          success: false,
-          error: "Authentication required",
-          message: "User not authenticated"
-        });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+        );
       }
 
       // Check if user is admin
       if (req.user.role !== 'ADMIN') {
-        return res.status(403).json({
-          success: false,
-          error: "Access denied",
-          message: "Admin privileges required"
-        });
+        return res.status(403).json(
+          error(ErrorCodes.FORBIDDEN, "Admin privileges required")
+        );
       }
 
       const adminUserId = req.user.id;
@@ -213,34 +188,32 @@ export const programTemplateController = {
 
       const template = await programTemplateService.createTemplate(adminUserId, templateData);
 
-      return res.status(201).json({
-        success: true,
-        data: template,
-        message: 'Template created successfully'
-      });
-    } catch (error) {
-      logger.error(`Error in createTemplate controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(201).json(
+        success(template, 'Template created successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in createTemplate controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         adminUserId: req.user?.id,
         templateName: req.body.name
       });
 
-      if (error instanceof Error && (
-        error.message.includes('required') || 
-        error.message.includes('must have')
+      if (err instanceof Error && (
+        err.message.includes('required') || 
+        err.message.includes('must have')
       )) {
-        return res.status(400).json({
-          success: false,
-          error: 'Validation error',
-          message: error.message
-        });
+        return res.status(400).json(
+          error(ErrorCodes.VALIDATION_FAILED, err.message)
+        );
       }
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to create template'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to create template',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -249,28 +222,20 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user?.id) {
-        return res.status(401).json({
-          success: false,
-          error: "Authentication required",
-          message: "User not authenticated"
-        });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+        );
       }
 
       // Check if user is admin
       if (req.user.role !== 'ADMIN') {
-        return res.status(403).json({
-          success: false,
-          error: "Access denied",
-          message: "Admin privileges required"
-        });
+        return res.status(403).json(
+          error(ErrorCodes.FORBIDDEN, "Admin privileges required")
+        );
       }
 
       const templateId = Number(req.params.id);
@@ -278,31 +243,29 @@ export const programTemplateController = {
 
       const updatedTemplate = await programTemplateService.updateTemplate(templateId, updateData);
 
-      return res.status(200).json({
-        success: true,
-        data: updatedTemplate,
-        message: 'Template updated successfully'
-      });
-    } catch (error) {
-      logger.error(`Error in updateTemplate controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(200).json(
+        success(updatedTemplate, 'Template updated successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in updateTemplate controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         templateId: req.params.id,
         adminUserId: req.user?.id
       });
 
-      if (error instanceof Error && error.message.includes('not found')) {
-        return res.status(404).json({
-          success: false,
-          error: 'Not found',
-          message: 'Template not found'
-        });
+      if (err instanceof Error && err.message.includes('not found')) {
+        return res.status(404).json(
+          error(ErrorCodes.NOT_FOUND, 'Template not found')
+        );
       }
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to update template'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to update template',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   },
 
@@ -311,58 +274,48 @@ export const programTemplateController = {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-          message: "Validation failed"
-        });
+        return res.status(400).json(validationError(errors.array()));
       }
 
       if (!req.user?.id) {
-        return res.status(401).json({
-          success: false,
-          error: "Authentication required",
-          message: "User not authenticated"
-        });
+        return res.status(401).json(
+          error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+        );
       }
 
       // Check if user is admin
       if (req.user.role !== 'ADMIN') {
-        return res.status(403).json({
-          success: false,
-          error: "Access denied",
-          message: "Admin privileges required"
-        });
+        return res.status(403).json(
+          error(ErrorCodes.FORBIDDEN, "Admin privileges required")
+        );
       }
 
       const templateId = Number(req.params.id);
       const deactivatedTemplate = await programTemplateService.deactivateTemplate(templateId);
 
-      return res.status(200).json({
-        success: true,
-        data: deactivatedTemplate,
-        message: 'Template deactivated successfully'
-      });
-    } catch (error) {
-      logger.error(`Error in deleteTemplate controller: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        stack: error instanceof Error ? error.stack : undefined,
+      return res.status(200).json(
+        success(deactivatedTemplate, 'Template deactivated successfully')
+      );
+    } catch (err) {
+      logger.error(`Error in deleteTemplate controller: ${err instanceof Error ? err.message : 'Unknown error'}`, {
+        stack: err instanceof Error ? err.stack : undefined,
         templateId: req.params.id,
         adminUserId: req.user?.id
       });
 
-      if (error instanceof Error && error.message.includes('not found')) {
-        return res.status(404).json({
-          success: false,
-          error: 'Not found',
-          message: 'Template not found'
-        });
+      if (err instanceof Error && err.message.includes('not found')) {
+        return res.status(404).json(
+          error(ErrorCodes.NOT_FOUND, 'Template not found')
+        );
       }
       
-      return res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: 'Failed to deactivate template'
-      });
+      return res.status(500).json(
+        error(
+          ErrorCodes.INTERNAL_ERROR,
+          'Failed to deactivate template',
+          err instanceof Error ? err.message : undefined
+        )
+      );
     }
   }
 };

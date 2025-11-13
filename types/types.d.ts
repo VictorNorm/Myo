@@ -1,16 +1,23 @@
 import type { Request } from "express";
 
-interface User {
+/**
+ * Authenticated user type attached to requests after JWT verification
+ */
+export interface AuthenticatedUser {
 	id: number;
+	firstname: string;
+	lastname: string;
 	username: string;
-	firstName: string;
-	lastName: string;
 	role: string;
-	// Add other user properties if needed
+	iat?: number;
+	exp?: number;
 }
 
-interface AuthenticatedRequest extends Request {
-	user?: User;
+/**
+ * Extended Express Request type with authenticated user
+ */
+export interface AuthenticatedRequest extends Request {
+	user?: AuthenticatedUser;
 }
 
 declare global {
@@ -19,16 +26,6 @@ declare global {
 			user?: AuthenticatedUser;
 		}
 	}
-}
-
-export interface AuthenticatedUser {
-	id: number;
-	firstName: string;
-	lastName: string;
-	username: string;
-	iat?: number;
-	exp?: number;
-	role: string;
 }
 
 // export type ExperienceLevel = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";

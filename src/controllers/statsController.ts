@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { param, query, validationResult } from "express-validator";
+import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { statsService, type TimeFrameType } from "../services/statsService";
 import logger from "../services/logger";
 
@@ -75,17 +76,13 @@ export const statsController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -96,32 +93,33 @@ export const statsController = {
 				userId
 			);
 
-			return res.status(200).json({
-				data: progressionData,
-				message: "Exercise progression data retrieved successfully"
-			});
+			return res.status(200).json(
+				success(progressionData, "Exercise progression data retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching exercise progression: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching exercise progression: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id,
 				}
 			);
 
-			if (error instanceof Error && error.message.includes("not found")) {
-				return res.status(404).json({
-					error: "Not found",
-					message: error.message
-				});
+			if (err instanceof Error && err.message.includes("not found")) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, err.message)
+				);
 			}
 
-			return res.status(500).json({
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve exercise progression",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -130,17 +128,13 @@ export const statsController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -162,33 +156,34 @@ export const statsController = {
 				filters
 			);
 
-			return res.status(200).json({
-				data: volumeData,
-				message: "Volume data retrieved successfully"
-			});
+			return res.status(200).json(
+				success(volumeData, "Volume data retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching completed exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching completed exercises: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id,
 					timeFrame: req.query.timeFrame,
 				}
 			);
 
-			if (error instanceof Error && error.message.includes("not found")) {
-				return res.status(404).json({
-					error: "Not found",
-					message: error.message
-				});
+			if (err instanceof Error && err.message.includes("not found")) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, err.message)
+				);
 			}
 
-			return res.status(500).json({
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve volume data",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -197,17 +192,13 @@ export const statsController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -227,33 +218,34 @@ export const statsController = {
 				filters
 			);
 
-			return res.status(200).json({
-				data: frequencyData,
-				message: "Workout progress data retrieved successfully"
-			});
+			return res.status(200).json(
+				success(frequencyData, "Workout progress data retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching workout progress: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching workout progress: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id,
 					timeFrame: req.query.timeFrame,
 				}
 			);
 
-			if (error instanceof Error && error.message.includes("not found")) {
-				return res.status(404).json({
-					error: "Not found",
-					message: error.message
-				});
+			if (err instanceof Error && err.message.includes("not found")) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, err.message)
+				);
 			}
 
-			return res.status(500).json({
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve workout progress",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 
@@ -262,17 +254,13 @@ export const statsController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				return res.status(400).json({
-					errors: errors.array(),
-					message: "Validation failed"
-				});
+				return res.status(400).json(validationError(errors.array()));
 			}
 
 			if (!req.user?.id) {
-				return res.status(401).json({
-					error: "Authentication required",
-					message: "User not authenticated"
-				});
+				return res.status(401).json(
+					error(ErrorCodes.UNAUTHORIZED, "User not authenticated")
+				);
 			}
 
 			const programId = Number(req.params.programId);
@@ -283,32 +271,33 @@ export const statsController = {
 				userId
 			);
 
-			return res.status(200).json({
-				data: statisticsData,
-				message: "Program statistics retrieved successfully"
-			});
+			return res.status(200).json(
+				success(statisticsData, "Program statistics retrieved successfully")
+			);
 
-		} catch (error) {
+		} catch (err) {
 			logger.error(
-				`Error fetching program statistics: ${error instanceof Error ? error.message : "Unknown error"}`,
+				`Error fetching program statistics: ${err instanceof Error ? err.message : "Unknown error"}`,
 				{
-					stack: error instanceof Error ? error.stack : undefined,
+					stack: err instanceof Error ? err.stack : undefined,
 					programId: req.params.programId,
 					userId: req.user?.id,
 				}
 			);
 
-			if (error instanceof Error && error.message.includes("not found")) {
-				return res.status(404).json({
-					error: "Not found",
-					message: error.message
-				});
+			if (err instanceof Error && err.message.includes("not found")) {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, err.message)
+				);
 			}
 
-			return res.status(500).json({
-				error: "Internal server error",
-				message: error instanceof Error ? error.message : "Unknown error"
-			});
+			return res.status(500).json(
+				error(
+					ErrorCodes.INTERNAL_ERROR,
+					"Failed to retrieve program statistics",
+					err instanceof Error ? err.message : undefined
+				)
+			);
 		}
 	},
 };

@@ -6834,3 +6834,36 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-11-11 14:24:39 info: Successfully connected to the database
 2025-11-11 14:24:39 info: Exercise cache initialized
 2025-11-11 14:24:39 info: All services initialized successfully
+2025-11-12 07:17:59 info: Application starting...
+2025-11-12 07:17:59 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-12 07:17:59 info: Server is running on http://0.0.0.0:3000
+2025-11-12 07:17:59 info: Initializing services...
+2025-11-12 07:18:00 info: Successfully connected to the database
+2025-11-12 07:18:00 info: Exercise cache initialized
+2025-11-12 07:18:00 info: All services initialized successfully
+2025-11-12 07:20:50 debug: Fetching user settings
+2025-11-12 07:20:50 debug: Fetched user settings successfully
+2025-11-12 07:20:56 debug: Authenticating user
+2025-11-12 07:20:56 debug: User authenticated successfully
+2025-11-12 07:20:56 debug: Generating auth token
+2025-11-12 07:20:56 debug: Auth token generated successfully
+2025-11-12 07:20:59 debug: Fetched programs for user
+2025-11-12 07:20:59 debug: Retrieved next workout
+2025-11-12 07:21:00 info: Retrieved all program templates
+2025-11-12 07:21:00 debug: Fetched programs for user
+2025-11-12 07:21:00 debug: Fetched programs for user
+2025-11-12 07:21:00 debug: Fetched programs for user
+2025-11-12 07:21:05 debug: Fetched programs for user
+2025-11-12 07:21:05 debug: Fetching volume data with filters
+2025-11-12 07:21:05 debug: Fetching workout frequency data with filters
+2025-11-12 07:21:05 debug: Fetched programs for user
+2025-11-12 07:21:05 debug: Calculated volume data
+2025-11-12 07:21:05 debug: Calculated workout frequency data
+2025-11-12 07:21:05 debug: Fetching all muscle groups
+2025-11-12 07:21:05 debug: Successfully fetched muscle groups
+2025-11-12 07:21:05 debug: Retrieved exercise progression data
+2025-11-12 07:21:06 debug: Fetching volume data with filters
+2025-11-12 07:21:06 debug: Fetching workout frequency data with filters
+2025-11-12 07:21:06 debug: Retrieved exercise progression data
+2025-11-12 07:21:06 debug: Calculated volume data
+2025-11-12 07:21:06 debug: Calculated workout frequency data
