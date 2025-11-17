@@ -38,7 +38,7 @@ export const authValidators = {
 	],
 
 	login: [
-		body("username")
+		body("email")
 			.notEmpty()
 			.withMessage("Email is required"),
 		body("password")

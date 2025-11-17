@@ -7,7 +7,7 @@ export function configurePassport() {
 	passport.use(
 		"local",
 		new LocalStrategy(
-			{ usernameField: "username", passwordField: "password" },
+			{ usernameField: "email", passwordField: "password" },
 			async (username, password, done) => {
 				try {
 					const user = await authService.authenticateUser(username, password);
