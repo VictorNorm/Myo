@@ -37,7 +37,10 @@ export const templateController = {
 
 			const templateData = await templateService.getWorkoutTemplate(workoutId, userId);
 
-			return res.status(200).json(templateData);
+			return res.status(200).json({
+				data: templateData,
+				message: "Workout template retrieved successfully"
+			});
 
 		} catch (error) {
 			logger.error(
