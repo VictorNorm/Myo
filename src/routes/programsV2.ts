@@ -7,14 +7,6 @@ import { exerciseController, exerciseValidators } from "../controllers/exerciseC
 
 const router = Router();
 
-
-
-
-
-
-
-
-
 // V2 Route aliases for frontend compatibility
 // These provide /api/v2/ prefixed paths that point to the same handlers
 
