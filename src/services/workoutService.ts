@@ -351,7 +351,7 @@ export const workoutService = {
     // Calculate progression
     const progressionResult = await workoutService.calculateProgressionForExercise(
       exerciseData,
-      exercise.name,
+      exerciseData.exerciseId,
       programGoal,
       userSettings,
       exerciseData.equipment_type
@@ -443,7 +443,8 @@ export const workoutService = {
       rating: data.rating,
       equipment_type: exercise.equipment,
       is_compound: exercise.category === "COMPOUND",
-      exercise_name: exercise.name,
+      exerciseId: exercise.id,
+      // exerciseName: exercise.name
     };
 
     const goal = data.programGoal || programGoal;
@@ -457,7 +458,7 @@ export const workoutService = {
   // Helper: Calculate progression for exercise rating
   calculateProgressionForExercise: async (
     exerciseData: ExerciseRatingData,
-    exerciseName: string,
+    exerciseId: number,
     programGoal: string,
     userSettings: any,
     equipmentType: string
@@ -465,13 +466,13 @@ export const workoutService = {
     const equipmentSettings = workoutService.buildEquipmentSettings(userSettings, exerciseData.useAdaptiveIncrements, equipmentType);
 
     const progressionData: ExerciseData = {
+      exerciseId: exerciseId,
       sets: exerciseData.sets,
       reps: exerciseData.reps,
       weight: exerciseData.weight,
       rating: exerciseData.rating,
       equipment_type: exerciseData.equipment_type as "DUMBBELL" | "BARBELL" | "CABLE" | "MACHINE" | "BODYWEIGHT",
       is_compound: exerciseData.is_compound,
-      exercise_name: exerciseName,
     };
 
     return calculateProgression(
@@ -488,7 +489,7 @@ export const workoutService = {
       dumbbellIncrement: toNumber(userSettings?.dumbbellIncrement, 2.0),
       cableIncrement: toNumber(userSettings?.cableIncrement, 2.5),
       machineIncrement: toNumber(userSettings?.machineIncrement, 5.0),
-      experienceLevel: userSettings?.experienceLevel || "BEGINNER",
+      // experienceLevel: REMOVED - no longer used in v2.0
     };
 
     // If not using adaptive increments, use fixed increment based on equipment
