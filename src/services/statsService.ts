@@ -262,6 +262,11 @@ export const statsService = {
 				0
 			);
 
+			// Count unique workouts (by date)
+			const uniqueWorkoutDates = new Set(
+				completedExercises.map(ex => ex.completedAt.toISOString().split("T")[0])
+			);
+
 			logger.debug("Calculated volume data", {
 				programId,
 				userId,
@@ -278,7 +283,7 @@ export const statsService = {
 				weeklyData,
 				totalVolume,
 				badDayCount,
-				totalWorkouts: completedExercises.length + badDayCount,
+				totalWorkouts: uniqueWorkoutDates.size + badDayCount,
 			};
 		} catch (error) {
 			logger.error(

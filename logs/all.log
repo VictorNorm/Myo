@@ -7893,3 +7893,519 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-11-19 11:40:23 debug: Successfully built workout template
 2025-11-19 11:52:28 info: SIGINT received, closing database connection...
 2025-11-19 11:52:28 info: Database connection closed successfully.
+2025-11-19 11:52:30 info: Application starting...
+2025-11-19 11:52:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-19 11:52:30 info: Server is running on http://0.0.0.0:3000
+2025-11-19 11:52:30 info: Initializing services...
+2025-11-19 11:52:30 info: Successfully connected to the database
+2025-11-19 11:52:30 info: Exercise cache initialized
+2025-11-19 11:52:30 info: All services initialized successfully
+2025-11-19 11:53:42 debug: Fetching user settings
+2025-11-19 11:53:42 debug: Fetched user settings successfully
+2025-11-19 11:53:43 debug: Authenticating user
+2025-11-19 11:53:43 debug: User authenticated successfully
+2025-11-19 11:53:43 debug: Generating auth token
+2025-11-19 11:53:43 debug: Auth token generated successfully
+2025-11-19 11:53:46 debug: Fetched programs for user
+2025-11-19 11:53:46 debug: Retrieved next workout
+2025-11-19 11:53:47 debug: Fetched workouts for program
+2025-11-19 11:53:47 debug: Retrieved next workout
+2025-11-19 11:53:48 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 11:53:48 warn: 🔍 Backend - Total exercises found:
+2025-11-19 11:53:48 warn: 🔍 Backend - First exercise raw:
+2025-11-19 11:53:48 debug: Processing workout template
+2025-11-19 11:53:48 debug: Retrieved exercise baselines for automated program
+2025-11-19 11:53:48 debug: Successfully built workout template
+2025-11-19 11:55:18 info: SIGINT received, closing database connection...
+2025-11-19 11:55:18 info: Database connection closed successfully.
+2025-11-19 11:55:19 info: Application starting...
+2025-11-19 11:55:19 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-19 11:55:19 info: Server is running on http://0.0.0.0:3000
+2025-11-19 11:55:19 info: Initializing services...
+2025-11-19 11:55:20 info: Successfully connected to the database
+2025-11-19 11:55:20 info: Exercise cache initialized
+2025-11-19 11:55:20 info: All services initialized successfully
+2025-11-19 11:56:47 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 11:56:47 warn: 🔍 Backend - Total exercises found:
+2025-11-19 11:56:47 warn: 🔍 Backend - First exercise raw:
+2025-11-19 11:56:47 debug: Processing workout template
+2025-11-19 11:56:47 debug: Retrieved exercise baselines for automated program
+2025-11-19 11:56:47 debug: Successfully built workout template
+2025-11-19 13:19:43 debug: Fetching user settings
+2025-11-19 13:19:43 debug: Fetched user settings successfully
+2025-11-19 13:19:47 debug: Authenticating user
+2025-11-19 13:19:47 debug: User authenticated successfully
+2025-11-19 13:19:47 debug: Generating auth token
+2025-11-19 13:19:47 debug: Auth token generated successfully
+2025-11-19 13:19:50 debug: Fetched programs for user
+2025-11-19 13:19:50 debug: Retrieved next workout
+2025-11-19 13:19:51 debug: Fetched workouts for program
+2025-11-19 13:19:51 debug: Retrieved next workout
+2025-11-19 13:19:52 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 13:19:52 warn: 🔍 Backend - Total exercises found:
+2025-11-19 13:19:52 warn: 🔍 Backend - First exercise raw:
+2025-11-19 13:19:52 debug: Processing workout template
+2025-11-19 13:19:52 debug: Retrieved exercise baselines for automated program
+2025-11-19 13:19:52 debug: Successfully built workout template
+2025-11-19 13:20:22 debug: Processing workout completion
+2025-11-19 13:20:22 debug: Fetched workouts for program
+2025-11-19 13:20:22 debug: Retrieved next workout
+2025-11-19 13:20:22 debug: Recorded workout completion for frequency tracking
+2025-11-19 13:20:22 info: Workout completed successfully
+2025-11-19 13:20:24 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 13:20:24 warn: 🔍 Backend - Total exercises found:
+2025-11-19 13:20:24 warn: 🔍 Backend - First exercise raw:
+2025-11-19 13:20:24 debug: Processing workout template
+2025-11-19 13:20:24 debug: Retrieved exercise baselines for automated program
+2025-11-19 13:20:24 debug: Successfully built workout template
+2025-11-19 13:20:39 debug: Fetched workouts for program
+2025-11-19 13:20:39 debug: Processing workout completion
+2025-11-19 13:20:39 debug: Recorded workout completion for frequency tracking
+2025-11-19 13:20:39 info: Workout completed successfully
+2025-11-19 13:20:39 debug: Retrieved next workout
+2025-11-19 13:20:40 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 13:20:40 warn: 🔍 Backend - Total exercises found:
+2025-11-19 13:20:40 warn: 🔍 Backend - First exercise raw:
+2025-11-19 13:20:40 debug: Processing workout template
+2025-11-19 13:20:40 debug: Retrieved exercise baselines for automated program
+2025-11-19 13:20:40 debug: Successfully built workout template
+2025-11-19 13:44:26 debug: Fetching user settings
+2025-11-19 13:44:26 debug: Fetched user settings successfully
+2025-11-19 13:44:28 debug: Authenticating user
+2025-11-19 13:44:28 debug: User authenticated successfully
+2025-11-19 13:44:28 debug: Generating auth token
+2025-11-19 13:44:28 debug: Auth token generated successfully
+2025-11-19 13:44:33 debug: Fetched programs for user
+2025-11-19 13:44:33 debug: Retrieved next workout
+2025-11-19 13:44:34 debug: Fetched workouts for program
+2025-11-19 13:44:34 debug: Retrieved next workout
+2025-11-19 13:44:35 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 13:44:35 warn: 🔍 Backend - Total exercises found:
+2025-11-19 13:44:35 warn: 🔍 Backend - First exercise raw:
+2025-11-19 13:44:35 debug: Processing workout template
+2025-11-19 13:44:35 debug: Retrieved exercise baselines for automated program
+2025-11-19 13:44:35 debug: Successfully built workout template
+2025-11-19 13:44:46 debug: Fetching user settings
+2025-11-19 13:44:46 debug: Fetched user settings successfully
+2025-11-19 13:44:48 debug: Authenticating user
+2025-11-19 13:44:48 debug: User authenticated successfully
+2025-11-19 13:44:48 debug: Generating auth token
+2025-11-19 13:44:48 debug: Auth token generated successfully
+2025-11-19 13:44:50 debug: Fetched programs for user
+2025-11-19 13:44:50 debug: Retrieved next workout
+2025-11-19 13:44:50 debug: Fetched workouts for program
+2025-11-19 13:44:50 debug: Retrieved next workout
+2025-11-19 13:44:52 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-19 13:44:52 warn: 🔍 Backend - Total exercises found:
+2025-11-19 13:44:52 warn: 🔍 Backend - First exercise raw:
+2025-11-19 13:44:52 debug: Processing workout template
+2025-11-19 13:44:52 debug: Retrieved exercise baselines for automated program
+2025-11-19 13:44:52 debug: Successfully built workout template
+2025-11-20 08:53:22 info: Application starting...
+2025-11-20 08:53:22 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-20 08:53:22 info: Server is running on http://0.0.0.0:3000
+2025-11-20 08:53:22 info: Initializing services...
+2025-11-20 08:53:22 info: Successfully connected to the database
+2025-11-20 08:53:22 info: Exercise cache initialized
+2025-11-20 08:53:22 info: All services initialized successfully
+2025-11-20 08:55:00 debug: Fetching user settings
+2025-11-20 08:55:00 debug: Fetched user settings successfully
+2025-11-20 08:55:19 debug: Authenticating user
+2025-11-20 08:55:19 debug: User authenticated successfully
+2025-11-20 08:55:19 debug: Generating auth token
+2025-11-20 08:55:19 debug: Auth token generated successfully
+2025-11-20 08:55:20 debug: Fetched programs for user
+2025-11-20 08:55:20 debug: Retrieved next workout
+2025-11-20 08:55:21 debug: Fetched workouts for program
+2025-11-20 08:55:21 debug: Retrieved next workout
+2025-11-20 08:55:24 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 08:55:24 warn: 🔍 Backend - Total exercises found:
+2025-11-20 08:55:24 warn: 🔍 Backend - First exercise raw:
+2025-11-20 08:55:24 debug: Processing workout template
+2025-11-20 08:55:24 debug: Retrieved exercise baselines for automated program
+2025-11-20 08:55:24 debug: Successfully built workout template
+2025-11-20 09:13:56 debug: Fetched workouts for program
+2025-11-20 09:13:56 debug: Processing workout completion
+2025-11-20 09:13:56 debug: Retrieved next workout
+2025-11-20 09:13:56 debug: Recorded workout completion for frequency tracking
+2025-11-20 09:13:56 info: Workout completed successfully
+2025-11-20 09:13:58 debug: Fetched programs for user
+2025-11-20 09:13:58 debug: Retrieved next workout
+2025-11-20 09:14:10 debug: Fetched programs for user
+2025-11-20 09:14:10 debug: Retrieved next workout
+2025-11-20 09:14:11 debug: Fetched programs for user
+2025-11-20 09:14:11 debug: Fetched programs for user
+2025-11-20 09:14:11 debug: Fetched programs for user
+2025-11-20 09:14:11 info: Retrieved all program templates
+2025-11-20 09:14:18 debug: Fetched programs for user
+2025-11-20 09:14:20 debug: Fetched programs for user
+2025-11-20 09:14:20 debug: Retrieved exercise progression data
+2025-11-20 09:14:20 debug: Fetched programs for user
+2025-11-20 09:14:20 debug: Fetching volume data with filters
+2025-11-20 09:14:20 debug: Fetching workout frequency data with filters
+2025-11-20 09:14:20 debug: Calculated volume data
+2025-11-20 09:14:20 debug: Calculated workout frequency data
+2025-11-20 09:14:20 debug: Fetching all muscle groups
+2025-11-20 09:14:20 debug: Successfully fetched muscle groups
+2025-11-20 09:14:20 debug: Fetching volume data with filters
+2025-11-20 09:14:20 debug: Retrieved exercise progression data
+2025-11-20 09:14:20 debug: Fetching workout frequency data with filters
+2025-11-20 09:14:20 debug: Calculated volume data
+2025-11-20 09:14:20 debug: Calculated workout frequency data
+2025-11-20 09:14:31 debug: Updating user settings
+2025-11-20 09:14:31 info: User settings updated successfully
+2025-11-20 09:14:42 debug: Updating user settings
+2025-11-20 09:14:42 info: User settings updated successfully
+2025-11-20 09:14:46 debug: Updating user settings
+2025-11-20 09:14:46 info: User settings updated successfully
+2025-11-20 09:14:48 debug: Updating user settings
+2025-11-20 09:14:48 info: User settings updated successfully
+2025-11-20 09:14:51 debug: Updating user settings
+2025-11-20 09:14:51 debug: Updating program progression settings with new experience level
+2025-11-20 09:14:51 debug: Program progression settings updated successfully
+2025-11-20 09:14:51 info: User settings updated successfully
+2025-11-20 09:14:55 debug: Fetched programs for user
+2025-11-20 09:14:55 debug: Retrieved next workout
+2025-11-20 09:14:57 debug: Fetched programs for user
+2025-11-20 09:15:07 debug: Fetched programs for user
+2025-11-20 09:15:36 debug: Fetched programs for user
+2025-11-20 09:15:40 debug: Fetched programs for user
+2025-11-20 09:15:48 debug: Fetched programs for user
+2025-11-20 09:15:52 debug: Fetched programs for user
+2025-11-20 09:16:22 debug: Fetched programs for user
+2025-11-20 09:16:22 debug: Fetching all muscle groups
+2025-11-20 09:16:22 debug: Successfully fetched muscle groups
+2025-11-20 09:16:22 debug: Fetching volume data with filters
+2025-11-20 09:16:22 debug: Calculated volume data
+2025-11-20 09:16:22 debug: Fetching workout frequency data with filters
+2025-11-20 09:16:22 debug: Retrieved exercise progression data
+2025-11-20 09:16:22 debug: Calculated workout frequency data
+2025-11-20 09:16:23 debug: Fetched programs for user
+2025-11-20 09:16:24 debug: Fetched programs for user
+2025-11-20 09:16:24 debug: Retrieved next workout
+2025-11-20 09:16:55 debug: Fetched programs for user
+2025-11-20 09:17:41 debug: Fetched programs for user
+2025-11-20 09:17:41 debug: Fetching all muscle groups
+2025-11-20 09:17:41 debug: Successfully fetched muscle groups
+2025-11-20 09:17:41 debug: Fetching volume data with filters
+2025-11-20 09:17:41 debug: Retrieved exercise progression data
+2025-11-20 09:17:41 debug: Fetching workout frequency data with filters
+2025-11-20 09:17:41 debug: Calculated volume data
+2025-11-20 09:17:41 debug: Calculated workout frequency data
+2025-11-20 10:08:05 debug: Fetching user settings
+2025-11-20 10:08:05 debug: Fetched user settings successfully
+2025-11-20 10:13:16 debug: Fetching user settings
+2025-11-20 10:13:16 debug: Fetched user settings successfully
+2025-11-20 10:13:22 debug: Authenticating user
+2025-11-20 10:13:22 debug: User authenticated successfully
+2025-11-20 10:13:22 debug: Generating auth token
+2025-11-20 10:13:22 debug: Auth token generated successfully
+2025-11-20 10:13:24 debug: Fetched programs for user
+2025-11-20 10:13:24 debug: Retrieved next workout
+2025-11-20 10:13:25 debug: Fetched workouts for program
+2025-11-20 10:13:25 debug: Retrieved next workout
+2025-11-20 10:13:26 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 10:13:26 warn: 🔍 Backend - Total exercises found:
+2025-11-20 10:13:26 warn: 🔍 Backend - First exercise raw:
+2025-11-20 10:13:26 debug: Processing workout template
+2025-11-20 10:13:26 debug: Retrieved exercise baselines for automated program
+2025-11-20 10:13:26 debug: Successfully built workout template
+2025-11-20 10:13:36 debug: Fetched programs for user
+2025-11-20 10:13:36 debug: Retrieved next workout
+2025-11-20 10:13:37 debug: Fetched programs for user
+2025-11-20 10:13:37 debug: Fetched programs for user
+2025-11-20 10:13:37 debug: Fetched programs for user
+2025-11-20 10:13:37 info: Retrieved all program templates
+2025-11-20 10:13:44 debug: Fetched programs for user
+2025-11-20 10:13:45 debug: Fetched programs for user
+2025-11-20 10:13:45 debug: Fetched programs for user
+2025-11-20 10:13:45 debug: Fetching volume data with filters
+2025-11-20 10:13:45 debug: Fetching workout frequency data with filters
+2025-11-20 10:13:45 debug: Calculated volume data
+2025-11-20 10:13:45 debug: Calculated workout frequency data
+2025-11-20 10:13:45 debug: Fetching all muscle groups
+2025-11-20 10:13:45 debug: Successfully fetched muscle groups
+2025-11-20 10:13:45 debug: Retrieved exercise progression data
+2025-11-20 10:13:45 debug: Fetching workout frequency data with filters
+2025-11-20 10:13:45 debug: Fetching volume data with filters
+2025-11-20 10:13:45 debug: Calculated workout frequency data
+2025-11-20 10:13:45 debug: Calculated volume data
+2025-11-20 10:13:45 debug: Retrieved exercise progression data
+2025-11-20 10:15:10 debug: Fetching user settings
+2025-11-20 10:15:10 debug: Fetched user settings successfully
+2025-11-20 10:15:12 debug: Authenticating user
+2025-11-20 10:15:12 debug: User authenticated successfully
+2025-11-20 10:15:12 debug: Generating auth token
+2025-11-20 10:15:12 debug: Auth token generated successfully
+2025-11-20 10:15:15 debug: Fetched programs for user
+2025-11-20 10:15:16 debug: Retrieved next workout
+2025-11-20 10:15:17 debug: Fetched workouts for program
+2025-11-20 10:15:18 debug: Retrieved next workout
+2025-11-20 10:15:18 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 10:15:18 warn: 🔍 Backend - Total exercises found:
+2025-11-20 10:15:18 warn: 🔍 Backend - First exercise raw:
+2025-11-20 10:15:18 debug: Processing workout template
+2025-11-20 10:15:18 debug: Retrieved exercise baselines for automated program
+2025-11-20 10:15:18 debug: Successfully built workout template
+2025-11-20 10:25:43 debug: Fetching user settings
+2025-11-20 10:25:43 debug: Fetched user settings successfully
+2025-11-20 10:26:16 debug: Fetching user settings
+2025-11-20 10:26:16 debug: Fetched user settings successfully
+2025-11-20 10:26:20 debug: Authenticating user
+2025-11-20 10:26:20 debug: User authenticated successfully
+2025-11-20 10:26:20 debug: Generating auth token
+2025-11-20 10:26:20 debug: Auth token generated successfully
+2025-11-20 10:26:22 debug: Fetched programs for user
+2025-11-20 10:26:22 debug: Retrieved next workout
+2025-11-20 10:26:23 debug: Fetched workouts for program
+2025-11-20 10:26:23 debug: Retrieved next workout
+2025-11-20 10:26:24 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 10:26:24 warn: 🔍 Backend - Total exercises found:
+2025-11-20 10:26:24 warn: 🔍 Backend - First exercise raw:
+2025-11-20 10:26:24 debug: Processing workout template
+2025-11-20 10:26:24 debug: Retrieved exercise baselines for automated program
+2025-11-20 10:26:24 debug: Successfully built workout template
+2025-11-20 10:31:16 debug: Fetching user settings
+2025-11-20 10:31:16 debug: Fetched user settings successfully
+2025-11-20 10:31:20 debug: Authenticating user
+2025-11-20 10:31:20 debug: User authenticated successfully
+2025-11-20 10:31:20 debug: Generating auth token
+2025-11-20 10:31:20 debug: Auth token generated successfully
+2025-11-20 10:31:21 debug: Fetched programs for user
+2025-11-20 10:31:21 debug: Retrieved next workout
+2025-11-20 10:31:22 debug: Fetched workouts for program
+2025-11-20 10:31:22 debug: Retrieved next workout
+2025-11-20 10:31:23 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 10:31:23 warn: 🔍 Backend - Total exercises found:
+2025-11-20 10:31:23 warn: 🔍 Backend - First exercise raw:
+2025-11-20 10:31:23 debug: Processing workout template
+2025-11-20 10:31:23 debug: Retrieved exercise baselines for automated program
+2025-11-20 10:31:23 debug: Successfully built workout template
+2025-11-20 10:36:07 debug: Fetching user settings
+2025-11-20 10:36:07 debug: Fetched user settings successfully
+2025-11-20 10:36:09 debug: Authenticating user
+2025-11-20 10:36:09 debug: User authenticated successfully
+2025-11-20 10:36:09 debug: Generating auth token
+2025-11-20 10:36:09 debug: Auth token generated successfully
+2025-11-20 10:36:10 debug: Fetched programs for user
+2025-11-20 10:36:10 debug: Retrieved next workout
+2025-11-20 10:36:11 debug: Fetched workouts for program
+2025-11-20 10:36:11 debug: Retrieved next workout
+2025-11-20 10:36:12 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 10:36:12 warn: 🔍 Backend - Total exercises found:
+2025-11-20 10:36:12 warn: 🔍 Backend - First exercise raw:
+2025-11-20 10:36:12 debug: Processing workout template
+2025-11-20 10:36:12 debug: Retrieved exercise baselines for automated program
+2025-11-20 10:36:12 debug: Successfully built workout template
+2025-11-20 10:36:49 debug: Fetched programs for user
+2025-11-20 10:36:49 debug: Retrieved next workout
+2025-11-20 10:36:50 debug: Fetched programs for user
+2025-11-20 10:36:50 debug: Fetched programs for user
+2025-11-20 10:36:50 debug: Fetched programs for user
+2025-11-20 10:36:50 info: Retrieved all program templates
+2025-11-20 10:36:58 debug: Fetched programs for user
+2025-11-20 10:36:58 debug: Fetched programs for user
+2025-11-20 10:36:58 debug: Fetching volume data with filters
+2025-11-20 10:36:58 debug: Fetching workout frequency data with filters
+2025-11-20 10:36:58 debug: Calculated volume data
+2025-11-20 10:36:58 debug: Fetching all muscle groups
+2025-11-20 10:36:58 debug: Successfully fetched muscle groups
+2025-11-20 10:36:58 debug: Retrieved exercise progression data
+2025-11-20 10:36:58 debug: Calculated workout frequency data
+2025-11-20 10:36:58 debug: Fetching workout frequency data with filters
+2025-11-20 10:36:58 debug: Fetching volume data with filters
+2025-11-20 10:36:58 debug: Retrieved exercise progression data
+2025-11-20 10:36:58 debug: Calculated workout frequency data
+2025-11-20 10:36:58 debug: Calculated volume data
+2025-11-20 10:37:06 debug: Fetched programs for user
+2025-11-20 10:37:06 debug: Retrieved next workout
+2025-11-20 11:18:00 debug: Fetching user settings
+2025-11-20 11:18:00 debug: Fetched user settings successfully
+2025-11-20 11:18:01 debug: Authenticating user
+2025-11-20 11:18:02 debug: User authenticated successfully
+2025-11-20 11:18:02 debug: Generating auth token
+2025-11-20 11:18:02 debug: Auth token generated successfully
+2025-11-20 11:18:05 debug: Fetched programs for user
+2025-11-20 11:18:05 debug: Retrieved next workout
+2025-11-20 11:18:06 debug: Fetched workouts for program
+2025-11-20 11:18:06 debug: Retrieved next workout
+2025-11-20 11:18:07 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 11:18:07 warn: 🔍 Backend - Total exercises found:
+2025-11-20 11:18:07 warn: 🔍 Backend - First exercise raw:
+2025-11-20 11:18:07 debug: Processing workout template
+2025-11-20 11:18:07 debug: Retrieved exercise baselines for automated program
+2025-11-20 11:18:07 debug: Successfully built workout template
+2025-11-20 11:21:44 debug: Fetching user settings
+2025-11-20 11:21:44 debug: Fetched user settings successfully
+2025-11-20 11:21:48 debug: Authenticating user
+2025-11-20 11:21:48 debug: User authenticated successfully
+2025-11-20 11:21:48 debug: Generating auth token
+2025-11-20 11:21:48 debug: Auth token generated successfully
+2025-11-20 11:21:52 debug: Fetched programs for user
+2025-11-20 11:21:52 debug: Fetched programs for user
+2025-11-20 11:21:52 debug: Fetched programs for user
+2025-11-20 11:21:52 info: Retrieved all program templates
+2025-11-20 11:21:57 debug: Fetched programs for user
+2025-11-20 11:21:57 debug: Retrieved next workout
+2025-11-20 11:23:44 debug: Fetching user settings
+2025-11-20 11:23:44 debug: Fetched user settings successfully
+2025-11-20 11:23:49 debug: Authenticating user
+2025-11-20 11:23:49 debug: User authenticated successfully
+2025-11-20 11:23:49 debug: Generating auth token
+2025-11-20 11:23:49 debug: Auth token generated successfully
+2025-11-20 11:23:51 debug: Fetched programs for user
+2025-11-20 11:23:51 debug: Fetched programs for user
+2025-11-20 11:23:51 debug: Fetched programs for user
+2025-11-20 11:23:51 info: Retrieved all program templates
+2025-11-20 11:23:53 debug: Fetched programs for user
+2025-11-20 11:23:53 debug: Retrieved next workout
+2025-11-20 11:23:54 debug: Fetched workouts for program
+2025-11-20 11:23:54 debug: Retrieved next workout
+2025-11-20 11:23:55 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 11:23:55 warn: 🔍 Backend - Total exercises found:
+2025-11-20 11:23:55 warn: 🔍 Backend - First exercise raw:
+2025-11-20 11:23:55 debug: Processing workout template
+2025-11-20 11:23:55 debug: Retrieved exercise baselines for automated program
+2025-11-20 11:23:55 debug: Successfully built workout template
+2025-11-20 11:29:10 debug: Fetching user settings
+2025-11-20 11:29:10 debug: Fetched user settings successfully
+2025-11-20 11:29:23 debug: Authenticating user
+2025-11-20 11:29:23 debug: User authenticated successfully
+2025-11-20 11:29:23 debug: Generating auth token
+2025-11-20 11:29:23 debug: Auth token generated successfully
+2025-11-20 11:29:28 debug: Fetched programs for user
+2025-11-20 11:29:28 debug: Retrieved next workout
+2025-11-20 11:29:29 debug: Fetched workouts for program
+2025-11-20 11:29:29 debug: Retrieved next workout
+2025-11-20 11:29:30 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 11:29:30 warn: 🔍 Backend - Total exercises found:
+2025-11-20 11:29:30 warn: 🔍 Backend - First exercise raw:
+2025-11-20 11:29:30 debug: Processing workout template
+2025-11-20 11:29:30 debug: Retrieved exercise baselines for automated program
+2025-11-20 11:29:30 debug: Successfully built workout template
+2025-11-20 12:14:38 debug: Authenticating user
+2025-11-20 12:14:38 debug: Invalid password during authentication
+2025-11-20 12:14:52 debug: Authenticating user
+2025-11-20 12:14:52 debug: Invalid password during authentication
+2025-11-20 12:15:11 debug: Authenticating user
+2025-11-20 12:15:11 debug: Invalid password during authentication
+2025-11-20 12:15:26 debug: Authenticating user
+2025-11-20 12:15:26 debug: User authenticated successfully
+2025-11-20 12:15:26 debug: Generating auth token
+2025-11-20 12:15:26 debug: Auth token generated successfully
+2025-11-20 12:15:33 debug: Fetched programs for user
+2025-11-20 12:15:34 debug: Retrieved next workout
+2025-11-20 12:15:35 debug: Fetched workouts for program
+2025-11-20 12:15:35 debug: Retrieved next workout
+2025-11-20 12:15:36 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 12:15:36 warn: 🔍 Backend - Total exercises found:
+2025-11-20 12:15:36 warn: 🔍 Backend - First exercise raw:
+2025-11-20 12:15:36 debug: Processing workout template
+2025-11-20 12:15:36 debug: Retrieved exercise baselines for automated program
+2025-11-20 12:15:36 debug: Successfully built workout template
+2025-11-20 12:22:02 debug: Fetching user settings
+2025-11-20 12:22:02 debug: Fetched user settings successfully
+2025-11-20 12:22:07 debug: Authenticating user
+2025-11-20 12:22:07 debug: User authenticated successfully
+2025-11-20 12:22:07 debug: Generating auth token
+2025-11-20 12:22:07 debug: Auth token generated successfully
+2025-11-20 12:22:08 debug: Fetched programs for user
+2025-11-20 12:22:08 debug: Retrieved next workout
+2025-11-20 12:22:09 debug: Fetched workouts for program
+2025-11-20 12:22:09 debug: Retrieved next workout
+2025-11-20 12:22:10 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-20 12:22:10 warn: 🔍 Backend - Total exercises found:
+2025-11-20 12:22:10 warn: 🔍 Backend - First exercise raw:
+2025-11-20 12:22:10 debug: Processing workout template
+2025-11-20 12:22:10 debug: Retrieved exercise baselines for automated program
+2025-11-20 12:22:10 debug: Successfully built workout template
+2025-11-24 09:47:25 info: Application starting...
+2025-11-24 09:47:25 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2025-11-24 09:47:25 info: Server is running on http://0.0.0.0:3000
+2025-11-24 09:47:25 info: Initializing services...
+2025-11-24 09:47:25 info: Successfully connected to the database
+2025-11-24 09:47:25 info: Exercise cache initialized
+2025-11-24 09:47:25 info: All services initialized successfully
+2025-11-24 10:12:42 debug: Fetching user settings
+2025-11-24 10:12:42 debug: Fetched user settings successfully
+2025-11-24 10:12:51 debug: Authenticating user
+2025-11-24 10:12:51 debug: User authenticated successfully
+2025-11-24 10:12:51 debug: Generating auth token
+2025-11-24 10:12:51 debug: Auth token generated successfully
+2025-11-24 10:12:57 debug: Fetched programs for user
+2025-11-24 10:12:57 debug: Retrieved next workout
+2025-11-24 10:12:59 debug: Fetched workouts for program
+2025-11-24 10:12:59 debug: Retrieved next workout
+2025-11-24 10:13:00 warn: 🔍 Backend - Sample exercise with video URL:
+2025-11-24 10:13:00 warn: 🔍 Backend - Total exercises found:
+2025-11-24 10:13:00 warn: 🔍 Backend - First exercise raw:
+2025-11-24 10:13:00 debug: Processing workout template
+2025-11-24 10:13:00 debug: Retrieved exercise baselines for automated program
+2025-11-24 10:13:00 debug: Successfully built workout template
+2025-11-24 10:13:04 debug: Fetched programs for user
+2025-11-24 10:13:04 debug: Retrieved next workout
+2025-11-24 10:13:06 debug: Fetched programs for user
+2025-11-24 10:13:06 debug: Fetched programs for user
+2025-11-24 10:13:06 debug: Fetched programs for user
+2025-11-24 10:13:06 info: Retrieved all program templates
+2025-11-24 11:28:14 debug: Fetched programs for user
+2025-11-24 11:28:15 debug: Fetched programs for user
+2025-11-24 11:28:15 debug: Fetching volume data with filters
+2025-11-24 11:28:15 debug: Calculated volume data
+2025-11-24 11:28:15 debug: Fetching workout frequency data with filters
+2025-11-24 11:28:15 debug: Fetching all muscle groups
+2025-11-24 11:28:15 debug: Successfully fetched muscle groups
+2025-11-24 11:28:15 debug: Retrieved exercise progression data
+2025-11-24 11:28:15 debug: Calculated workout frequency data
+2025-11-24 11:28:15 debug: Fetching volume data with filters
+2025-11-24 11:28:15 debug: Fetching workout frequency data with filters
+2025-11-24 11:28:15 debug: Calculated volume data
+2025-11-24 11:28:15 debug: Calculated workout frequency data
+2025-11-24 11:28:15 debug: Retrieved exercise progression data
+2025-11-24 11:28:40 debug: Fetching volume data with filters
+2025-11-24 11:28:40 debug: Retrieved exercise progression data
+2025-11-24 11:28:40 debug: Fetched programs for user
+2025-11-24 11:28:40 debug: Fetching workout frequency data with filters
+2025-11-24 11:28:40 debug: Calculated volume data
+2025-11-24 11:28:40 debug: Calculated workout frequency data
+2025-11-24 11:28:40 debug: Fetching all muscle groups
+2025-11-24 11:28:40 debug: Successfully fetched muscle groups
+2025-11-24 11:28:40 debug: Fetching workout frequency data with filters
+2025-11-24 11:28:40 debug: Fetching volume data with filters
+2025-11-24 11:28:40 debug: Retrieved exercise progression data
+2025-11-24 11:28:40 debug: Calculated workout frequency data
+2025-11-24 11:28:40 debug: Calculated volume data
+2025-11-24 11:28:45 debug: Fetched programs for user
+2025-11-24 11:28:45 debug: Fetching all muscle groups
+2025-11-24 11:28:45 debug: Successfully fetched muscle groups
+2025-11-24 11:28:45 debug: Fetching workout frequency data with filters
+2025-11-24 11:28:45 debug: Fetching volume data with filters
+2025-11-24 11:28:45 debug: Retrieved exercise progression data
+2025-11-24 11:28:45 debug: Calculated volume data
+2025-11-24 11:28:45 debug: Calculated workout frequency data
+2025-11-24 11:56:39 debug: Fetched programs for user
+2025-11-24 11:56:39 debug: Fetching workout frequency data with filters
+2025-11-24 11:56:39 debug: Fetching volume data with filters
+2025-11-24 11:56:39 debug: Calculated workout frequency data
+2025-11-24 11:56:39 debug: Calculated volume data
+2025-11-24 11:56:39 debug: Retrieved exercise progression data
+2025-11-24 11:56:39 debug: Fetching all muscle groups
+2025-11-24 11:56:39 debug: Successfully fetched muscle groups
+2025-11-24 11:56:39 debug: Fetching volume data with filters
+2025-11-24 11:56:39 debug: Fetching workout frequency data with filters
+2025-11-24 11:56:39 debug: Retrieved exercise progression data
+2025-11-24 11:56:39 debug: Calculated volume data
+2025-11-24 11:56:39 debug: Calculated workout frequency data
+2025-11-24 11:56:56 debug: Fetching volume data with filters
+2025-11-24 11:56:56 debug: Fetched programs for user
+2025-11-24 11:56:56 debug: Calculated volume data
+2025-11-24 11:56:56 debug: Fetching workout frequency data with filters
+2025-11-24 11:56:56 debug: Retrieved exercise progression data
+2025-11-24 11:56:56 debug: Calculated workout frequency data
+2025-11-24 11:56:56 debug: Fetching all muscle groups
+2025-11-24 11:56:56 debug: Successfully fetched muscle groups
+2025-11-24 11:56:56 debug: Fetching workout frequency data with filters
+2025-11-24 11:56:56 debug: Fetching volume data with filters
+2025-11-24 11:56:56 debug: Retrieved exercise progression data
+2025-11-24 11:56:56 debug: Calculated workout frequency data
+2025-11-24 11:56:56 debug: Calculated volume data
