@@ -6,6 +6,7 @@ interface UpsertExerciseInput {
 	sets: number;
 	reps: number;
 	weight: number;
+	notes?: string | null;
 }
 
 interface SupersetInput {
@@ -116,6 +117,7 @@ export const exerciseRepository = {
                 sets: exercise.sets,
                 reps: exercise.reps,
                 weight: exercise.weight,
+                notes: exercise.notes ?? null,
                 order: index,
               },
               include: {

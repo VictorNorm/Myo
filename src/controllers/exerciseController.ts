@@ -25,7 +25,6 @@ export const exerciseValidators = {
 			.optional()
 			.isNumeric()
 			.withMessage("Max weight must be a number"),
-		body("notes").optional().isString(),
 	],
 	update: [
 		body("name")
@@ -53,7 +52,6 @@ export const exerciseValidators = {
 			.optional()
 			.isNumeric()
 			.withMessage("Max weight must be a number"),
-		body("notes").optional().isString(),
 	],
 	upsertExercisesToWorkout: [
 		body("workoutId").isInt({ min: 1 }).withMessage("Valid workout ID is required"),
@@ -62,6 +60,7 @@ export const exerciseValidators = {
 		body("exercises.*.sets").isInt({ min: 1 }).withMessage("Sets must be a positive integer"),
 		body("exercises.*.reps").isInt({ min: 1 }).withMessage("Reps must be a positive integer"),
 		body("exercises.*.weight").isNumeric().withMessage("Weight must be a number"),
+		body("exercises.*.notes").optional().isString().withMessage("Notes must be a string"),
 		body("supersets").optional().isArray().withMessage("Supersets must be an array"),
 		body("supersets.*.first_exercise_id").optional().isInt({ min: 1 }).withMessage("First exercise ID must be valid"),
 		body("supersets.*.second_exercise_id").optional().isInt({ min: 1 }).withMessage("Second exercise ID must be valid"),

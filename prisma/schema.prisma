@@ -67,7 +67,6 @@ model exercises {
   defaultIncrementKg  Decimal?                @db.Decimal(4, 2)  // For gym-specific increments
   minWeight           Decimal?                @db.Decimal(6, 2)  // Minimum possible weight
   maxWeight           Decimal?                @db.Decimal(6, 2)  // Maximum available weight
-  notes               String?                 // For special instructions
   videoUrl            String?
   createdAt           DateTime                 @default(now()) @db.Timestamptz(0)
 
@@ -243,6 +242,7 @@ model workout_exercises {
   reps             Int?
   weight           Decimal?    @db.Decimal(10, 2)
   order            Int
+  notes            String?
   createdAt        DateTime    @default(now()) @db.Timestamptz(0)
   updatedAt        DateTime    @default(now()) @db.Timestamptz(0)
   first_supersets  supersets[] @relation("FirstExercise")

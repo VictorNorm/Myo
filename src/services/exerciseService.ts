@@ -9,7 +9,6 @@ interface CreateExerciseInput {
 	defaultIncrementKg?: number | string;
 	minWeight?: number | string;
 	maxWeight?: number | string;
-	notes?: string | null;
 }
 
 interface UpdateExerciseInput {
@@ -19,7 +18,6 @@ interface UpdateExerciseInput {
 	defaultIncrementKg?: number | string;
 	minWeight?: number | string;
 	maxWeight?: number | string;
-	notes?: string | null;
 }
 
 interface UpsertExerciseInput {
@@ -80,9 +78,6 @@ export const exerciseService = {
 	},
 
 	createExercise: async (input: CreateExerciseInput) => {
-		// Handle notes properly - convert undefined to null to match expected type
-		const notes: string | null = input.notes === undefined ? null : input.notes;
-
 		const exercise = await exerciseRepository.create({
 			name: input.name,
 			equipment: input.equipment,
@@ -90,7 +85,6 @@ export const exerciseService = {
 			defaultIncrementKg: toDecimal(input.defaultIncrementKg),
 			minWeight: toDecimal(input.minWeight),
 			maxWeight: toDecimal(input.maxWeight),
-			notes: notes,
 			videoUrl: null
 		});
 		return formatExerciseData(exercise);
@@ -108,7 +102,6 @@ export const exerciseService = {
 			updateData.minWeight = toDecimal(input.minWeight);
 		if (input.maxWeight !== undefined)
 			updateData.maxWeight = toDecimal(input.maxWeight);
-		if (input.notes !== undefined) updateData.notes = input.notes;
 
 		const exercise = await exerciseRepository.update(id, updateData);
 		return formatExerciseData(exercise);
@@ -131,7 +124,6 @@ export const exerciseService = {
 				defaultIncrementKg: exercise.defaultIncrementKg ? Number(exercise.defaultIncrementKg) : null,
 				minWeight: exercise.minWeight ? Number(exercise.minWeight) : null,
 				maxWeight: exercise.maxWeight ? Number(exercise.maxWeight) : null,
-				notes: exercise.notes,
 				videoUrl: exercise.videoUrl,
 				createdAt: exercise.createdAt,
 				muscleGroups: exercise.muscle_groups.map(emg => ({

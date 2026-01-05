@@ -128,6 +128,7 @@ export const workoutService = {
         reps: latest ? latest.reps : we.reps,
         weight: latest ? Number(latest.weight) : Number(we.weight) || 0,
         order: we.order,
+        notes: we.notes,
         exercises: {
           id: we.exercises.id,
           name: we.exercises.name,

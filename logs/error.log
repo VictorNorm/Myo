@@ -36,3 +36,4 @@ C:\Users\Victor\Documents\GitHub\myo-express-prisma\src\services\repositories\pr
 Foreign key constraint violated on the constraint: `program_progression_settings_program_id_fkey`
 2025-10-21 14:16:27 error: Error updating program status: Invalid status transition from COMPLETED to ACTIVE
 2025-11-19 09:47:09 error: SyntaxError: Unexpected token '1', "120" is not valid JSON
+2025-12-15 08:17:18 error: Error fetching programs for user: No programs found for this user

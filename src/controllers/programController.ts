@@ -157,6 +157,12 @@ export const programValidators = {
 			.isInt({ min: 1 })
 			.withMessage("Program ID must be a positive integer"),
 	],
+
+	getProgramById: [
+		param("programId")
+			.isInt({ min: 1 })
+			.withMessage("Program ID must be a positive integer"),
+	],
 };
 
 export const programController = {
@@ -560,6 +566,37 @@ export const programController = {
 				error: "Internal server error",
 				message: error instanceof Error ? error.message : "Unknown error"
 			});
+		}
+	},
+
+	// GET /programs/single/:programId - Get single program by ID
+	getProgramById: async (req: Request, res: Response) => {
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				return res.status(400).json(validationError(errors.array()));
+			}
+
+			const programId = Number(req.params.programId);
+			const program = await programService.getProgramById(programId);
+
+			return res.status(200).json(
+				success(program, "Program retrieved successfully")
+			);
+		} catch (err) {
+			logger.error(`Error fetching program by ID: ${err instanceof Error ? err.message : "Unknown error"}`, {
+				programId: req.params.programId,
+			});
+			
+			if (err instanceof Error && err.message === "Program not found") {
+				return res.status(404).json(
+					error(ErrorCodes.NOT_FOUND, "Program not found")
+				);
+			}
+			
+			return res.status(500).json(
+				error(ErrorCodes.INTERNAL_ERROR, "Failed to retrieve program")
+			);
 		}
 	},
 };

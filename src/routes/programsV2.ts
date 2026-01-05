@@ -21,6 +21,18 @@ router.get(
 );
 
 /**
+ * V2: GET /api/v2/programs/single/:programId
+ * Get a single program by its ID
+ */
+router.get(
+	"/api/v2/programs/single/:programId",
+	authenticateToken,
+	authorizeMiddleware.programAccess,
+	programValidators.getProgramById,
+	programController.getProgramById
+);
+
+/**
  * V2 alias: GET /api/v2/programs/:userId
  */
 router.get(

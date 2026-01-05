@@ -327,8 +327,15 @@ export const programService = {
 		return programRepository.verifyOwnership(programId, userId);
 	},
 
-	// Utility: Get program by ID for ownership verification
-	async getProgramById(programId: number): Promise<ProgramWithCounts | null> {
-		return programRepository.findById(programId);
+	// Get program by ID with error handling
+	async getProgramById(programId: number): Promise<any> {
+		const program = await programRepository.findById(programId);
+		
+		if (!program) {
+			throw new Error("Program not found");
+		}
+		
+		logger.info("Fetched program by ID", { programId });
+		return program;
 	},
 };
