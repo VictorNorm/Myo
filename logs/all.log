@@ -9690,3 +9690,78 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2025-12-19 14:54:56 debug: Successfully fetched muscle groups
 2025-12-19 14:54:56 debug: Fetching all muscle groups
 2025-12-19 14:54:56 debug: Successfully fetched muscle groups
+2026-01-05 06:06:30 info: Application starting...
+2026-01-05 06:06:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-01-05 06:06:30 info: Server is running on http://0.0.0.0:3000
+2026-01-05 06:06:30 info: Initializing services...
+2026-01-05 06:06:30 info: Successfully connected to the database
+2026-01-05 06:06:30 info: Exercise cache initialized
+2026-01-05 06:06:30 info: All services initialized successfully
+2026-01-05 06:06:53 debug: Authenticating user
+2026-01-05 06:06:53 debug: Invalid password during authentication
+2026-01-05 06:06:56 debug: Authenticating user
+2026-01-05 06:06:56 debug: User authenticated successfully
+2026-01-05 06:06:56 debug: Generating auth token
+2026-01-05 06:06:56 debug: Auth token generated successfully
+2026-01-05 06:07:42 info: Token expired
+2026-01-05 06:08:03 debug: Authenticating user
+2026-01-05 06:08:03 debug: User authenticated successfully
+2026-01-05 06:08:03 debug: Generating auth token
+2026-01-05 06:08:03 debug: Auth token generated successfully
+2026-01-05 06:08:10 debug: Fetched programs for user
+2026-01-05 06:08:10 debug: Fetched workouts for program
+2026-01-05 06:08:10 debug: Retrieved next workout
+2026-01-05 06:09:13 debug: Fetched programs for user
+2026-01-05 06:09:13 debug: Fetched workouts for program
+2026-01-05 06:09:13 debug: Retrieved next workout
+2026-01-05 06:09:27 warn: 🔍 Backend - Sample exercise with video URL:
+2026-01-05 06:09:27 warn: 🔍 Backend - Total exercises found:
+2026-01-05 06:09:27 warn: 🔍 Backend - First exercise raw:
+2026-01-05 06:09:27 debug: Processing workout template
+2026-01-05 06:09:27 debug: Retrieved exercise baselines for automated program
+2026-01-05 06:09:27 debug: Successfully built workout template
+2026-01-05 06:09:36 debug: Fetched programs for user
+2026-01-05 06:09:36 debug: Fetched workouts for program
+2026-01-05 06:09:36 debug: Retrieved next workout
+2026-01-05 06:09:48 debug: Fetched programs for user
+2026-01-05 06:09:48 debug: Fetched programs for user
+2026-01-05 06:09:48 info: Retrieved all program templates
+2026-01-05 06:09:48 debug: Fetched programs for user
+2026-01-05 06:09:51 debug: Fetched programs for user
+2026-01-05 06:09:51 debug: Fetched programs for user
+2026-01-05 06:09:51 debug: Fetching volume data with filters
+2026-01-05 06:09:51 debug: Fetching workout frequency data with filters
+2026-01-05 06:09:51 debug: Calculated volume data
+2026-01-05 06:09:51 debug: Calculated workout frequency data
+2026-01-05 06:09:51 debug: Retrieved exercise progression data
+2026-01-05 06:09:51 debug: Fetching all muscle groups
+2026-01-05 06:09:51 debug: Successfully fetched muscle groups
+2026-01-05 06:09:51 debug: Fetching volume data with filters
+2026-01-05 06:09:51 debug: Fetching workout frequency data with filters
+2026-01-05 06:09:51 debug: Calculated workout frequency data
+2026-01-05 06:09:51 debug: Calculated volume data
+2026-01-05 06:09:51 debug: Retrieved exercise progression data
+2026-01-05 06:10:00 debug: Fetching workout frequency data with filters
+2026-01-05 06:10:00 debug: Fetched programs for user
+2026-01-05 06:10:00 debug: Fetching volume data with filters
+2026-01-05 06:10:00 debug: Calculated workout frequency data
+2026-01-05 06:10:00 debug: Retrieved exercise progression data
+2026-01-05 06:10:00 debug: Calculated volume data
+2026-01-05 06:10:00 debug: Fetching all muscle groups
+2026-01-05 06:10:00 debug: Successfully fetched muscle groups
+2026-01-05 06:10:00 debug: Fetching volume data with filters
+2026-01-05 06:10:00 debug: Fetching workout frequency data with filters
+2026-01-05 06:10:00 debug: Calculated workout frequency data
+2026-01-05 06:10:00 debug: Retrieved exercise progression data
+2026-01-05 06:10:00 debug: Calculated volume data
+2026-01-05 06:41:11 debug: Fetching all muscle groups
+2026-01-05 06:41:11 debug: Successfully fetched muscle groups
+2026-01-05 06:41:11 debug: Fetching all muscle groups
+2026-01-05 06:41:11 debug: Successfully fetched muscle groups
+2026-01-05 08:15:28 info: Application starting...
+2026-01-05 08:15:28 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-01-05 08:15:28 info: Server is running on http://0.0.0.0:3000
+2026-01-05 08:15:28 info: Initializing services...
+2026-01-05 08:15:28 info: Successfully connected to the database
+2026-01-05 08:15:28 info: Exercise cache initialized
+2026-01-05 08:15:28 info: All services initialized successfully

@@ -15,6 +15,11 @@ enum ProgramType {
   AUTOMATED     // New value
 }
 
+enum MuscleGroupRole {
+  PRIMARY
+  SECONDARY
+}
+
 enum ProgramStatus {
   PENDING    // Initial state when program is created
   ACTIVE     // Currently active program
@@ -320,6 +325,7 @@ model exercise_muscle_groups {
   muscle_group_id Int
   exercises       exercises     @relation(fields: [exercise_id], references: [id])
   muscle_groups   muscle_groups @relation(fields: [muscle_group_id], references: [id])
+  role            MuscleGroupRole @default(PRIMARY)
 
   @@id([exercise_id, muscle_group_id])
 }
