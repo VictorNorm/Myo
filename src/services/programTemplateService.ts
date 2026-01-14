@@ -15,6 +15,18 @@ import type {
 } from "../../types/programTemplates";
 import type { ProgramWithCounts } from "./repositories/programRepository";
 
+// Default weights by equipment type (in kg)
+const getDefaultWeightByEquipment = (equipment: string): number => {
+  const defaults: Record<string, number> = {
+    'BARBELL': 20,      // Empty Olympic bar
+    'DUMBBELL': 5,      // Light starting pair (per hand)
+    'CABLE': 10,        // Low stack position
+    'MACHINE': 20,      // Conservative machine start
+    'BODYWEIGHT': 0,    // Just bodyweight
+  };
+  return defaults[equipment] ?? 0;
+};
+
 export const programTemplateService = {
   // Get all available templates
   async getAllTemplates(): Promise<ProgramTemplateBasic[]> {
@@ -130,7 +142,9 @@ export const programTemplateService = {
             exercise_id: exercise.exercise_id,
             sets: exercise.sets,
             reps: exercise.reps,
-            weight: exercise.weight,
+            weight: exercise.weight > 0
+              ? exercise.weight
+              : getDefaultWeightByEquipment(exercise.exercise?.equipment || 'DUMBBELL'),
             order: exercise.order
           }));
 
