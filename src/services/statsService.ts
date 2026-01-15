@@ -763,4 +763,323 @@ export const statsService = {
 			}))
 			.filter((gain) => gain.percentGain > 0); // Only show positive gains
 	},
+
+	// =====================================================
+	// CROSS-PROGRAM SERVICE METHODS (All Programs Stats)
+	// =====================================================
+
+	/**
+	 * Get exercise progression across ALL programs
+	 */
+	async getExerciseProgressionAllPrograms(
+		userId: number
+	): Promise<ExerciseProgressionData[]> {
+		try {
+			const progressionData = await statsRepository.getExerciseProgressionDataAllPrograms(userId);
+
+			logger.debug("Retrieved exercise progression data for all programs", {
+				userId,
+				exerciseCount: progressionData.length,
+			});
+
+			return progressionData;
+		} catch (error) {
+			logger.error(
+				`Error fetching all-programs exercise progression: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{ userId }
+			);
+			throw error;
+		}
+	},
+
+	/**
+	 * Get volume data across ALL programs
+	 */
+	async getVolumeDataAllPrograms(
+		userId: number,
+		timeFrame: TimeFrameType,
+		filters: {
+			exerciseId?: number;
+			muscleGroupId?: number;
+			startDate?: string;
+			endDate?: string;
+			excludeBadDays?: boolean;
+		} = {}
+	): Promise<VolumeData & { badDayCount: number; totalWorkouts: number }> {
+		try {
+			logger.debug('Fetching volume data for all programs', {
+				userId,
+				timeFrame,
+				filters
+			});
+
+			// Parse dates if provided
+			const dateFilters: { startDate?: Date; endDate?: Date } = {};
+			if (filters.startDate) {
+				dateFilters.startDate = new Date(filters.startDate);
+			}
+			if (filters.endDate) {
+				dateFilters.endDate = new Date(filters.endDate);
+			}
+
+			// If timeFrame is provided and no custom dates, calculate date range
+			// For "all programs" we use current date as reference instead of program start
+			if (!filters.startDate && !filters.endDate && timeFrame !== 'all' && timeFrame !== 'program') {
+				const now = new Date();
+				const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+				if (timeFrame === 'week') {
+					const startOfWeek = new Date(currentDate);
+					startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+					dateFilters.startDate = startOfWeek;
+					dateFilters.endDate = currentDate;
+				} else if (timeFrame === 'month') {
+					const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+					dateFilters.startDate = startOfMonth;
+					dateFilters.endDate = currentDate;
+				}
+				// 'all' and 'program' don't need date filters for cross-program view
+			}
+
+			// Get filtered completed exercises
+			const completedExercises = await statsRepository.findCompletedExercisesAllPrograms(
+				userId,
+				{
+					exerciseId: filters.exerciseId ? Number(filters.exerciseId) : undefined,
+					muscleGroupId: filters.muscleGroupId ? Number(filters.muscleGroupId) : undefined,
+					startDate: dateFilters.startDate,
+					endDate: dateFilters.endDate,
+					excludeBadDays: filters.excludeBadDays ?? true
+				}
+			);
+
+			// Get bad day count
+			const badDayCount = await statsRepository.getBadDayCountAllPrograms(
+				userId,
+				dateFilters.startDate,
+				dateFilters.endDate
+			);
+
+			// Calculate volume for each completed exercise
+			const exercisesWithVolume = completedExercises.map((exercise) => ({
+				...exercise,
+				volume: exercise.sets * exercise.reps * Number(exercise.weight),
+			}));
+
+			// Calculate volume by date
+			const volumeByDateMap = new Map<string, number>();
+			for (const exercise of exercisesWithVolume) {
+				const dateKey = exercise.completedAt.toISOString().split("T")[0];
+				volumeByDateMap.set(
+					dateKey,
+					(volumeByDateMap.get(dateKey) || 0) + exercise.volume
+				);
+			}
+			const volumeByDate = Array.from(volumeByDateMap.entries())
+				.map(([date, volume]) => ({ date, volume }))
+				.sort((a, b) => a.date.localeCompare(b.date));
+
+			// Calculate volume by muscle group
+			const volumeByMuscleGroupMap = new Map<string, number>();
+			for (const exercise of exercisesWithVolume) {
+				for (const mg of exercise.exercise.muscle_groups) {
+					const muscleGroup = mg.muscle_groups.name;
+					volumeByMuscleGroupMap.set(
+						muscleGroup,
+						(volumeByMuscleGroupMap.get(muscleGroup) || 0) + exercise.volume
+					);
+				}
+			}
+			const volumeByMuscleGroup = Array.from(volumeByMuscleGroupMap.entries())
+				.map(([muscleGroup, volume]) => ({ muscleGroup, volume }))
+				.sort((a, b) => b.volume - a.volume);
+
+			// Calculate volume by exercise
+			const volumeByExerciseMap = new Map<string, number>();
+			for (const exercise of exercisesWithVolume) {
+				const exerciseName = exercise.exercise.name;
+				volumeByExerciseMap.set(
+					exerciseName,
+					(volumeByExerciseMap.get(exerciseName) || 0) + exercise.volume
+				);
+			}
+			const volumeByExercise = Array.from(volumeByExerciseMap.entries())
+				.map(([exercise, volume]) => ({ exercise, volume }))
+				.sort((a, b) => b.volume - a.volume);
+
+			// Calculate weekly data
+			const weeklyDataMap = new Map<number, { volume: number; weekStart: Date }>();
+			for (const exercise of exercisesWithVolume) {
+				const weekNumber = getWeekNumber(exercise.completedAt);
+				const weekStart = new Date(exercise.completedAt);
+				weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+
+				if (!weeklyDataMap.has(weekNumber)) {
+					weeklyDataMap.set(weekNumber, { volume: 0, weekStart });
+				}
+				weeklyDataMap.get(weekNumber)!.volume += exercise.volume;
+			}
+			const weeklyData = Array.from(weeklyDataMap.entries())
+				.map(([weekNumber, { volume, weekStart }]) => ({
+					weekStart: weekStart.toISOString().split("T")[0],
+					volume,
+					weekNumber,
+				}))
+				.sort((a, b) => a.weekNumber - b.weekNumber);
+
+			const totalVolume = exercisesWithVolume.reduce(
+				(sum, exercise) => sum + exercise.volume,
+				0
+			);
+
+			const uniqueWorkoutDates = new Set(
+				completedExercises.map(ex => ex.completedAt.toISOString().split("T")[0])
+			);
+
+			logger.debug("Calculated all-programs volume data", {
+				userId,
+				timeFrame,
+				totalVolume,
+				exerciseCount: completedExercises.length,
+				badDayCount,
+			});
+
+			return {
+				volumeByDate,
+				volumeByMuscleGroup,
+				volumeByExercise,
+				weeklyData,
+				totalVolume,
+				badDayCount,
+				totalWorkouts: uniqueWorkoutDates.size + badDayCount,
+			};
+		} catch (error) {
+			logger.error(
+				`Error calculating all-programs volume data: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{ userId, timeFrame }
+			);
+			throw error;
+		}
+	},
+
+	/**
+	 * Get workout frequency across ALL programs
+	 */
+	async getWorkoutFrequencyDataAllPrograms(
+		userId: number,
+		timeFrame: TimeFrameType,
+		filters: {
+			startDate?: string;
+			endDate?: string;
+			excludeBadDays?: boolean;
+		} = {}
+	): Promise<WorkoutFrequencyData & { badDayCount: number; totalWorkouts: number }> {
+		try {
+			logger.debug('Fetching workout frequency for all programs', {
+				userId,
+				timeFrame,
+				filters
+			});
+
+			// Parse dates
+			const dateFilters: { startDate?: Date; endDate?: Date } = {};
+			if (filters.startDate) {
+				dateFilters.startDate = new Date(filters.startDate);
+			}
+			if (filters.endDate) {
+				dateFilters.endDate = new Date(filters.endDate);
+			}
+
+			// Calculate date range for timeFrame
+			if (!filters.startDate && !filters.endDate && timeFrame !== 'all' && timeFrame !== 'program') {
+				const now = new Date();
+				const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+				if (timeFrame === 'week') {
+					const startOfWeek = new Date(currentDate);
+					startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+					dateFilters.startDate = startOfWeek;
+					dateFilters.endDate = currentDate;
+				} else if (timeFrame === 'month') {
+					const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+					dateFilters.startDate = startOfMonth;
+					dateFilters.endDate = currentDate;
+				}
+			}
+
+			// Get workout completions
+			const workoutCompletions = await statsRepository.findWorkoutCompletionsAllPrograms(
+				userId,
+				{
+					startDate: dateFilters.startDate,
+					endDate: dateFilters.endDate,
+					excludeBadDays: filters.excludeBadDays ?? true
+				}
+			);
+
+			// Get bad day count
+			const badDayCount = await statsRepository.getBadDayCountAllPrograms(
+				userId,
+				dateFilters.startDate,
+				dateFilters.endDate
+			);
+
+			// Calculate weekly frequency
+			const weeklyFrequency = this.calculateWeeklyFrequency(workoutCompletions);
+
+			// Calculate completed workouts count
+			const totalWorkouts = workoutCompletions.length;
+
+			// For all-programs mode, we can't use program-specific weekly frequency
+			// Instead calculate based on average workouts per week
+			const avgWorkoutsPerWeek = weeklyFrequency.length > 0
+				? Math.round((totalWorkouts / weeklyFrequency.length) * 10) / 10
+				: 0;
+
+			// Calculate consistency: percentage of weeks with at least one workout
+			const consistency = weeklyFrequency.length > 0
+				? Math.round((weeklyFrequency.filter(w => w.workoutCount > 0).length / weeklyFrequency.length) * 100)
+				: 0;
+
+			// Calculate current streak (consecutive weeks with workouts)
+			const sortedWeeks = [...weeklyFrequency].sort((a, b) => b.weekNumber - a.weekNumber);
+			let currentStreak = 0;
+			for (const week of sortedWeeks) {
+				if (week.workoutCount > 0) {
+					currentStreak++;
+				} else {
+					break;
+				}
+			}
+
+			// Calculate longest streak
+			const longestStreak = this.calculateLongestStreak(workoutCompletions);
+
+			logger.debug("Calculated all-programs frequency data", {
+				userId,
+				timeFrame,
+				totalWorkouts,
+				currentStreak,
+				avgWorkoutsPerWeek,
+				consistency,
+				badDayCount,
+			});
+
+			return {
+				currentStreak,
+				longestStreak,
+				totalWorkouts: workoutCompletions.length + badDayCount,
+				avgWorkoutsPerWeek,
+				consistency,
+				weeklyFrequency,
+				badDayCount,
+			};
+		} catch (error) {
+			logger.error(
+				`Error calculating all-programs frequency: ${error instanceof Error ? error.message : "Unknown error"}`,
+				{ userId, timeFrame }
+			);
+			throw error;
+		}
+	},
 };

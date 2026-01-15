@@ -1,7 +1,12 @@
 import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
 import authorizeMiddleware from "../middleware/authorizeMiddleware";
-import { statsController, statsValidators } from "../controllers/statsController";
+import {
+	statsController,
+	statsValidators,
+	crossProgramController,
+	crossProgramValidators,
+} from "../controllers/statsController";
 
 const router = Router();
 
@@ -54,6 +59,54 @@ router.get(
 	authorizeMiddleware.programAccess,
 	statsValidators.getProgramStatistics,
 	statsController.getProgramStatistics
+);
+
+// =====================================================
+// CROSS-PROGRAM ROUTES (All Programs Stats)
+// =====================================================
+
+/**
+ * GET /api/v2/stats/all-programs/progression
+ * Get exercise progression across ALL user programs
+ */
+router.get(
+	"/api/v2/stats/all-programs/progression",
+	authenticateToken,
+	crossProgramValidators.getExerciseProgressionAllPrograms,
+	crossProgramController.getExerciseProgressionAllPrograms
+);
+
+/**
+ * GET /api/v2/stats/all-programs/volume
+ * Get volume data across ALL user programs
+ */
+router.get(
+	"/api/v2/stats/all-programs/volume",
+	authenticateToken,
+	crossProgramValidators.getVolumeAllPrograms,
+	crossProgramController.getVolumeAllPrograms
+);
+
+/**
+ * GET /api/v2/stats/all-programs/frequency
+ * Get workout frequency across ALL user programs
+ */
+router.get(
+	"/api/v2/stats/all-programs/frequency",
+	authenticateToken,
+	crossProgramValidators.getFrequencyAllPrograms,
+	crossProgramController.getFrequencyAllPrograms
+);
+
+/**
+ * GET /api/v2/stats/all-programs/exercises
+ * Get all unique exercises the user has ever completed
+ */
+router.get(
+	"/api/v2/stats/all-programs/exercises",
+	authenticateToken,
+	crossProgramValidators.getAllUserExercises,
+	crossProgramController.getAllUserExercises
 );
 
 export default router;

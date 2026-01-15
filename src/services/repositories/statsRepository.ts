@@ -607,4 +607,322 @@ export const statsRepository = {
 			where: whereClause,
 		});
 	},
+
+	// =====================================================
+	// CROSS-PROGRAM METHODS (All Programs Stats)
+	// =====================================================
+
+	/**
+	 * Get exercise progression data across ALL user programs
+	 */
+	async getExerciseProgressionDataAllPrograms(
+		userId: number
+	): Promise<ExerciseProgressionData[]> {
+		// Get all unique exercises that have progression history for this user
+		// This ensures we only return exercises with actual strength progress data
+		const exercisesWithProgression = await prisma.progression_history.findMany({
+			where: { user_id: userId },
+			select: { exercise_id: true },
+			distinct: ['exercise_id'],
+		});
+
+		const exerciseIds = exercisesWithProgression.map(ph => ph.exercise_id);
+
+		if (exerciseIds.length === 0) {
+			return [];
+		}
+
+		// Batch fetch all data needed for progression analysis
+		const [exercises, baselines, progressionHistory, lastCompleted] = await Promise.all([
+			// Get exercise details
+			prisma.exercises.findMany({
+				where: { id: { in: exerciseIds } },
+				select: { id: true, name: true },
+			}),
+
+			// Get baselines for all exercises (across all programs)
+			prisma.exercise_baselines.findMany({
+				where: {
+					user_id: userId,
+					exercise_id: { in: exerciseIds },
+				},
+				orderBy: { createdAt: 'asc' },
+			}),
+
+			// Get progression history for all exercises (across all programs)
+			// Note: Order by ASC so frontend processing can correctly identify first/last entries
+			prisma.progression_history.findMany({
+				where: {
+					user_id: userId,
+					exercise_id: { in: exerciseIds },
+				},
+				orderBy: { createdAt: 'asc' },
+			}),
+
+			// Get last completed exercise for each
+			prisma.$queryRaw<Array<{
+				exercise_id: number;
+				sets: number;
+				reps: number;
+				weight: string;
+				rating: number | null;
+				completedAt: Date;
+			}>>`
+				SELECT DISTINCT ON (exercise_id)
+					exercise_id,
+					sets,
+					reps,
+					weight,
+					rating,
+					"completedAt"
+				FROM completed_exercises
+				WHERE user_id = ${userId}
+					AND exercise_id = ANY(${exerciseIds})
+				ORDER BY exercise_id, "completedAt" DESC
+			`,
+		]);
+
+		// Create lookup maps for efficiency
+		const exerciseMap = new Map(exercises.map((e) => [e.id, e]));
+		const lastCompletedMap = new Map(lastCompleted.map((lc) => [lc.exercise_id, lc]));
+
+		// Group baselines by exercise (take the earliest one as the true baseline)
+		const baselineMap = new Map<number, typeof baselines[0]>();
+		for (const baseline of baselines) {
+			if (!baselineMap.has(baseline.exercise_id)) {
+				baselineMap.set(baseline.exercise_id, baseline);
+			}
+		}
+
+		// Group progression history by exercise
+		const progressionMap = new Map<number, typeof progressionHistory>();
+		for (const ph of progressionHistory) {
+			if (!progressionMap.has(ph.exercise_id)) {
+				progressionMap.set(ph.exercise_id, []);
+			}
+			progressionMap.get(ph.exercise_id)!.push(ph);
+		}
+
+		// Build result array
+		return exerciseIds.map((exerciseId) => {
+			const exercise = exerciseMap.get(exerciseId);
+			const baseline = baselineMap.get(exerciseId);
+			const progression = progressionMap.get(exerciseId) || [];
+			const lastComp = lastCompletedMap.get(exerciseId);
+
+			return {
+				exerciseId,
+				exerciseName: exercise?.name || `Exercise ${exerciseId}`,
+				baseline: baseline
+					? {
+							sets: baseline.sets,
+							reps: baseline.reps,
+							weight: Number(baseline.weight),
+					  }
+					: null,
+				progressionHistory: progression.map((p) => ({
+					id: p.id,
+					oldWeight: p.oldWeight,
+					newWeight: p.newWeight,
+					oldReps: p.oldReps,
+					newReps: p.newReps,
+					reason: p.reason,
+					createdAt: p.createdAt,
+				})),
+				lastCompleted: lastComp
+					? {
+							sets: lastComp.sets,
+							reps: lastComp.reps,
+							weight: lastComp.weight,
+							rating: lastComp.rating,
+							completedAt: lastComp.completedAt,
+					  }
+					: null,
+			};
+		});
+	},
+
+	/**
+	 * Get completed exercises across ALL user programs with filters
+	 */
+	async findCompletedExercisesAllPrograms(
+		userId: number,
+		filters: {
+			exerciseId?: number;
+			muscleGroupId?: number;
+			startDate?: Date;
+			endDate?: Date;
+			excludeBadDays?: boolean;
+		}
+	): Promise<CompletedExerciseWithDetails[]> {
+		const whereClause: any = {
+			user_id: userId,
+		};
+
+		// Apply exercise filter
+		if (filters.exerciseId) {
+			whereClause.exercise_id = filters.exerciseId;
+		}
+
+		// Apply muscle group filter
+		if (filters.muscleGroupId) {
+			whereClause.exercise = {
+				muscle_groups: {
+					some: {
+						muscle_group_id: filters.muscleGroupId,
+					},
+				},
+			};
+		}
+
+		// Apply date range filters
+		if (filters.startDate || filters.endDate) {
+			whereClause.completedAt = {};
+			if (filters.startDate) {
+				whereClause.completedAt.gte = filters.startDate;
+			}
+			if (filters.endDate) {
+				whereClause.completedAt.lte = filters.endDate;
+			}
+		}
+
+		// Apply bad day filter by joining with workout_completions
+		if (filters.excludeBadDays) {
+			whereClause.workout = {
+				workout_completions: {
+					some: {
+						user_id: userId,
+						is_bad_day: false,
+					},
+				},
+			};
+		}
+
+		return prisma.completed_exercises.findMany({
+			where: whereClause,
+			include: {
+				exercise: {
+					select: {
+						id: true,
+						name: true,
+						muscle_groups: {
+							select: {
+								muscle_groups: {
+									select: {
+										id: true,
+										name: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			orderBy: {
+				completedAt: 'desc',
+			},
+		});
+	},
+
+	/**
+	 * Get workout completions across ALL user programs
+	 */
+	async findWorkoutCompletionsAllPrograms(
+		userId: number,
+		filters: {
+			startDate?: Date;
+			endDate?: Date;
+			excludeBadDays?: boolean;
+		}
+	): Promise<Array<{
+		id: number;
+		completed_at: Date;
+		workout_id: number;
+		is_bad_day: boolean;
+		workout: {
+			id: number;
+			name: string;
+		};
+	}>> {
+		const whereClause: any = {
+			user_id: userId,
+		};
+
+		// Apply date range
+		if (filters.startDate || filters.endDate) {
+			whereClause.completed_at = {};
+			if (filters.startDate) {
+				whereClause.completed_at.gte = filters.startDate;
+			}
+			if (filters.endDate) {
+				whereClause.completed_at.lte = filters.endDate;
+			}
+		}
+
+		// Apply bad day filter
+		if (filters.excludeBadDays) {
+			whereClause.is_bad_day = false;
+		}
+
+		return prisma.workout_completions.findMany({
+			where: whereClause,
+			include: {
+				workout: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+			},
+			orderBy: {
+				completed_at: 'desc',
+			},
+		});
+	},
+
+	/**
+	 * Get bad day count across all programs
+	 */
+	async getBadDayCountAllPrograms(
+		userId: number,
+		startDate?: Date,
+		endDate?: Date
+	): Promise<number> {
+		const whereClause: any = {
+			user_id: userId,
+			is_bad_day: true,
+		};
+
+		if (startDate || endDate) {
+			whereClause.completed_at = {};
+			if (startDate) whereClause.completed_at.gte = startDate;
+			if (endDate) whereClause.completed_at.lte = endDate;
+		}
+
+		return prisma.workout_completions.count({
+			where: whereClause,
+		});
+	},
+
+	/**
+	 * Get all unique exercises the user has ever done
+	 */
+	async getAllUserExercises(userId: number): Promise<Array<{ id: number; name: string }>> {
+		const exercises = await prisma.completed_exercises.findMany({
+			where: {
+				user_id: userId,
+			},
+			select: {
+				exercise: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+			},
+			distinct: ['exercise_id'],
+		});
+
+		return exercises.map(e => e.exercise);
+	},
 };
