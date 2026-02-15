@@ -10370,3 +10370,56 @@ Foreign key constraint violated on the constraint: `program_progression_settings
 2026-01-15 10:28:26 debug: Fetched programs for user
 2026-01-15 10:29:22 info: SIGINT received, closing database connection...
 2026-01-15 10:29:22 info: Database connection closed successfully.
+2026-02-12 08:18:25 info: Application starting...
+2026-02-12 08:18:25 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-02-12 08:18:25 info: Server is running on http://0.0.0.0:3000
+2026-02-12 08:18:25 info: Initializing services...
+2026-02-12 08:18:25 info: Successfully connected to the database
+2026-02-12 08:18:25 info: Exercise cache initialized
+2026-02-12 08:18:25 info: All services initialized successfully
+2026-02-12 08:18:45 debug: Authenticating user
+2026-02-12 08:18:45 debug: User authenticated successfully
+2026-02-12 08:18:45 debug: Generating auth token
+2026-02-12 08:18:45 debug: Auth token generated successfully
+2026-02-12 08:18:53 debug: Fetching all users
+2026-02-12 08:18:53 debug: Successfully fetched and transformed users
+2026-02-12 08:18:53 debug: Fetched programs for user
+2026-02-12 08:18:53 debug: Fetching all users
+2026-02-12 08:18:53 debug: Successfully fetched and transformed users
+2026-02-12 08:18:53 debug: Fetched programs for user
+2026-02-12 08:19:25 debug: Fetching all muscle groups
+2026-02-12 08:19:25 debug: Successfully fetched muscle groups
+2026-02-12 08:19:25 debug: Fetching all muscle groups
+2026-02-12 08:19:25 debug: Successfully fetched muscle groups
+2026-02-12 08:21:33 error: Error creating exercise: 
+Invalid `prisma.exercises.create()` invocation in
+C:\Myo-project\myo-express-prisma\src\services\repositories\exerciseRepository.ts:44:29
+
+  41 },
+  42 
+  43 create: async (exerciseData: Omit<exercises, "id" | "createdAt">) => {
+→ 44   return prisma.exercises.create(
+Unique constraint failed on the fields: (`name`)
+2026-02-15 08:30:03 info: Application starting...
+2026-02-15 08:30:03 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-02-15 08:30:03 info: Server is running on http://0.0.0.0:3000
+2026-02-15 08:30:03 info: Initializing services...
+2026-02-15 08:30:03 info: Successfully connected to the database
+2026-02-15 08:30:03 info: Exercise cache initialized
+2026-02-15 08:30:03 info: All services initialized successfully
+2026-02-15 08:33:00 debug: Fetching all muscle groups
+2026-02-15 08:33:00 debug: Successfully fetched muscle groups
+2026-02-15 08:33:00 debug: Fetching all muscle groups
+2026-02-15 08:33:00 debug: Successfully fetched muscle groups
+2026-02-15 08:43:52 debug: Fetching all muscle groups
+2026-02-15 08:43:52 debug: Successfully fetched muscle groups
+2026-02-15 08:43:52 debug: Fetching all muscle groups
+2026-02-15 08:43:52 debug: Successfully fetched muscle groups
+2026-02-15 08:50:03 debug: Fetching all muscle groups
+2026-02-15 08:50:03 debug: Successfully fetched muscle groups
+2026-02-15 08:50:03 debug: Fetching all muscle groups
+2026-02-15 08:50:03 debug: Successfully fetched muscle groups
+2026-02-15 08:50:50 debug: Fetching all muscle groups
+2026-02-15 08:50:50 debug: Successfully fetched muscle groups
+2026-02-15 09:07:45 info: SIGINT received, closing database connection...
+2026-02-15 09:07:45 info: Database connection closed successfully.

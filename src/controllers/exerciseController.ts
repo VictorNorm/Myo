@@ -13,6 +13,18 @@ export const exerciseValidators = {
 		body("category")
 			.isIn(["COMPOUND", "ISOLATION"])
 			.withMessage("Invalid exercise category"),
+		body("videoUrl")
+			.optional({ values: "null" })
+			.isURL()
+			.withMessage("Video URL must be a valid URL"),
+		body("muscleGroupIds")
+			.optional()
+			.isArray()
+			.withMessage("Muscle group IDs must be an array"),
+		body("muscleGroupIds.*")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Each muscle group ID must be a positive integer"),
 		body("defaultIncrementKg")
 			.optional()
 			.isNumeric()
@@ -40,6 +52,18 @@ export const exerciseValidators = {
 			.optional()
 			.isIn(["COMPOUND", "ISOLATION"])
 			.withMessage("Invalid exercise category"),
+		body("videoUrl")
+			.optional({ values: "null" })
+			.isURL()
+			.withMessage("Video URL must be a valid URL"),
+		body("muscleGroupIds")
+			.optional()
+			.isArray()
+			.withMessage("Muscle group IDs must be an array"),
+		body("muscleGroupIds.*")
+			.optional()
+			.isInt({ min: 1 })
+			.withMessage("Each muscle group ID must be a positive integer"),
 		body("defaultIncrementKg")
 			.optional()
 			.isNumeric()

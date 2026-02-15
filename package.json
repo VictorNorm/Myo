@@ -30,7 +30,7 @@
 		"express-rate-limit": "^7.3.1",
 		"express-validator": "^7.1.0",
 		"express-winston": "^4.2.0",
-		"fitness-progression-calculator": "^1.6.3",
+		"fitness-progression-calculator": "^2.0.0",
 		"helmet": "^7.1.0",
 		"jsonwebtoken": "^9.0.2",
 		"nodemailer": "^6.9.14",
