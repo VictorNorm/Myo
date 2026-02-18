@@ -35,7 +35,7 @@ export const authService = {
 		});
 
 		try {
-			const user = await authRepository.findUserByUsername(username);
+			const user = await authRepository.findUserByUsername(username.toLowerCase());
 
 			if (!user) {
 				logger.debug("User not found during authentication", { 
