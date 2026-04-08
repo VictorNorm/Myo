@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { param, query, validationResult } from "express-validator";
 import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { statsService, type TimeFrameType } from "../services/statsService";
@@ -73,7 +73,7 @@ export const statsValidators = {
 
 export const statsController = {
 	// GET /progression/programs/:programId/exercises
-	getExerciseProgression: async (req: Request, res: Response) => {
+	getExerciseProgression: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -107,25 +107,12 @@ export const statsController = {
 					userId: req.user?.id,
 				}
 			);
-
-			if (err instanceof Error && err.message.includes("not found")) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, err.message)
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve exercise progression",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 
 	// GET /completed-exercises/programs/:programId
-	getCompletedExercises: async (req: Request, res: Response) => {
+	getCompletedExercises: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -171,25 +158,12 @@ export const statsController = {
 					timeFrame: req.query.timeFrame,
 				}
 			);
-
-			if (err instanceof Error && err.message.includes("not found")) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, err.message)
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve volume data",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 
 	// GET /workout-progress/programs/:programId
-	getWorkoutProgress: async (req: Request, res: Response) => {
+	getWorkoutProgress: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -233,25 +207,12 @@ export const statsController = {
 					timeFrame: req.query.timeFrame,
 				}
 			);
-
-			if (err instanceof Error && err.message.includes("not found")) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, err.message)
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve workout progress",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 
 	// GET /programs/:programId/statistics
-	getProgramStatistics: async (req: Request, res: Response) => {
+	getProgramStatistics: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -285,20 +246,7 @@ export const statsController = {
 					userId: req.user?.id,
 				}
 			);
-
-			if (err instanceof Error && err.message.includes("not found")) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, err.message)
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve program statistics",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 };

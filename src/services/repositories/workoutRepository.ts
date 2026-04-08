@@ -271,6 +271,17 @@ export const workoutRepository = {
     });
   },
 
+  // Record historical workout completion for frequency tracking
+  createWorkoutCompletion: async (data: {
+    user_id: number;
+    program_id: number;
+    workout_id: number;
+    completed_at: Date;
+    is_bad_day: boolean;
+  }) => {
+    return prisma.workout_completions.create({ data });
+  },
+
   // Transaction helper for complex operations
   executeTransaction: async <T>(callback: (tx: any) => Promise<T>): Promise<T> => {
     return prisma.$transaction(callback);

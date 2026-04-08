@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { 
+import {
 	templateRepository,
 	type ExerciseBaselineFromDB,
 	type CompletedExerciseFromDB,
@@ -8,6 +8,7 @@ import {
 	type SupersetData
 } from "./repositories/templateRepository";
 import logger from "./logger";
+import { NotFoundError, BadRequestError } from "../utils/errorHandler";
 
 // Response interfaces
 export interface TemplateExerciseData {
@@ -44,14 +45,14 @@ export const templateService = {
 		const workout = await templateRepository.getWorkoutWithProgram(workoutId);
 
 		if (!workout) {
-			throw new Error("Workout not found");
+			throw new NotFoundError("Workout not found");
 		}
 
 		const programType = workout.programs?.programType || "MANUAL";
 		const programId = workout.program_id;
 
 		if (!programId) {
-			throw new Error("Workout is not associated with a program");
+			throw new BadRequestError("Workout is not associated with a program");
 		}
 
 		// Get workout exercises with their details

@@ -7,6 +7,7 @@ import {
 	type ProgressionHistoryWithExercise,
 } from "./repositories/statsRepository";
 import logger from "./logger";
+import { NotFoundError } from "../utils/errorHandler";
 
 // Response interfaces
 export interface VolumeData {
@@ -140,7 +141,7 @@ export const statsService = {
 			// Get program info for date filtering
 			const programInfo = await statsRepository.getProgramInfo(programId);
 			if (!programInfo) {
-				throw new Error("Program not found");
+				throw new NotFoundError("Program not found");
 			}
 
 			// Parse dates if provided
@@ -321,7 +322,7 @@ export const statsService = {
 			// Get program info
 			const programInfo = await statsRepository.getProgramInfo(programId);
 			if (!programInfo) {
-				throw new Error("Program not found");
+				throw new NotFoundError("Program not found");
 			}
 
 			// Parse dates if provided
@@ -434,7 +435,7 @@ export const statsService = {
 			// Get program info
 			const programInfo = await statsRepository.getProgramInfo(programId);
 			if (!programInfo) {
-				throw new Error("Program not found");
+				throw new NotFoundError("Program not found");
 			}
 
 			// Get workout progress for days active calculation

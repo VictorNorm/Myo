@@ -10423,3 +10423,215 @@ Unique constraint failed on the fields: (`name`)
 2026-02-15 08:50:50 debug: Successfully fetched muscle groups
 2026-02-15 09:07:45 info: SIGINT received, closing database connection...
 2026-02-15 09:07:45 info: Database connection closed successfully.
+2026-02-18 11:34:33 info: Application starting...
+2026-02-18 11:34:33 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-02-18 11:34:33 info: Server is running on http://0.0.0.0:3000
+2026-02-18 11:34:33 info: Initializing services...
+2026-02-18 11:34:33 info: Successfully connected to the database
+2026-02-18 11:34:33 info: Exercise cache initialized
+2026-02-18 11:34:33 info: All services initialized successfully
+2026-02-18 11:42:11 debug: Creating new user account
+2026-02-18 11:42:12 info: User account created successfully
+2026-02-18 11:42:40 debug: Authenticating user
+2026-02-18 11:42:40 debug: Invalid password during authentication
+2026-02-18 11:42:52 debug: Authenticating user
+2026-02-18 11:42:52 debug: Invalid password during authentication
+2026-03-18 10:00:30 info: Application starting...
+2026-03-18 10:00:30 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-18 10:00:30 info: Server is running on http://0.0.0.0:3000
+2026-03-18 10:00:30 info: Initializing services...
+2026-03-18 10:00:30 info: Successfully connected to the database
+2026-03-18 10:00:30 info: Exercise cache initialized
+2026-03-18 10:00:30 info: All services initialized successfully
+2026-03-18 10:01:50 info: Application starting...
+2026-03-18 10:01:50 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-18 10:01:50 info: Server is running on http://0.0.0.0:3000
+2026-03-18 10:01:50 info: Initializing services...
+2026-03-18 10:01:50 info: Successfully connected to the database
+2026-03-18 10:01:50 info: Exercise cache initialized
+2026-03-18 10:01:50 info: All services initialized successfully
+2026-03-18 10:09:17 info: SIGINT received, closing database connection...
+2026-03-18 10:09:17 info: Database connection closed successfully.
+2026-03-18 10:09:20 info: Application starting...
+2026-03-18 10:09:20 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-18 10:09:20 info: Server is running on http://0.0.0.0:3000
+2026-03-18 10:09:20 info: Initializing services...
+2026-03-18 10:09:20 info: Successfully connected to the database
+2026-03-18 10:09:20 info: Exercise cache initialized
+2026-03-18 10:09:20 info: All services initialized successfully
+2026-03-18 10:10:32 debug: Authenticating user
+2026-03-18 10:10:32 debug: User not found during authentication
+2026-03-18 10:19:33 info: SIGINT received, closing database connection...
+2026-03-18 10:19:33 info: Database connection closed successfully.
+2026-03-18 10:19:37 info: Application starting...
+2026-03-18 10:19:37 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-18 10:19:37 info: Server is running on http://0.0.0.0:3000
+2026-03-18 10:19:37 info: Initializing services...
+2026-03-18 10:19:37 info: Successfully connected to the database
+2026-03-18 10:19:37 info: Exercise cache initialized
+2026-03-18 10:19:37 info: All services initialized successfully
+2026-03-18 10:25:29 debug: Authenticating user
+2026-03-18 10:25:29 debug: Invalid password during authentication
+2026-03-18 10:25:36 debug: Authenticating user
+2026-03-18 10:25:36 debug: User authenticated successfully
+2026-03-18 10:25:36 debug: Generating auth token
+2026-03-18 10:25:36 debug: Auth token generated successfully
+2026-03-18 10:25:37 debug: Fetched programs for user
+2026-03-18 10:25:37 debug: Fetched programs for user
+2026-03-18 10:25:37 debug: Fetched workouts for program
+2026-03-18 10:25:37 debug: Fetched workouts for program
+2026-03-18 10:25:37 debug: Retrieved next workout
+2026-03-18 10:25:37 debug: Retrieved next workout
+2026-03-18 10:38:23 warn: 🔍 Backend - Sample exercise with video URL:
+2026-03-18 10:38:23 warn: 🔍 Backend - Total exercises found:
+2026-03-18 10:38:23 warn: 🔍 Backend - First exercise raw:
+2026-03-18 10:38:23 debug: Processing workout template
+2026-03-18 10:38:23 debug: Retrieved exercise baselines for automated program
+2026-03-18 10:38:23 debug: Successfully built workout template
+2026-03-23 09:37:37 info: Application starting...
+2026-03-23 09:37:37 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-23 09:37:37 info: Server is running on http://0.0.0.0:3000
+2026-03-23 09:37:37 info: Initializing services...
+2026-03-23 09:37:37 info: Successfully connected to the database
+2026-03-23 09:37:37 info: Exercise cache initialized
+2026-03-23 09:37:37 info: All services initialized successfully
+2026-03-23 09:50:02 debug: Authenticating user
+2026-03-23 09:50:02 debug: User authenticated successfully
+2026-03-23 09:50:02 debug: Generating auth token
+2026-03-23 09:50:02 debug: Auth token generated successfully
+2026-03-23 09:50:06 debug: Fetching all users
+2026-03-23 09:50:06 debug: Successfully fetched and transformed users
+2026-03-23 09:50:06 debug: Fetching all users
+2026-03-23 09:50:06 debug: Fetched programs for user
+2026-03-23 09:50:06 debug: Fetched programs for user
+2026-03-23 09:50:06 debug: Successfully fetched and transformed users
+2026-03-23 09:50:14 debug: Fetched workouts for program
+2026-03-23 09:50:16 debug: Successfully fetched workout exercises
+2026-03-23 09:50:32 debug: Fetching all users
+2026-03-23 09:50:32 debug: Successfully fetched and transformed users
+2026-03-23 09:50:32 debug: Fetching all users
+2026-03-23 09:50:32 debug: Fetched programs for user
+2026-03-23 09:50:32 debug: Successfully fetched and transformed users
+2026-03-23 09:50:32 debug: Fetched programs for user
+2026-03-23 09:50:37 debug: Fetched workouts for program
+2026-03-23 09:50:44 debug: Successfully fetched workout exercises
+2026-03-23 09:50:49 debug: Fetched workouts for program
+2026-03-23 09:50:57 debug: Successfully fetched workout exercises
+2026-03-25 09:16:00 info: Application starting...
+2026-03-25 09:16:00 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-25 09:16:00 info: Server is running on http://0.0.0.0:3000
+2026-03-25 09:16:00 info: Initializing services...
+2026-03-25 09:16:00 info: Successfully connected to the database
+2026-03-25 09:16:00 info: Exercise cache initialized
+2026-03-25 09:16:00 info: All services initialized successfully
+2026-03-25 09:16:15 debug: Fetching all muscle groups
+2026-03-25 09:16:15 debug: Successfully fetched muscle groups
+2026-03-25 09:16:15 debug: Fetching all muscle groups
+2026-03-25 09:16:15 debug: Successfully fetched muscle groups
+2026-03-25 09:16:22 debug: Fetching all users
+2026-03-25 09:16:22 debug: Successfully fetched and transformed users
+2026-03-25 09:16:22 debug: Fetching all users
+2026-03-25 09:16:22 debug: Fetched programs for user
+2026-03-25 09:16:22 debug: Fetched programs for user
+2026-03-25 09:16:22 debug: Successfully fetched and transformed users
+2026-03-25 09:16:26 debug: Fetched workouts for program
+2026-03-25 09:16:28 debug: Successfully fetched workout exercises
+2026-03-25 09:21:37 info: SIGINT received, closing database connection...
+2026-03-25 09:21:37 info: Database connection closed successfully.
+2026-03-25 09:21:39 info: Application starting...
+2026-03-25 09:21:39 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-25 09:21:39 info: Server is running on http://0.0.0.0:3000
+2026-03-25 09:21:39 info: Initializing services...
+2026-03-25 09:21:39 info: Successfully connected to the database
+2026-03-25 09:21:39 info: Exercise cache initialized
+2026-03-25 09:21:39 info: All services initialized successfully
+2026-03-25 09:21:43 debug: Fetching all users
+2026-03-25 09:21:43 debug: Successfully fetched and transformed users
+2026-03-25 09:21:43 debug: Fetching all users
+2026-03-25 09:21:43 debug: Fetched programs for user
+2026-03-25 09:21:43 debug: Successfully fetched and transformed users
+2026-03-25 09:21:43 debug: Fetched programs for user
+2026-03-25 09:21:46 debug: Fetched workouts for program
+2026-03-25 09:21:47 debug: Successfully fetched workout exercises
+2026-03-25 09:22:01 debug: Fetching all users
+2026-03-25 09:22:01 debug: Successfully fetched and transformed users
+2026-03-25 09:22:01 debug: Fetching all users
+2026-03-25 09:22:01 debug: Successfully fetched and transformed users
+2026-03-25 09:22:02 debug: Fetching all users
+2026-03-25 09:22:02 debug: Successfully fetched and transformed users
+2026-03-25 09:22:02 debug: Fetching all users
+2026-03-25 09:22:02 debug: Successfully fetched and transformed users
+2026-03-25 09:22:02 debug: Fetched programs for user
+2026-03-25 09:22:02 debug: Fetched programs for user
+2026-03-25 09:22:06 debug: Fetched workouts for program
+2026-03-25 09:22:07 debug: Successfully fetched workout exercises
+2026-03-25 09:24:41 debug: Fetching all users
+2026-03-25 09:24:41 debug: Successfully fetched and transformed users
+2026-03-25 09:24:41 debug: Fetched programs for user
+2026-03-25 09:24:41 debug: Fetching all users
+2026-03-25 09:24:41 debug: Successfully fetched and transformed users
+2026-03-25 09:24:41 debug: Fetched programs for user
+2026-03-25 09:25:51 debug: Fetching all users
+2026-03-25 09:25:51 debug: Fetching all users
+2026-03-25 09:25:51 debug: Successfully fetched and transformed users
+2026-03-25 09:25:51 debug: Fetched programs for user
+2026-03-25 09:25:51 debug: Successfully fetched and transformed users
+2026-03-25 09:25:51 debug: Fetched programs for user
+2026-03-25 09:25:54 debug: Fetched workouts for program
+2026-03-25 09:25:54 debug: Successfully fetched workout exercises
+2026-03-25 09:26:31 debug: Fetching all users
+2026-03-25 09:26:31 debug: Successfully fetched and transformed users
+2026-03-25 09:26:31 debug: Fetched programs for user
+2026-03-25 09:26:31 debug: Fetching all users
+2026-03-25 09:26:31 debug: Successfully fetched and transformed users
+2026-03-25 09:26:31 debug: Fetched programs for user
+2026-03-25 09:26:37 debug: Fetched workouts for program
+2026-03-25 09:26:38 debug: Successfully fetched workout exercises
+2026-03-25 09:27:13 info: SIGINT received, closing database connection...
+2026-03-25 09:27:13 info: Database connection closed successfully.
+2026-03-25 09:27:16 info: Application starting...
+2026-03-25 09:27:16 info: Environment PORT=undefined, resolved PORT=3000, HOST=0.0.0.0
+2026-03-25 09:27:16 info: Server is running on http://0.0.0.0:3000
+2026-03-25 09:27:16 info: Initializing services...
+2026-03-25 09:27:16 info: Successfully connected to the database
+2026-03-25 09:27:16 info: Exercise cache initialized
+2026-03-25 09:27:16 info: All services initialized successfully
+2026-03-25 09:28:02 debug: Fetching all users
+2026-03-25 09:28:02 debug: Successfully fetched and transformed users
+2026-03-25 09:28:02 debug: Fetching all users
+2026-03-25 09:28:02 debug: Successfully fetched and transformed users
+2026-03-25 09:28:03 info: Fetched programs for user
+2026-03-25 09:28:04 debug: Fetched workouts for program
+2026-03-25 09:28:06 debug: Successfully fetched workout exercises
+2026-03-25 09:30:42 debug: Fetching all users
+2026-03-25 09:30:42 debug: Successfully fetched and transformed users
+2026-03-25 09:30:42 debug: Fetching all users
+2026-03-25 09:30:42 debug: Successfully fetched and transformed users
+2026-03-25 09:30:46 debug: Fetching all users
+2026-03-25 09:30:46 debug: Successfully fetched and transformed users
+2026-03-25 09:30:46 debug: Fetching all users
+2026-03-25 09:30:46 debug: Successfully fetched and transformed users
+2026-03-25 09:31:05 debug: Fetching all users
+2026-03-25 09:31:05 debug: Successfully fetched and transformed users
+2026-03-25 09:31:05 debug: Fetching all users
+2026-03-25 09:31:05 debug: Successfully fetched and transformed users
+2026-03-25 09:31:59 debug: Fetching all users
+2026-03-25 09:31:59 debug: Successfully fetched and transformed users
+2026-03-25 09:31:59 debug: Fetching all users
+2026-03-25 09:31:59 debug: Successfully fetched and transformed users
+2026-03-25 09:32:30 debug: Fetching all users
+2026-03-25 09:32:30 debug: Successfully fetched and transformed users
+2026-03-25 09:32:30 debug: Fetching all users
+2026-03-25 09:32:30 debug: Successfully fetched and transformed users
+2026-03-25 09:33:31 debug: Fetching all users
+2026-03-25 09:33:31 debug: Successfully fetched and transformed users
+2026-03-25 09:33:31 debug: Fetching all users
+2026-03-25 09:33:31 debug: Successfully fetched and transformed users
+2026-03-25 09:34:02 debug: Fetching all users
+2026-03-25 09:34:02 debug: Successfully fetched and transformed users
+2026-03-25 09:34:23 debug: Fetching all users
+2026-03-25 09:34:23 debug: Successfully fetched and transformed users
+2026-03-25 09:34:40 debug: Fetching all users
+2026-03-25 09:34:40 debug: Successfully fetched and transformed users
+2026-03-25 09:34:40 debug: Fetching all users
+2026-03-25 09:34:40 debug: Successfully fetched and transformed users

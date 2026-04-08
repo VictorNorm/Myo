@@ -1,5 +1,4 @@
 import { workoutRepository, type CompletedExercise, type ExerciseBaselineCreate, type ProgressionHistoryCreate } from "./repositories/workoutRepository";
-import prisma from "./db";
 import logger from "./logger";
 import type { Decimal } from "@prisma/client/runtime/library";
 import {
@@ -7,6 +6,9 @@ import {
   type ExerciseData,
   type UserEquipmentSettings,
 } from "fitness-progression-calculator";
+import { NotFoundError, BadRequestError, ForbiddenError } from "../utils/errorHandler";
+import type { WorkoutExerciseRecord } from "../../types/workout";
+import type { UserSettings } from "./repositories/userSettingsRepository";
 
 // Business logic interfaces
 export interface ExerciseCompletionData {
@@ -78,12 +80,12 @@ export const workoutService = {
     );
 
     if (!program) {
-      throw new Error("Program not found");
+      throw new NotFoundError("Program not found");
     }
 
     // Authorization check for non-admins
     if (!isAdmin && program.userId !== userId) {
-      throw new Error("Not authorized to access this program's workouts");
+      throw new ForbiddenError("Not authorized to access this program's workouts");
     }
 
     return workouts;
@@ -145,7 +147,7 @@ export const workoutService = {
     isBadDay: boolean = false
   ): Promise<WorkoutCompletionResult> => {
     if (!Array.isArray(exerciseDataArray) || exerciseDataArray.length === 0) {
-      throw new Error("Invalid exercise data format");
+      throw new BadRequestError("Invalid exercise data format");
     }
 
     const workoutId = exerciseDataArray[0].workoutId;
@@ -154,7 +156,7 @@ export const workoutService = {
     // Get workout and program details
     const workout = await workoutRepository.findWorkoutWithProgram(workoutId);
     if (!workout || !workout.program_id) {
-      throw new Error("Workout not found or not associated with a program");
+      throw new NotFoundError("Workout not found or not associated with a program");
     }
 
     const programId = workout.program_id;
@@ -172,7 +174,7 @@ export const workoutService = {
     });
 
     // Process all exercises in a transaction
-    return workoutRepository.executeTransaction(async (prisma) => {
+    return workoutRepository.executeTransaction(async (_tx) => {
       const progressionResults: ProgressionResult[] = [];
 
       // Process each exercise
@@ -180,7 +182,7 @@ export const workoutService = {
         exerciseDataArray.map(async (data) => {
           const exercise = await workoutRepository.findExerciseById(data.exerciseId);
           if (!exercise) {
-            throw new Error(`Exercise ${data.exerciseId} not found`);
+            throw new NotFoundError(`Exercise ${data.exerciseId} not found`);
           }
 
           // Save completed exercise
@@ -288,14 +290,12 @@ export const workoutService = {
       });
 
       // Insert into workout_completions for historical tracking and frequency stats
-      await prisma.workout_completions.create({
-        data: {
-          user_id: userId,
-          program_id: programId,
-          workout_id: workoutId,
-          completed_at: new Date(),
-          is_bad_day: isBadDay,
-        },
+      await workoutRepository.createWorkoutCompletion({
+        user_id: userId,
+        program_id: programId,
+        workout_id: workoutId,
+        completed_at: new Date(),
+        is_bad_day: isBadDay,
       });
 
       logger.debug("Recorded workout completion for frequency tracking", {
@@ -317,12 +317,12 @@ export const workoutService = {
   rateExercise: async (userId: number, exerciseData: ExerciseRatingData) => {
     const exercise = await workoutRepository.findExerciseById(exerciseData.exerciseId);
     if (!exercise) {
-      throw new Error("Exercise not found");
+      throw new NotFoundError("Exercise not found");
     }
 
     const workout = await workoutRepository.findWorkoutWithProgram(exerciseData.workoutId);
     if (!workout || !workout.program_id) {
-      throw new Error("Workout not found or not associated with a program");
+      throw new NotFoundError("Workout not found or not associated with a program");
     }
 
     const programId = workout.program_id;
@@ -404,12 +404,12 @@ export const workoutService = {
   addWorkout: async (name: string, programId: number, userId: number, userRole?: string) => {
     const program = await workoutRepository.findProgramById(programId);
     if (!program) {
-      throw new Error("Program does not exist");
+      throw new NotFoundError("Program does not exist");
     }
 
     // Authorization check
     if (program.userId !== userId && userRole !== "ADMIN") {
-      throw new Error("Not authorized to add workouts to this program");
+      throw new ForbiddenError("Not authorized to add workouts to this program");
     }
 
     const workout = await workoutRepository.createWorkout(name, programId);
@@ -431,7 +431,7 @@ export const workoutService = {
   // Helper: Calculate progression for exercise completion
   calculateExerciseProgression: async (
     data: ExerciseCompletionData,
-    exercise: any,
+    exercise: WorkoutExerciseRecord,
     programGoal: string
   ) => {
     const userSettings = await workoutRepository.findUserSettings(data.userId);
@@ -461,7 +461,7 @@ export const workoutService = {
     exerciseData: ExerciseRatingData,
     exerciseId: number,
     programGoal: string,
-    userSettings: any,
+    userSettings: UserSettings,
     equipmentType: string
   ) => {
     const equipmentSettings = workoutService.buildEquipmentSettings(userSettings, exerciseData.useAdaptiveIncrements, equipmentType);
@@ -484,7 +484,7 @@ export const workoutService = {
   },
 
   // Helper: Build equipment settings from user preferences
-  buildEquipmentSettings: (userSettings: any, useAdaptiveIncrements = true, equipmentType?: string): UserEquipmentSettings => {
+  buildEquipmentSettings: (userSettings: UserSettings | null, useAdaptiveIncrements = true, equipmentType?: string): UserEquipmentSettings => {
     const settings: UserEquipmentSettings = {
       barbellIncrement: toNumber(userSettings?.barbellIncrement, 2.5),
       dumbbellIncrement: toNumber(userSettings?.dumbbellIncrement, 2.0),

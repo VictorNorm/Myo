@@ -8,6 +8,7 @@ import {
 	type ResetPasswordData,
 } from "./repositories/passwordRepository";
 import logger from "./logger";
+import { BadRequestError } from "../utils/errorHandler";
 
 // Service interfaces
 export interface ForgotPasswordRequest {
@@ -86,14 +87,18 @@ export const passwordService = {
 				logger.warn("Password reset attempted with invalid or expired token", {
 					tokenProvided: !!request.token,
 				});
-				throw new Error("Invalid or expired reset token");
+				throw new BadRequestError(
+					"The password reset link is invalid or has expired. Please request a new one."
+				);
 			}
 
 			if (user.resetToken === null) {
 				logger.warn("User reset token is null despite database query constraint", {
 					userId: user.id,
 				});
-				throw new Error("Invalid reset token state");
+				throw new BadRequestError(
+					"Password reset request is in an invalid state. Please start over."
+				);
 			}
 
 			// Verify the provided token against the hashed token
@@ -103,7 +108,9 @@ export const passwordService = {
 				logger.warn("Invalid reset token verification", {
 					userId: user.id,
 				});
-				throw new Error("Invalid reset token");
+				throw new BadRequestError(
+					"The password reset link is invalid or has expired. Please request a new one."
+				);
 			}
 
 			// Validate password strength
@@ -167,23 +174,23 @@ export const passwordService = {
 		const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
 		if (password.length < MIN_LENGTH) {
-			throw new Error(`Password must be at least ${MIN_LENGTH} characters long`);
+			throw new BadRequestError(`Password must be at least ${MIN_LENGTH} characters long`);
 		}
 
 		if (!hasUpperCase) {
-			throw new Error("Password must contain at least one uppercase letter");
+			throw new BadRequestError("Password must contain at least one uppercase letter");
 		}
 
 		if (!hasLowerCase) {
-			throw new Error("Password must contain at least one lowercase letter");
+			throw new BadRequestError("Password must contain at least one lowercase letter");
 		}
 
 		if (!hasNumbers) {
-			throw new Error("Password must contain at least one number");
+			throw new BadRequestError("Password must contain at least one number");
 		}
 
 		if (!hasSpecialChar) {
-			throw new Error("Password must contain at least one special character");
+			throw new BadRequestError("Password must contain at least one special character");
 		}
 	},
 

@@ -1,5 +1,6 @@
 import { userRepository, type UserDetail, type UserProfile } from "./repositories/userRepository";
 import logger from "./logger";
+import { NotFoundError, ForbiddenError } from "../utils/errorHandler";
 
 // Helper function to check user access permissions
 const checkUserAccessPermission = (
@@ -103,7 +104,7 @@ export const userService = {
 					requestingUserId: requestingUser.id,
 					requestingUserRole: requestingUser.role
 				});
-				throw new Error("Unauthorized to view this user");
+				throw new ForbiddenError("Unauthorized to view this user");
 			}
 
 			logger.debug("User details accessed successfully", {
@@ -138,13 +139,13 @@ export const userService = {
 			// Check if user exists
 			const userExists = await userRepository.userExists(userId);
 			if (!userExists) {
-				throw new Error("User not found");
+				throw new NotFoundError("User not found");
 			}
 
 			// Check if trainer exists 
 			const trainerExists = await userRepository.userExists(trainerId);
 			if (!trainerExists) {
-				throw new Error("Trainer not found");
+				throw new NotFoundError("Trainer not found");
 			}
 
 			await userRepository.assignUserToTrainer(userId, trainerId);

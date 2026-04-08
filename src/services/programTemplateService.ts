@@ -2,6 +2,7 @@ import { programTemplateRepository } from "./repositories/programTemplateReposit
 import { programRepository } from "./repositories/programRepository";
 import prisma from "./db";
 import logger from "./logger";
+import { AppError, NotFoundError, BadRequestError } from "../utils/errorHandler";
 import type {
   ProgramTemplateBasic,
   ProgramTemplateWithWorkouts,
@@ -72,13 +73,13 @@ export const programTemplateService = {
       const template = await programTemplateRepository.findTemplateWithWorkouts(templateId);
       
       if (!template) {
-        throw new Error('Template not found');
+        throw new NotFoundError('Template not found');
       }
 
       if (!template.is_active) {
-        throw new Error('Template is no longer available');
+        throw new AppError('Template is no longer available', 410);
       }
-      
+
       logger.info('Retrieved template details', {
         templateId: templateId,
         templateName: template.name,
@@ -104,9 +105,9 @@ export const programTemplateService = {
     try {
       // Get the template with all workouts and exercises
       const template = await this.getTemplateDetails(templateId);
-      
+
       if (!template) {
-        throw new Error('Template not found');
+        throw new NotFoundError('Template not found');
       }
 
       let totalExercisesCreated = 0;
@@ -193,17 +194,17 @@ export const programTemplateService = {
     try {
       // Validate template data
       if (!templateData.name || templateData.name.trim() === '') {
-        throw new Error('Template name is required');
+        throw new BadRequestError('Template name is required');
       }
 
       if (!templateData.template_workouts || templateData.template_workouts.length === 0) {
-        throw new Error('At least one workout is required');
+        throw new BadRequestError('At least one workout is required');
       }
 
       // Validate each workout has exercises
       for (const workout of templateData.template_workouts) {
         if (!workout.template_exercises || workout.template_exercises.length === 0) {
-          throw new Error(`Workout "${workout.name}" must have at least one exercise`);
+          throw new BadRequestError(`Workout "${workout.name}" must have at least one exercise`);
         }
       }
 
@@ -233,11 +234,11 @@ export const programTemplateService = {
       // Verify template exists
       const exists = await programTemplateRepository.verifyTemplateExists(templateId);
       if (!exists) {
-        throw new Error('Template not found');
+        throw new NotFoundError('Template not found');
       }
 
       const updatedTemplate = await programTemplateRepository.updateTemplate(templateId, updateData);
-      
+
       if (!updatedTemplate) {
         throw new Error('Failed to update template');
       }
@@ -262,9 +263,9 @@ export const programTemplateService = {
   async deactivateTemplate(templateId: number): Promise<ProgramTemplateBasic> {
     try {
       const deactivatedTemplate = await programTemplateRepository.deactivateTemplate(templateId);
-      
+
       if (!deactivatedTemplate) {
-        throw new Error('Template not found');
+        throw new NotFoundError('Template not found');
       }
 
       logger.info('Deactivated program template', {

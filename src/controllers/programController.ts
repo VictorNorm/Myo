@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { body, param, query, validationResult } from "express-validator";
 import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { programService } from "../services/programService";
@@ -210,7 +210,7 @@ export const programController = {
 	},
 
 	// GET /programs/:userId - Get programs for specific user
-	getUserProgramsById: async (req: Request, res: Response) => {
+	getUserProgramsById: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -235,25 +235,12 @@ export const programController = {
 					statusFilter: req.query.status,
 				}
 			);
-
-			if (err instanceof Error && err.message.includes("No programs")) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, err.message)
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve programs for user",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 
 	// GET /programs/:programId/nextWorkout - Get next workout in program
-	getNextWorkout: async (req: Request, res: Response) => {
+	getNextWorkout: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -295,21 +282,7 @@ export const programController = {
 					userId: req.user?.id,
 				}
 			);
-
-			if (err instanceof Error && 
-				(err.message.includes("not found") || err.message.includes("access denied"))) {
-				return res.status(404).json(
-					error(ErrorCodes.NOT_FOUND, "Program not found or access denied")
-				);
-			}
-
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"Failed to retrieve next workout",
-					err instanceof Error ? err.message : undefined
-				)
-			);
+			next(err);
 		}
 	},
 

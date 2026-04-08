@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { programTemplateService } from "../services/programTemplateService";
@@ -61,7 +61,7 @@ export const programTemplateController = {
   },
 
   // GET /api/v2/templates/:id - Get specific template with full details
-  getTemplateById: async (req: Request, res: Response) => {
+  getTemplateById: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -79,31 +79,12 @@ export const programTemplateController = {
         stack: err instanceof Error ? err.stack : undefined,
         templateId: req.params.id
       });
-
-      if (err instanceof Error && err.message.includes('not found')) {
-        return res.status(404).json(
-          error(ErrorCodes.NOT_FOUND, 'Template not found')
-        );
-      }
-
-      if (err instanceof Error && err.message.includes('no longer available')) {
-        return res.status(410).json(
-          error('gone', 'Template is no longer available')
-        );
-      }
-      
-      return res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          'Failed to retrieve template details',
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // POST /api/v2/templates/:id/create-program - Create program from template
-  createProgramFromTemplate: async (req: Request, res: Response) => {
+  createProgramFromTemplate: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -139,31 +120,12 @@ export const programTemplateController = {
         userId: req.user?.id,
         programName: req.body.name
       });
-
-      if (err instanceof Error && err.message.includes('not found')) {
-        return res.status(404).json(
-          error(ErrorCodes.NOT_FOUND, 'Template not found')
-        );
-      }
-
-      if (err instanceof Error && err.message.includes('no longer available')) {
-        return res.status(410).json(
-          error('gone', 'Template is no longer available')
-        );
-      }
-      
-      return res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          'Failed to create program from template',
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // POST /api/v2/templates - Create new template (admin only)
-  createTemplate: async (req: Request, res: Response) => {
+  createTemplate: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -197,28 +159,12 @@ export const programTemplateController = {
         adminUserId: req.user?.id,
         templateName: req.body.name
       });
-
-      if (err instanceof Error && (
-        err.message.includes('required') || 
-        err.message.includes('must have')
-      )) {
-        return res.status(400).json(
-          error(ErrorCodes.VALIDATION_FAILED, err.message)
-        );
-      }
-      
-      return res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          'Failed to create template',
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // PUT /api/v2/templates/:id - Update template (admin only)
-  updateTemplate: async (req: Request, res: Response) => {
+  updateTemplate: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -252,25 +198,12 @@ export const programTemplateController = {
         templateId: req.params.id,
         adminUserId: req.user?.id
       });
-
-      if (err instanceof Error && err.message.includes('not found')) {
-        return res.status(404).json(
-          error(ErrorCodes.NOT_FOUND, 'Template not found')
-        );
-      }
-      
-      return res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          'Failed to update template',
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // DELETE /api/v2/templates/:id - Deactivate template (admin only)
-  deleteTemplate: async (req: Request, res: Response) => {
+  deleteTemplate: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -302,20 +235,7 @@ export const programTemplateController = {
         templateId: req.params.id,
         adminUserId: req.user?.id
       });
-
-      if (err instanceof Error && err.message.includes('not found')) {
-        return res.status(404).json(
-          error(ErrorCodes.NOT_FOUND, 'Template not found')
-        );
-      }
-      
-      return res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          'Failed to deactivate template',
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   }
 };

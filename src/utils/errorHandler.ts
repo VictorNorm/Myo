@@ -1,5 +1,18 @@
 import type { Request, Response, NextFunction } from "express";
 import logger from "../services/logger";
+import { error, ErrorCodes } from "../../types/responses";
+
+function getErrorCode(statusCode: number): string {
+	switch (statusCode) {
+		case 400: return ErrorCodes.VALIDATION_FAILED;
+		case 401: return ErrorCodes.UNAUTHORIZED;
+		case 403: return ErrorCodes.FORBIDDEN;
+		case 404: return ErrorCodes.NOT_FOUND;
+		case 409: return ErrorCodes.CONFLICT;
+		case 410: return "gone";
+		default:  return ErrorCodes.INTERNAL_ERROR;
+	}
+}
 
 // Base Error class for application errors
 export class AppError extends Error {
@@ -39,6 +52,12 @@ export class ForbiddenError extends AppError {
 	}
 }
 
+export class ConflictError extends AppError {
+	constructor(message = "Resource already exists") {
+		super(message, 409);
+	}
+}
+
 // Global error handling middleware
 export const errorHandler = (
 	err: Error,
@@ -54,24 +73,26 @@ export const errorHandler = (
 		stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
 	});
 
-	// Handle known error types
+	// Handle known operational errors (NotFoundError, BadRequestError, etc.)
 	if (err instanceof AppError) {
-		return res.status(err.statusCode).json({
-			error: err.message,
-		});
+		return res.status(err.statusCode).json(
+			error(getErrorCode(err.statusCode), err.message)
+		);
 	}
 
-	// Handle Prisma errors (can be expanded for different Prisma error codes)
+	// Handle Prisma known request errors (unique constraint, foreign key, etc.)
 	if (err.name === "PrismaClientKnownRequestError") {
-		return res.status(400).json({
-			error: "Database operation failed",
-			details: err.message,
-		});
+		return res.status(400).json(
+			error(ErrorCodes.DATABASE_ERROR, "Database operation failed")
+		);
 	}
 
-	// Default error response for unhandled errors
-	return res.status(500).json({
-		error: "Internal server error",
-		details: process.env.NODE_ENV === "development" ? err.message : undefined,
-	});
+	// Unhandled errors — never expose internals in production
+	return res.status(500).json(
+		error(
+			ErrorCodes.INTERNAL_ERROR,
+			"Internal server error",
+			process.env.NODE_ENV === "development" ? err.message : undefined
+		)
+	);
 };

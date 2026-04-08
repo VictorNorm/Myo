@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
 import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { workoutService, type ExerciseCompletionData, type ExerciseRatingData } from "../services/workoutService";
@@ -121,7 +121,7 @@ export const workoutValidators = {
 
 export const workoutController = {
   // GET /programs/:programId/workouts
-  getProgramWorkouts: async (req: AuthenticatedRequest, res: Response) => {
+  getProgramWorkouts: async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -162,27 +162,7 @@ export const workoutController = {
           userId: req.user?.id,
         }
       );
-
-      if (err instanceof Error) {
-        if (err.message === "Program not found") {
-          return res.status(404).json(
-            error(ErrorCodes.NOT_FOUND, err.message)
-          );
-        }
-        if (err.message === "Not authorized to access this program's workouts") {
-          return res.status(403).json(
-            error(ErrorCodes.FORBIDDEN, err.message)
-          );
-        }
-      }
-
-      res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          "Failed to fetch workouts",
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
@@ -235,7 +215,7 @@ export const workoutController = {
   },
 
   // POST /workouts/completeWorkout
-  completeWorkout: async (req: ExerciseCompletionRequest, res: Response) => {
+  completeWorkout: async (req: ExerciseCompletionRequest, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -288,33 +268,12 @@ export const workoutController = {
           exerciseCount: req.body?.exercises?.length,
         }
       );
-
-      // Handle specific business logic errors
-      if (err instanceof Error) {
-        if (err.message.includes("not found")) {
-          return res.status(404).json(
-            error(ErrorCodes.NOT_FOUND, err.message)
-          );
-        }
-        if (err.message.includes("already completed")) {
-          return res.status(400).json(
-            error("already_completed", err.message)
-          );
-        }
-      }
-
-      res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          "Failed to complete workout",
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // POST /workouts/rate-exercise
-  rateExercise: async (req: ExerciseRatingRequest, res: Response) => {
+  rateExercise: async (req: ExerciseRatingRequest, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -360,32 +319,12 @@ export const workoutController = {
           workoutId: req.body?.workoutId,
         }
       );
-
-      if (err instanceof Error) {
-        if (err.message === "Exercise not found" || err.message === "Workout not found or not associated with a program") {
-          return res.status(404).json(
-            error(ErrorCodes.NOT_FOUND, err.message)
-          );
-        }
-        if (err.message === "Failed to record exercise completion") {
-          return res.status(500).json(
-            error(ErrorCodes.INTERNAL_ERROR, err.message)
-          );
-        }
-      }
-
-      res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          "Failed to rate exercise",
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 
   // POST /workouts/addworkout
-  addWorkout: async (req: AddWorkoutRequest, res: Response) => {
+  addWorkout: async (req: AddWorkoutRequest, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -421,27 +360,7 @@ export const workoutController = {
           userId: req.user?.id,
         }
       );
-
-      if (err instanceof Error) {
-        if (err.message === "Program does not exist") {
-          return res.status(404).json(
-            error(ErrorCodes.NOT_FOUND, err.message)
-          );
-        }
-        if (err.message === "Not authorized to add workouts to this program") {
-          return res.status(403).json(
-            error(ErrorCodes.FORBIDDEN, err.message)
-          );
-        }
-      }
-
-      res.status(500).json(
-        error(
-          ErrorCodes.INTERNAL_ERROR,
-          "Failed to create workout",
-          err instanceof Error ? err.message : undefined
-        )
-      );
+      next(err);
     }
   },
 };

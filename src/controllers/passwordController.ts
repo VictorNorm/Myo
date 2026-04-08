@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { success, error, validationError, ErrorCodes } from "../../types/responses";
 import { passwordService } from "../services/passwordService";
@@ -103,7 +103,7 @@ export const passwordController = {
 	},
 
 	// POST /reset-password
-	resetPassword: async (req: Request, res: Response) => {
+	resetPassword: async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -143,40 +143,7 @@ export const passwordController = {
 					userAgent: req.get("User-Agent"),
 				}
 			);
-
-			// Handle specific error types for better user experience
-			if (err instanceof Error) {
-				// Token-related errors
-				if (err.message.includes("Invalid or expired reset token") ||
-					err.message.includes("Invalid reset token")) {
-					return res.status(400).json(
-						error("invalid_token", "The password reset link is invalid or has expired. Please request a new one.")
-					);
-				}
-
-				// Password validation errors
-				if (err.message.includes("Password must")) {
-					return res.status(400).json(
-						error(ErrorCodes.VALIDATION_FAILED, err.message)
-					);
-				}
-
-				// State errors
-				if (err.message.includes("Invalid reset token state")) {
-					return res.status(400).json(
-						error("invalid_state", "Password reset request is in an invalid state. Please start over.")
-					);
-				}
-			}
-
-			// Generic error response
-			return res.status(500).json(
-				error(
-					ErrorCodes.INTERNAL_ERROR,
-					"An error occurred while resetting your password"
-					// Don't include details for security
-				)
-			);
+			next(err);
 		}
 	},
 
